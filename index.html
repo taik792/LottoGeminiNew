@@ -57,7 +57,7 @@
         async function caricaDatiV5() {
             try {
                 // Fetch del nuovo JSON Geometrico
-                const response = await fetch('risultati_v5.json?t=' + Date.now());
+                const response = await fetch('risultati_v4.json?t=' + Date.now());
                 const data = await response.json();
                 
                 const risultati = data.ruote ? data.ruote : data;
