@@ -1,35 +1,62 @@
-async function aggiornaSito() {
-    try {
-        // Cache buster per forzare l'aggiornamento dei dati
-        const r = await fetch('risultati_v4.json?t=' + Date.now());
-        const risultati = await r.json();
-        
-        const grid = document.getElementById('container-ruote');
-        grid.innerHTML = '';
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lotto Elite Pro V4 - Cyclo Edition</title>
+    <style>
+        body { background-color: #121212; color: white; font-family: sans-serif; text-align: center; }
+        .container { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; padding: 20px; }
+        .card { background: #1e1e1e; border: 1px solid #333; border-radius: 10px; padding: 15px; width: 220px; }
+        .ruota-nome { font-size: 1.2em; font-weight: bold; color: #ffcc00; margin-bottom: 10px; }
+        .palla-ambo { display: inline-block; background: #28a745; color: white; border-radius: 50%; width: 40px; height: 40px; line-height: 40px; margin: 5px; font-weight: bold; }
+        .diametrali { color: #00ffcc; font-size: 0.9em; margin-top: 10px; }
+        .score { font-size: 0.8em; color: #888; margin-top: 5px; }
+    </style>
+</head>
+<body>
+    <h1>🔥 LOTTO ELITE PRO V4 🔥</h1>
+    <p>Analisi Ciclometrica - Distanza 45 (Diametrali)</p>
+    
+    <div class="container" id="container-ruote">
+        </div>
 
-        Object.keys(risultati).forEach(ruota => {
-            const dati = risultati[ruota];
-            const card = `
-                <div class="card">
-                    <div class="ruota-nome">${ruota}</div>
-                    <div class="punti">SCORE: ${dati.score}</div>
-                    <div class="ambo-container">
-                        <span class="palla">${dati.ambo[0]}</span>
-                        <span class="palla">${dati.ambo[1]}</span>
-                    </div>
-                    <div class="info-extra">
-                        <small>DIAMETRALI D45:</small><br>
-                        <strong>${dati.diametrali.join(' - ')}</strong>
-                    </div>
-                    <div class="countdown">Rimanenti: ${dati.countdown} estr.</div>
-                </div>
-            `;
-            grid.innerHTML += card;
-        });
-    } catch (err) {
-        console.error("Errore caricamento:", err);
-    }
-}
+    <script>
+        async function caricaDati() {
+            try {
+                // Carichiamo il file generato dall'algoritmo V4
+                const response = await fetch('risultati_v4.json?t=' + Date.now());
+                const data = await response.json();
+                
+                // Se i dati sono dentro "ruote", li estraiamo, altrimenti usiamo data
+                const risultati = data.ruote ? data.ruote : data;
+                const container = document.getElementById('container-ruote');
+                container.innerHTML = '';
 
-// Avvia al caricamento della pagina
-window.onload = aggiornaSito;
+                Object.keys(risultati).forEach(ruota => {
+                    const info = risultati[ruota];
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    
+                    // Gestiamo sia la chiave 'diametrali' che 'vertibili' per sicurezza
+                    const d45 = info.diametrali ? info.diametrali.join(' - ') : (info.vertibili ? info.vertibili.join(' - ') : 'N/D');
+
+                    card.innerHTML = `
+                        <div class="ruota-nome">${ruota}</div>
+                        <div class="palla-ambo">${info.ambo[0]}</div>
+                        <div class="palla-ambo">${info.ambo[1]}</div>
+                        <div class="diametrali">DIAMETRALE D45: <b>${d45}</b></div>
+                        <div class="score">SCORE: ${info.score} | CICLO: ${info.countdown}</div>
+                    `;
+                    container.appendChild(card);
+                });
+            } catch (error) {
+                console.error("Errore nel caricamento dei dati:", error);
+                document.body.innerHTML += "<p style='color:red'>Errore nel caricamento dei dati V4. Verifica che risultati_v4.json esista.</p>";
+            }
+        }
+
+        window.onload = caricaDati;
+    </script>
+</body>
+</html>
