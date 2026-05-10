@@ -44,11 +44,8 @@
     <h1>💎 LOTTO ELITE PRO V4 💎</h1>
     <div class="subtitle">Geometric Mirror - Analisi Simmetrie Isotope</div>
 
-    <div id="top-container">
-        </div>
-
-    <div class="container" id="container-ruote">
-        </div>
+    <div id="top-container"></div>
+    <div class="container" id="container-ruote"></div>
 
     <script>
         async function caricaDatiV4() {
@@ -63,13 +60,13 @@
                 container.innerHTML = '';
                 topDiv.innerHTML = '';
 
-                // --- ORDINE RICHIESTO: BARI -> GENOVA -> ALTRE ---
-                const ordineFisso = [
-                    "Bari", "Genova", "Cagliari", "Firenze", "Milano", 
+                // --- ORDINE CORRETTO DEL BOLLETTINO ---
+                const ordineUfficiale = [
+                    "Bari", "Cagliari", "Firenze", "Genova", "Milano", 
                     "Napoli", "Palermo", "Roma", "Torino", "Venezia"
                 ];
 
-                // 1. TOP 3 (Sempre basati sullo score più alto per la strategia)
+                // 1. TOP 3 (Sempre visibili in alto per score)
                 const top3Keys = Object.keys(risultati)
                     .sort((a, b) => risultati[b].score - risultati[a].score)
                     .slice(0, 3);
@@ -86,8 +83,8 @@
                     `;
                 });
 
-                // 2. CARD CON ORDINE BARI -> GENOVA
-                ordineFisso.forEach(ruota => {
+                // 2. CARD ORDINATE SECONDO IL BOLLETTINO (Bari -> Cagliari -> Firenze...)
+                ordineUfficiale.forEach(ruota => {
                     if (risultati[ruota]) {
                         const info = risultati[ruota];
                         const card = document.createElement('div');
@@ -100,16 +97,11 @@
                             <div class="score-tag">${info.score}</div>
                             <div class="ruota-nome">${ruota}</div>
                             <span class="partner-label">${partnerLabel}</span>
-                            
-                            <div class="ultima-estrazione">
-                                ${ultimaHtml}
-                            </div>
-
+                            <div class="ultima-estrazione">${ultimaHtml}</div>
                             <div class="previsione">
                                 <div class="palla-ambo">${info.ambo[0]}</div>
                                 <div class="palla-ambo">${info.ambo[1]}</div>
                             </div>
-
                             <div class="tecnica-info">${info.tecnica}</div>
                             <div class="info-footer">ATTESA: ${info.countdown} ESTRAZIONI</div>
                         `;
@@ -119,10 +111,8 @@
 
             } catch (error) {
                 console.error("Errore:", error);
-                document.getElementById('container-ruote').innerHTML = "<p style='color:red'>Errore nel caricamento dati.</p>";
             }
         }
-
         window.onload = caricaDatiV4;
     </script>
 </body>
