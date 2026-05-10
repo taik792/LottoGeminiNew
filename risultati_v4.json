@@ -8,14 +8,14 @@
             33
         ],
         "ambo": [
-            78,
-            19
+            40,
+            20
         ],
-        "score": 176,
+        "score": 174,
         "countdown": 5,
         "diametrali": [
-            33,
-            64
+            85,
+            65
         ]
     },
     "Cagliari": {
@@ -27,14 +27,14 @@
             64
         ],
         "ambo": [
-            31,
-            13
+            24,
+            73
         ],
-        "score": 173,
+        "score": 177,
         "countdown": 5,
         "diametrali": [
-            76,
-            58
+            69,
+            28
         ]
     },
     "Firenze": {
@@ -46,14 +46,14 @@
             22
         ],
         "ambo": [
-            19,
-            60
+            60,
+            19
         ],
-        "score": 173,
+        "score": 174,
         "countdown": 5,
         "diametrali": [
-            64,
-            15
+            15,
+            64
         ]
     },
     "Genova": {
@@ -66,13 +66,13 @@
         ],
         "ambo": [
             81,
-            85
+            10
         ],
-        "score": 173,
+        "score": 170,
         "countdown": 5,
         "diametrali": [
             36,
-            40
+            55
         ]
     },
     "Milano": {
@@ -84,14 +84,14 @@
             56
         ],
         "ambo": [
-            81,
-            72
+            72,
+            81
         ],
         "score": 172,
         "countdown": 5,
         "diametrali": [
-            36,
-            27
+            27,
+            36
         ]
     },
     "Napoli": {
@@ -103,14 +103,14 @@
             24
         ],
         "ambo": [
-            6,
-            83
+            69,
+            30
         ],
-        "score": 177,
+        "score": 175,
         "countdown": 5,
         "diametrali": [
-            51,
-            38
+            24,
+            75
         ]
     },
     "Palermo": {
@@ -122,14 +122,14 @@
             44
         ],
         "ambo": [
-            89,
-            73
+            85,
+            86
         ],
-        "score": 176,
+        "score": 173,
         "countdown": 5,
         "diametrali": [
-            44,
-            28
+            40,
+            41
         ]
     },
     "Roma": {
@@ -141,14 +141,14 @@
             16
         ],
         "ambo": [
-            83,
-            79
+            61,
+            81
         ],
-        "score": 177,
+        "score": 170,
         "countdown": 5,
         "diametrali": [
-            38,
-            34
+            16,
+            36
         ]
     },
     "Torino": {
@@ -161,13 +161,13 @@
         ],
         "ambo": [
             17,
-            75
+            28
         ],
         "score": 172,
         "countdown": 5,
         "diametrali": [
             62,
-            30
+            73
         ]
     },
     "Venezia": {
@@ -179,14 +179,14 @@
             89
         ],
         "ambo": [
-            19,
-            36
+            44,
+            86
         ],
-        "score": 170,
+        "score": 176,
         "countdown": 5,
         "diametrali": [
-            64,
-            81
+            89,
+            41
         ]
     }
 }
