@@ -5,58 +5,173 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lotto Elite Pro V4 - Cyclo Edition</title>
     <style>
-        body { background-color: #121212; color: white; font-family: sans-serif; text-align: center; }
-        .container { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; padding: 20px; }
-        .card { background: #1e1e1e; border: 1px solid #333; border-radius: 10px; padding: 15px; width: 220px; }
-        .ruota-nome { font-size: 1.2em; font-weight: bold; color: #ffcc00; margin-bottom: 10px; }
-        .palla-ambo { display: inline-block; background: #28a745; color: white; border-radius: 50%; width: 40px; height: 40px; line-height: 40px; margin: 5px; font-weight: bold; }
-        .diametrali { color: #00ffcc; font-size: 0.9em; margin-top: 10px; }
-        .score { font-size: 0.8em; color: #888; margin-top: 5px; }
+        :root {
+            --bg-color: #0d0d0d;
+            --card-bg: #1a1a1a;
+            --text-main: #e0e0e0;
+            --accent: #00d4ff;
+            --highlight: #28a745;
+            --diametrale: #ff3366;
+        }
+
+        body { 
+            background-color: var(--bg-color); 
+            color: var(--text-main); 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 { color: #fff; text-shadow: 0 0 10px var(--accent); margin-bottom: 5px; }
+        .subtitle { color: #888; font-size: 0.9em; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 2px; }
+
+        .container { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            gap: 20px; 
+            max-width: 1300px; 
+            margin: 0 auto; 
+        }
+
+        .card { 
+            background: var(--card-bg); 
+            border: 1px solid #333; 
+            border-radius: 15px; 
+            padding: 20px; 
+            position: relative;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover { transform: translateY(-5px); border-color: var(--accent); }
+
+        .ruota-nome { 
+            font-size: 1.5em; 
+            font-weight: bold; 
+            color: var(--accent); 
+            margin-bottom: 15px; 
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+        }
+
+        .label { font-size: 0.7em; color: #666; text-transform: uppercase; margin-bottom: 5px; display: block; }
+
+        /* Ultima estrazione: pallini grigi piccoli */
+        .ultima-estrazione { margin-bottom: 20px; }
+        .palla-grigia { 
+            display: inline-block; 
+            background: #333; 
+            color: #aaa; 
+            border-radius: 50%; 
+            width: 30px; 
+            height: 30px; 
+            line-height: 30px; 
+            margin: 2px; 
+            font-size: 0.85em; 
+            font-weight: bold; 
+        }
+
+        /* Previsione: palloni verdi grandi */
+        .previsione { display: flex; justify-content: center; gap: 15px; margin: 15px 0; }
+        .palla-ambo { 
+            background: var(--highlight); 
+            color: white; 
+            border-radius: 50%; 
+            width: 60px; 
+            height: 60px; 
+            line-height: 60px; 
+            font-size: 1.8em; 
+            font-weight: bold; 
+            box-shadow: 0 0 15px rgba(40, 167, 69, 0.4);
+        }
+
+        .diametrali { 
+            color: var(--diametrale); 
+            font-weight: bold; 
+            font-size: 1em; 
+            margin-top: 15px;
+            padding: 8px;
+            background: rgba(255, 51, 102, 0.1);
+            border-radius: 8px;
+        }
+
+        .footer-card { 
+            margin-top: 20px; 
+            display: flex; 
+            justify-content: space-between; 
+            font-size: 0.8em; 
+            color: #555; 
+        }
+
+        .score-badge { 
+            background: #ffcc00; 
+            color: #000; 
+            padding: 3px 8px; 
+            border-radius: 4px; 
+            font-weight: bold; 
+        }
     </style>
 </head>
 <body>
+
     <h1>🔥 LOTTO ELITE PRO V4 🔥</h1>
-    <p>Analisi Ciclometrica - Distanza 45 (Diametrali)</p>
-    
+    <div class="subtitle">Cyclo Edition - Analisi Distanza 45</div>
+
     <div class="container" id="container-ruote">
         </div>
 
     <script>
-        async function caricaDati() {
+        async function fetchDati() {
             try {
-                // Carichiamo il file generato dall'algoritmo V4
                 const response = await fetch('risultati_v4.json?t=' + Date.now());
                 const data = await response.json();
                 
-                // Se i dati sono dentro "ruote", li estraiamo, altrimenti usiamo data
+                // Gestione struttura flessibile del JSON
                 const risultati = data.ruote ? data.ruote : data;
                 const container = document.getElementById('container-ruote');
                 container.innerHTML = '';
 
                 Object.keys(risultati).forEach(ruota => {
-                    const info = risultati[ruota];
-                    const card = document.createElement('div');
-                    card.className = 'card';
+                    const r = risultati[ruota];
                     
-                    // Gestiamo sia la chiave 'diametrali' che 'vertibili' per sicurezza
-                    const d45 = info.diametrali ? info.diametrali.join(' - ') : (info.vertibili ? info.vertibili.join(' - ') : 'N/D');
+                    // Creazione HTML per l'ultima estrazione (pallini grigi)
+                    const ultimaHtml = r.ultima && r.ultima.length > 0 
+                        ? r.ultima.map(n => `<span class="palla-grigia">${n}</span>`).join('')
+                        : '<span style="color:#444">Dati non disponibili</span>';
 
-                    card.innerHTML = `
-                        <div class="ruota-nome">${ruota}</div>
-                        <div class="palla-ambo">${info.ambo[0]}</div>
-                        <div class="palla-ambo">${info.ambo[1]}</div>
-                        <div class="diametrali">DIAMETRALE D45: <b>${d45}</b></div>
-                        <div class="score">SCORE: ${info.score} | CICLO: ${info.countdown}</div>
+                    // Recupero Diametrali o Vertibili per compatibilità
+                    const d45 = r.diametrali ? r.diametrali.join(' - ') : (r.vertibili ? r.vertibili.join(' - ') : 'N/D');
+
+                    container.innerHTML += `
+                        <div class="card">
+                            <div class="ruota-nome">${ruota}</div>
+                            
+                            <span class="label">Ultima Estrazione</span>
+                            <div class="ultima-estrazione">${ultimaHtml}</div>
+                            
+                            <span class="label">Previsione Ciclometrica</span>
+                            <div class="previsione">
+                                <div class="palla-ambo">${r.ambo[0]}</div>
+                                <div class="palla-ambo">${r.ambo[1]}</div>
+                            </div>
+                            
+                            <div class="diametrali">DIAMETRALI D45: ${d45}</div>
+                            
+                            <div class="footer-card">
+                                <span>Ciclo: ${r.countdown} estr.</span>
+                                <span class="score-badge">SCORE: ${r.score}</span>
+                            </div>
+                        </div>
                     `;
-                    container.appendChild(card);
                 });
-            } catch (error) {
-                console.error("Errore nel caricamento dei dati:", error);
-                document.body.innerHTML += "<p style='color:red'>Errore nel caricamento dei dati V4. Verifica che risultati_v4.json esista.</p>";
+            } catch (e) {
+                console.error("Errore caricamento:", e);
+                document.getElementById('container-ruote').innerHTML = "<p>Errore nel caricamento dei dati V4.</p>";
             }
         }
 
-        window.onload = caricaDati;
+        window.onload = fetchDati;
     </script>
 </body>
 </html>
