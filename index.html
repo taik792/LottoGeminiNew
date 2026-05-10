@@ -17,11 +17,9 @@
         h1 { color: #fff; text-shadow: 0 0 10px var(--gold); margin-top: 30px; letter-spacing: 2px; }
         .subtitle { color: var(--cyan); font-weight: bold; margin-bottom: 30px; text-transform: uppercase; font-size: 0.8em; letter-spacing: 1px; }
 
-        /* Container Top 3 */
         #top-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin: 0 auto 40px; max-width: 1200px; padding: 0 20px; }
         .top-card { border: 2px solid var(--gold); border-radius: 12px; padding: 15px; background: rgba(255,204,0,0.05); min-width: 260px; box-shadow: 0 0 15px rgba(255,204,0,0.2); }
         
-        /* Container Ruote */
         .container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; padding: 0 30px; max-width: 1300px; margin: auto; }
         
         .card { background: var(--card-bg); border: 1px solid #333; border-radius: 15px; padding: 20px; position: relative; transition: all 0.3s ease; }
@@ -55,81 +53,73 @@
     <script>
         async function caricaDatiV4() {
             try {
-                // Fetch del JSON V4 con logica geometrica
                 const response = await fetch('risultati_v4.json?t=' + Date.now());
                 const data = await response.json();
-                
                 const risultati = data.ruote ? data.ruote : data;
+                
                 const container = document.getElementById('container-ruote');
                 const topDiv = document.getElementById('top-container');
                 
                 container.innerHTML = '';
                 topDiv.innerHTML = '';
 
-                // --- LOGICA DI ORDINAMENTO RICHIESTA ---
-                // Definiamo l'ordine manuale: Bari, poi Genova, poi le altre in ordine alfabetico
-                const ordineManuale = ["Bari", "Genova"];
-                
-                const ruoteOrdinate = Object.keys(risultati).sort((a, b) => {
-                    let indexA = ordineManuale.indexOf(a);
-                    let indexB = ordineManuale.indexOf(b);
+                // --- ORDINE RICHIESTO: BARI -> GENOVA -> ALTRE ---
+                const ordineFisso = [
+                    "Bari", "Genova", "Cagliari", "Firenze", "Milano", 
+                    "Napoli", "Palermo", "Roma", "Torino", "Venezia"
+                ];
 
-                    // Se entrambe sono nella lista manuale, usa quell'ordine
-                    if (indexA !== -1 && indexB !== -1) return indexA - indexB;
-                    // Se solo una è nella lista manuale, quella va prima
-                    if (indexA !== -1) return -1;
-                    if (indexB !== -1) return 1;
-                    // Altrimenti, ordine alfabetico per le rimanenti
-                    return a.localeCompare(b);
-                });
-
-                // 1. TOP 3 SELECTION (basate sullo score più alto)
-                const top3 = Object.keys(risultati).sort((a, b) => risultati[b].score - risultati[a].score).slice(0, 3);
+                // 1. TOP 3 (Sempre basati sullo score più alto per la strategia)
+                const top3Keys = Object.keys(risultati)
+                    .sort((a, b) => risultati[b].score - risultati[a].score)
+                    .slice(0, 3);
                 
-                top3.forEach((ruota, i) => {
+                top3Keys.forEach((ruota, i) => {
                     const info = risultati[ruota];
                     topDiv.innerHTML += `
                         <div class="top-card">
                             <div style="color:var(--gold); font-size:0.7em; font-weight:bold">TOP SELECTION #${i+1}</div>
                             <div style="font-size:1.4em; font-weight:bold; margin:5px 0">${ruota}</div>
                             <div style="font-size:1.8em; color:var(--green); font-weight:bold">${info.ambo[0]} - ${info.ambo[1]}</div>
-                            <div style="font-size:0.7em; color:#888; margin-top:5px">SPECULARITÀ: ${info.partner}</div>
+                            <div style="font-size:0.7em; color:#888; margin-top:5px">PARTNER: ${info.partner}</div>
                         </div>
                     `;
                 });
 
-                // 2. TUTTE LE CARD (nell'ordine Bari -> Genova -> Altre)
-                ruoteOrdinate.forEach(ruota => {
-                    const info = risultati[ruota];
-                    const card = document.createElement('div');
-                    card.className = `card ${info.score >= 180 ? 'gold-border' : ''}`;
-                    
-                    const ultimaHtml = info.ultima.map(n => `<span class="palla-grigia">${n}</span>`).join('');
-                    const partnerLabel = info.partner !== "Nessuno" ? `In specchio con: ${info.partner}` : "Analisi Singola";
-
-                    card.innerHTML = `
-                        <div class="score-tag">${info.score}</div>
-                        <div class="ruota-nome">${ruota}</div>
-                        <span class="partner-label">${partnerLabel}</span>
+                // 2. CARD CON ORDINE BARI -> GENOVA
+                ordineFisso.forEach(ruota => {
+                    if (risultati[ruota]) {
+                        const info = risultati[ruota];
+                        const card = document.createElement('div');
+                        card.className = `card ${info.score >= 180 ? 'gold-border' : ''}`;
                         
-                        <div class="ultima-estrazione">
-                            ${ultimaHtml}
-                        </div>
+                        const ultimaHtml = info.ultima.map(n => `<span class="palla-grigia">${n}</span>`).join('');
+                        const partnerLabel = info.partner !== "Nessuno" ? `In specchio con: ${info.partner}` : "Analisi Standard";
 
-                        <div class="previsione">
-                            <div class="palla-ambo">${info.ambo[0]}</div>
-                            <div class="palla-ambo">${info.ambo[1]}</div>
-                        </div>
+                        card.innerHTML = `
+                            <div class="score-tag">${info.score}</div>
+                            <div class="ruota-nome">${ruota}</div>
+                            <span class="partner-label">${partnerLabel}</span>
+                            
+                            <div class="ultima-estrazione">
+                                ${ultimaHtml}
+                            </div>
 
-                        <div class="tecnica-info">${info.tecnica}</div>
-                        <div class="info-footer">ATTESA: ${info.countdown} ESTRAZIONI</div>
-                    `;
-                    container.appendChild(card);
+                            <div class="previsione">
+                                <div class="palla-ambo">${info.ambo[0]}</div>
+                                <div class="palla-ambo">${info.ambo[1]}</div>
+                            </div>
+
+                            <div class="tecnica-info">${info.tecnica}</div>
+                            <div class="info-footer">ATTESA: ${info.countdown} ESTRAZIONI</div>
+                        `;
+                        container.appendChild(card);
+                    }
                 });
 
             } catch (error) {
-                console.error("Errore caricamento:", error);
-                document.getElementById('container-ruote').innerHTML = "<p style='color:red'>Dati in fase di aggiornamento...</p>";
+                console.error("Errore:", error);
+                document.getElementById('container-ruote').innerHTML = "<p style='color:red'>Errore nel caricamento dati.</p>";
             }
         }
 
