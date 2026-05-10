@@ -1,101 +1,63 @@
 import json
-import datetime
-from itertools import combinations
+import os
+import random
 
-RUOTE = ["Bari","Cagliari","Firenze","Genova","Milano","Napoli","Palermo","Roma","Torino","Venezia","Nazionale"]
+# LOTTO ELITE PRO V4 - CYCLO EDITION (D45)
+RUOTE = ["Bari", "Cagliari", "Firenze", "Genova", "Milano", "Napoli", "Palermo", "Roma", "Torino", "Venezia"]
 
-# ===== CARICAMENTO DATI =====
-try:
-    with open("estrazioni.json", encoding="utf-8") as f:
-        estrazioni = json.load(f)
-except FileNotFoundError:
-    print("Errore: estrazioni.json non trovato.")
-    exit()
-
-# Caricamento risultati precedenti (Memoria)
-try:
-    with open("risultati.json", encoding="utf-8") as f:
-        vecchi = json.load(f)
-        v_ambi = {r: d["ambo"] for r, d in vecchi.get("ruote", {}).items()}
-        v_count = {r: d.get("countdown", 5) for r, d in vecchi.get("ruote", {}).items()}
-        v_ultime = {r: d.get("ultima", []) for r, d in vecchi.get("ruote", {}).items()}
-except:
-    v_ambi, v_count, v_ultime = {}, {}, {}
-
-risultati = {
-    "ultimo_aggiornamento": datetime.datetime.now().isoformat(),
-    "ruote": {}, 
-    "giocate": [], 
-    "jolly": {}
-}
-
-# --- FUNZIONI TECNICHE ---
-def vertibile(n):
-    s = str(n).zfill(2)
-    v = int(s[::-1])
-    if v > 90: v = n 
-    if n % 10 == n // 10:
-        v = (n // 10) * 10 + 9 if (n // 10) < 9 else 89
-    return v
-
-def calcola_freq(lista):
-    freq = {}
-    for estr in lista:
-        for n in estr:
-            freq[n] = freq.get(n, 0) + 1
-    return freq
-
-# --- ANALISI CORE V3.1 ---
-for ruota in RUOTE:
-    if ruota not in estrazioni: continue
-    estr_r = estrazioni[ruota]
-    ultime_estr = estr_r[-1] # L'estrazione più recente nel file JSON
-
-    f_b = calcola_freq(estr_r[-18:])
-    f_m = calcola_freq(estr_r[-540:])
-    
-    # Calcolo Score equilibrato
-    score_num = {n: (f_b.get(n,0)*3.2 + f_m.get(n,0)*1.2) for n in range(1,91)}
-    candidati = sorted([n for n in range(1, 91) if n not in ultime_estr], key=lambda x: score_num[x], reverse=True)[:20]
-    
-    # Selezione Ambo Top
-    miglior_ambo = [candidati[0], candidati[1]]
-    miglior_score = round(score_num[candidati[0]] + score_num[candidati[1]], 2)
-
-    # --- LOGICA COUNTDOWN INTELLIGENTE ---
-    vecchio_ambo = v_ambi.get(ruota, [])
-    vecchia_ultima = v_ultime.get(ruota, [])
-    countdown_attuale = v_count.get(ruota, 5)
-
-    if miglior_ambo == vecchio_ambo:
-        # Se l'ambo è lo stesso, controlla se l'estrazione è cambiata
-        if ultime_estr != vecchia_ultima:
-            # Nuova estrazione rilevata -> scalo di 1
-            nuovo_count = max(0, countdown_attuale - 1)
-        else:
-            # Stessa estrazione -> mantengo il numero attuale
-            nuovo_count = countdown_attuale
+def calcola_diametrale(n):
+    """Calcola il diametrale (distanza 45) nel cerchio a 90 numeri"""
+    if n <= 45:
+        return n + 45
     else:
-        # L'ambo è cambiato -> resetto a 5
-        nuovo_count = 5
+        return n - 45
 
-    risultati["ruote"][ruota] = {
-        "ultima": ultime_estr, 
-        "ambo": miglior_ambo, 
-        "vertibili": [vertibile(miglior_ambo[0]), vertibile(miglior_ambo[1])],
-        "score": miglior_score,
-        "countdown": nuovo_count
-    }
+def elabora_v4():
+    try:
+        with open('estrazioni.json', 'r', encoding='utf-8') as f:
+            estrazioni = json.load(f)
+    except:
+        print("Errore: estrazioni.json non trovato.")
+        return
 
-# Classifica per la Dashboard
-top_s = sorted(risultati["ruote"].items(), key=lambda x: x[1]["score"], reverse=True)
-for r, d in top_s[:3]:
-    risultati["giocate"].append({"ruota": r, "ambo": d["ambo"]})
+    risultati_v4 = {}
 
-risultati["jolly"] = {"ruota": "Napoli", "ambo": top_s[0][1]["ambo"], "vert": top_s[0][1]["vertibili"]}
+    for ruota in RUOTE:
+        ultimi_usciti = estrazioni.get(ruota, [[]])[-1]
+        
+        # Logica Ciclometrica: pesiamo i numeri e i loro diametrali
+        pesi = {i: random.randint(1, 15) for i in range(1, 91)}
+        
+        for n in ultimi_usciti:
+            if 1 <= n <= 90:
+                # Il numero uscito "chiama" il suo diametrale
+                diam = calcola_diametrale(n)
+                pesi[diam] += 60 
+        
+        classifica = sorted(pesi.items(), key=lambda x: x[1], reverse=True)
+        
+        ambo = []
+        for num, score in classifica:
+            if num not in ultimi_usciti and num > 2:
+                ambo.append(num)
+            if len(ambo) == 2: break
 
-# Salvataggio
-with open("risultati.json", "w", encoding="utf-8") as f:
-    json.dump(risultati, f, indent=2)
+        # Calcolo Score Ciclometrico
+        distanza = abs(ambo[0] - ambo[1])
+        bonus_distanza = 20 if distanza == 45 or distanza == 30 else 0
+        score_finale = 165 + (sum(pesi[n] for n in ambo) // 5) + bonus_distanza
 
-print(f"✅ Analisi completata alle {datetime.datetime.now().strftime('%H:%M:%S')}")
+        risultati_v4[ruota] = {
+            "ambo": ambo,
+            "score": int(score_finale),
+            "countdown": 5,
+            "diametrali": [calcola_diametrale(n) for n in ambo],
+            "tipo": "Ciclometrica D45"
+        }
+
+    with open('risultati_v4.json', 'w', encoding='utf-8') as f:
+        json.dump(risultati_v4, f, indent=4)
+    print("V4: Analisi Ciclometrica completata e salvata in risultati_v4.json")
+
+if __name__ == "__main__":
+    elabora_v4()
