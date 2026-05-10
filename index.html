@@ -3,168 +3,169 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lotto Elite Pro V3.1 - Analisi Multi-Ciclica</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <title>Lotto Elite Pro V4 - Cyclo Edition</title>
     <style>
         :root {
-            --bg-color: #0a0e14;
-            --card-bg: #161b22;
-            --accent-color: #00f2ff;
-            --text-color: #e6edf3;
-            --gold: #ffd700;
-            --red: #ff4b4b;
-            --green: #238636;
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-color: #e0e0e0;
+            --accent-color: #00ffcc; /* Colore Ciclometrico */
+            --gold: #ffcc00;
         }
-
         body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
-            font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        h1 {
-            font-family: 'Orbitron', sans-serif;
-            color: var(--accent-color);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            text-shadow: 0 0 10px rgba(0, 242, 255, 0.5);
-            margin-bottom: 5px;
             text-align: center;
         }
-
-        .subtitle { font-size: 0.9em; color: #8b949e; margin-bottom: 30px; text-align: center; }
-
-        /* TOP CARDS */
-        .top-container { display: flex; gap: 15px; margin-bottom: 40px; flex-wrap: wrap; justify-content: center; width: 100%; }
+        .header { margin-bottom: 30px; }
+        .top-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
         .top-card {
-            background: linear-gradient(145deg, #1f242d, #161b22);
-            border: 1px solid var(--accent-color);
-            padding: 15px; border-radius: 12px; text-align: center; min-width: 160px;
+            background: linear-gradient(145deg, #2c2c2c, #1a1a1a);
+            border: 2px solid var(--gold);
+            border-radius: 15px;
+            padding: 15px;
+            width: 220px;
+            box-shadow: 0 4px 15px rgba(255, 204, 0, 0.2);
         }
-        .top-card h3 { margin: 0; color: var(--gold); font-size: 0.8em; text-transform: uppercase; }
-        .top-numbers { font-size: 1.6em; font-weight: bold; margin: 10px 0; color: #fff; }
-
-        /* JOLLY SECTION */
-        .jolly-section {
-            width: 100%; max-width: 500px; margin-bottom: 40px; border: 2px dashed var(--red);
-            padding: 20px; border-radius: 15px; text-align: center; background: rgba(255, 75, 75, 0.03);
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
-
-        /* GRID RUOTE */
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; width: 100%; max-width: 1200px; }
-        .ruota-card { background-color: var(--card-bg); border-radius: 15px; padding: 20px; border-left: 4px solid var(--accent-color); position: relative; }
-        .ruota-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .ruota-name { font-family: 'Orbitron', sans-serif; font-size: 1.2em; color: var(--accent-color); }
-        .score-badge { font-size: 0.7em; color: var(--gold); background: #21262d; padding: 4px 8px; border-radius: 5px; }
-
-        .estrazione-bar { display: flex; gap: 8px; justify-content: center; margin-bottom: 20px; }
-        .palla {
-            width: 30px; height: 30px; background: #30363d; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; font-size: 0.8em; color: #c9d1d9;
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            position: relative;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            border-bottom: 3px solid #333;
         }
-
-        .previsione-box { background: #0d1117; padding: 15px; border-radius: 10px; text-align: center; }
-        .ambo-main { display: flex; justify-content: center; gap: 12px; margin-bottom: 10px; }
-        .numero-box { background: var(--green); color: white; padding: 8px 15px; border-radius: 8px; font-size: 1.4em; font-weight: bold; }
-        
-        .vert-box { font-size: 0.8em; color: #8b949e; border-top: 1px solid #30363d; padding-top: 8px; margin-bottom: 10px; }
-        .vert-label { color: var(--red); font-weight: bold; }
-
-        /* BOX COUNTDOWN SOTTO OGNI RUOTA */
-        .countdown-label { 
-            margin-top: 10px; 
-            padding-top: 10px; 
-            border-top: 1px dashed #30363d; 
-            font-size: 0.75em; 
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        .ruota-nome { font-size: 1.4em; color: var(--accent-color); margin-bottom: 15px; font-weight: bold; }
+        .palla-estratta {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background: #444;
+            border-radius: 50%;
+            line-height: 30px;
+            margin: 2px;
+            font-size: 0.8em;
         }
-
-        @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
+        .numeri-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        .palla-ambo {
+            width: 50px;
+            height: 50px;
+            background: #28a745;
+            border-radius: 50%;
+            line-height: 50px;
+            font-size: 1.3em;
+            font-weight: bold;
+            box-shadow: 0 0 10px rgba(40, 167, 69, 0.5);
+        }
+        .ciclometria-box {
+            color: var(--accent-color);
+            border-top: 1px solid #333;
+            margin-top: 10px;
+            padding-top: 10px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        .countdown { font-size: 0.75em; color: #888; margin-top: 10px; text-transform: uppercase; }
     </style>
 </head>
 <body>
 
-    <h1>🔥 LOTTO ELITE PRO Gemini🤘🤘🤞</h1>
-    <div class="subtitle">Algoritmo Predittivo V3.1 - Analisi Multi-Ciclica</div>
+    <div class="header">
+        <h1>🔥 LOTTO ELITE PRO V4 🔥</h1>
+        <p style="color: var(--accent-color);">Analisi Ciclometrica - Distanza 45 (Diametrali)</p>
+    </div>
 
-    <div id="top-giocate" class="top-container"></div>
+    <div id="top-three" class="top-container"></div>
 
-    <div id="jolly" class="jolly-section"></div>
-
-    <div id="ruote-grid" class="grid"></div>
+    <div id="container-ruote" class="grid-container"></div>
 
     <script>
-        async function loadData() {
+        async function fetchDati() {
             try {
-                const response = await fetch('risultati.json');
-                const data = await response.json();
+                const cb = new Date().getTime();
+                // Assicurati che il file si chiami risultati_v4.json su GitHub
+                const [resR, resE] = await Promise.all([
+                    fetch('risultati_v4.json?t=' + cb),
+                    fetch('estrazioni.json?t=' + cb)
+                ]);
+                
+                const risultati = await resR.json();
+                const estrazioni = await resE.json();
 
-                // 1. Render Top Giocate (Orizzontali)
-                const topContainer = document.getElementById('top-giocate');
-                topContainer.innerHTML = "";
-                data.giocate.forEach(g => {
+                const container = document.getElementById('container-ruote');
+                const topContainer = document.getElementById('top-three');
+                
+                // 1. Preparazione dati
+                const ruoteList = Object.keys(risultati).map(key => ({ nome: key, ...risultati[key] }));
+
+                // 2. Classifica per lo Score (Top 3)
+                const classifica = [...ruoteList].sort((a, b) => b.score - a.score);
+
+                // 3. Generazione Top 3
+                topContainer.innerHTML = '';
+                classifica.slice(0, 3).forEach((r, i) => {
                     topContainer.innerHTML += `
                         <div class="top-card">
-                            <h3>${g.ruota}</h3>
-                            <div class="top-numbers">${g.ambo[0]} - ${g.ambo[1]}</div>
+                            <h2 style="margin:0; font-size: 1.1em;">#${i+1} ${r.nome}</h2>
+                            <div style="color:var(--gold); font-size: 0.9em;">SCORE: ${r.score}</div>
+                            <div style="font-size: 1.4em; margin: 10px 0;">🎯 ${r.ambo.join(' - ')}</div>
                         </div>`;
                 });
 
-                // 2. Render Jolly di Recupero
-                document.getElementById('jolly').innerHTML = `
-                    <div style="color: var(--red); font-weight: bold; margin-bottom: 5px; font-size: 0.7em;">🚀 AMBO JOLLY DI RECUPERO</div>
-                    <div style="font-size: 1.8em; font-family: 'Orbitron';">${data.jolly.ruota}: ${data.jolly.ambo[0]} - ${data.jolly.ambo[1]}</div>
-                    <div class="vert-box"><span class="vert-label">VERTIBILI:</span> ${data.jolly.vert[0]} - ${data.jolly.vert[1]}</div>
-                `;
-
-                // 3. Render Griglia Ruote con Countdown Individuale
-                const grid = document.getElementById('ruote-grid');
-                grid.innerHTML = "";
-                Object.keys(data.ruote).forEach(rName => {
-                    const r = data.ruote[rName];
-                    const balls = r.ultima.map(n => `<div class="palla">${n}</div>`).join('');
-                    
-                    // GESTIONE UNDEFINED: Se il dato manca nel JSON, mette 5 di default
-                    const valCountdown = (r.countdown !== undefined) ? r.countdown : 5;
-                    
-                    // Colore rosso se il countdown è arrivato a zero
-                    const cColor = (valCountdown === 0) ? "var(--red)" : "#8b949e";
-                    const cWeight = (valCountdown === 0) ? "bold" : "normal";
-
-                    grid.innerHTML += `
-                        <div class="ruota-card">
-                            <div class="ruota-header">
-                                <span class="ruota-name">${rName}</span>
-                                <span class="score-badge">Score: ${r.score}</span>
+                // 4. Generazione Card (Ordine Ruota Fisso)
+                container.innerHTML = '';
+                ruoteList.forEach(r => {
+                    const est = estrazioni[r.nome] ? estrazioni[r.nome][estrazioni[r.nome].length - 1] : [];
+                    container.innerHTML += `
+                        <div class="card">
+                            <div style="position:absolute; top:10px; right:15px; color:var(--gold); font-weight:bold;">${r.score}</div>
+                            <div class="ruota-nome">${r.nome}</div>
+                            
+                            <div style="margin-bottom:10px;">
+                                ${est.map(n => `<div class="palla-estratta">${n}</div>`).join('')}
                             </div>
-                            <div class="estrazione-bar">${balls}</div>
-                            <div class="previsione-box">
-                                <div class="ambo-main">
-                                    <div class="numero-box">${r.ambo[0]}</div>
-                                    <div class="numero-box">${r.ambo[1]}</div>
-                                </div>
-                                <div class="vert-box">
-                                    <span class="vert-label">VERTIBILI:</span> ${r.vertibili[0]} - ${r.vertibili[1]}
-                                </div>
-                                <div class="countdown-label" style="color: ${cColor}; font-weight: ${cWeight};">
-                                    RIMANENTI: <span style="font-family: Orbitron; font-size: 1.2em;">${valCountdown}</span> ESTRAZIONI
-                                </div>
+
+                            <div class="numeri-container">
+                                <div class="palla-ambo">${r.ambo[0]}</div>
+                                <div class="palla-ambo">${r.ambo[1]}</div>
+                            </div>
+
+                            <div class="ciclometria-box">
+                                DIAMETRALI D45: ${r.diametrali.join(' - ')}
+                            </div>
+
+                            <div class="countdown">
+                                CICLO: ${r.tipo} | ${r.countdown} ESTR.
                             </div>
                         </div>`;
                 });
 
-            } catch (e) { 
-                console.error("Errore caricamento dati:", e); 
-            }
+            } catch (err) { console.error("Errore:", err); }
         }
 
-        loadData();
+        fetchDati();
+        setInterval(fetchDati, 10000); // Aggiorna ogni 10 secondi
     </script>
 </body>
 </html>
