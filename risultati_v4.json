@@ -8,52 +8,16 @@
             33
         ],
         "ambo": [
-            40,
-            20
+            35,
+            45
         ],
-        "score": 174,
+        "score": 180,
         "countdown": 5,
+        "tecnica": "Geometric Mirror (Isotopia Pos 4)",
+        "partner": "Palermo",
         "diametrali": [
-            85,
-            65
-        ]
-    },
-    "Cagliari": {
-        "ultima": [
-            28,
-            76,
-            58,
-            69,
-            64
-        ],
-        "ambo": [
-            24,
-            73
-        ],
-        "score": 177,
-        "countdown": 5,
-        "diametrali": [
-            69,
-            28
-        ]
-    },
-    "Firenze": {
-        "ultima": [
-            15,
-            87,
-            69,
-            64,
-            22
-        ],
-        "ambo": [
-            60,
-            19
-        ],
-        "score": 174,
-        "countdown": 5,
-        "diametrali": [
-            15,
-            64
+            80,
+            90
         ]
     },
     "Genova": {
@@ -65,52 +29,16 @@
             52
         ],
         "ambo": [
-            81,
-            10
-        ],
-        "score": 170,
-        "countdown": 5,
-        "diametrali": [
-            36,
-            55
-        ]
-    },
-    "Milano": {
-        "ultima": [
-            66,
             27,
-            36,
-            11,
-            56
+            45
         ],
-        "ambo": [
+        "score": 180,
+        "countdown": 5,
+        "tecnica": "Geometric Mirror (Isotopia Pos 1)",
+        "partner": "Venezia",
+        "diametrali": [
             72,
-            81
-        ],
-        "score": 172,
-        "countdown": 5,
-        "diametrali": [
-            27,
-            36
-        ]
-    },
-    "Napoli": {
-        "ultima": [
-            51,
-            75,
-            66,
-            38,
-            24
-        ],
-        "ambo": [
-            69,
-            30
-        ],
-        "score": 175,
-        "countdown": 5,
-        "diametrali": [
-            24,
-            75
+            90
         ]
     },
     "Palermo": {
@@ -122,33 +50,16 @@
             44
         ],
         "ambo": [
-            85,
-            86
+            35,
+            45
         ],
-        "score": 173,
+        "score": 180,
         "countdown": 5,
+        "tecnica": "Geometric Mirror (Isotopia Pos 4)",
+        "partner": "Bari",
         "diametrali": [
-            40,
-            41
-        ]
-    },
-    "Roma": {
-        "ultima": [
-            38,
-            34,
-            7,
-            36,
-            16
-        ],
-        "ambo": [
-            61,
-            81
-        ],
-        "score": 170,
-        "countdown": 5,
-        "diametrali": [
-            16,
-            36
+            80,
+            90
         ]
     },
     "Torino": {
@@ -160,14 +71,58 @@
             30
         ],
         "ambo": [
-            17,
-            28
+            64,
+            60
         ],
         "score": 172,
         "countdown": 5,
+        "tecnica": "Geometric Mirror (Isotopia Pos 2)",
+        "partner": "Bari",
         "diametrali": [
-            62,
-            73
+            19,
+            15
+        ]
+    },
+    "Firenze": {
+        "ultima": [
+            15,
+            87,
+            69,
+            64,
+            22
+        ],
+        "ambo": [
+            74,
+            30
+        ],
+        "score": 172,
+        "countdown": 5,
+        "tecnica": "Geometric Mirror (Isotopia Pos 5)",
+        "partner": "Genova",
+        "diametrali": [
+            29,
+            75
+        ]
+    },
+    "Milano": {
+        "ultima": [
+            66,
+            27,
+            36,
+            11,
+            56
+        ],
+        "ambo": [
+            24,
+            60
+        ],
+        "score": 172,
+        "countdown": 5,
+        "tecnica": "Geometric Mirror (Isotopia Pos 2)",
+        "partner": "Firenze",
+        "diametrali": [
+            69,
+            15
         ]
     },
     "Venezia": {
@@ -179,14 +134,79 @@
             89
         ],
         "ambo": [
-            44,
-            86
+            27,
+            45
         ],
-        "score": 176,
+        "score": 180,
         "countdown": 5,
+        "tecnica": "Geometric Mirror (Isotopia Pos 1)",
+        "partner": "Genova",
         "diametrali": [
-            89,
-            41
+            72,
+            90
+        ]
+    },
+    "Napoli": {
+        "ultima": [
+            51,
+            75,
+            66,
+            38,
+            24
+        ],
+        "ambo": [
+            12,
+            30
+        ],
+        "score": 172,
+        "countdown": 5,
+        "tecnica": "Geometric Mirror (Isotopia Pos 3)",
+        "partner": "Milano",
+        "diametrali": [
+            57,
+            75
+        ]
+    },
+    "Cagliari": {
+        "ultima": [
+            28,
+            76,
+            58,
+            69,
+            64
+        ],
+        "ambo": [
+            14,
+            48
+        ],
+        "score": 150,
+        "countdown": 5,
+        "tecnica": "Analisi Lineare Standard",
+        "partner": "Nessuno",
+        "diametrali": [
+            59,
+            3
+        ]
+    },
+    "Roma": {
+        "ultima": [
+            38,
+            34,
+            7,
+            36,
+            16
+        ],
+        "ambo": [
+            72,
+            4
+        ],
+        "score": 150,
+        "countdown": 5,
+        "tecnica": "Analisi Lineare Standard",
+        "partner": "Nessuno",
+        "diametrali": [
+            27,
+            49
         ]
     }
 }
