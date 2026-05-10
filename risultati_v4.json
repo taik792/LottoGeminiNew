@@ -1,1 +1,192 @@
-{ }
+{
+    "Bari": {
+        "ultima": [
+            22,
+            24,
+            23,
+            33,
+            9
+        ],
+        "ambo": [
+            69,
+            68
+        ],
+        "diametrali": [
+            24,
+            23
+        ],
+        "score": 177,
+        "countdown": 5
+    },
+    "Cagliari": {
+        "ultima": [
+            40,
+            15,
+            22,
+            90,
+            51
+        ],
+        "ambo": [
+            85,
+            6
+        ],
+        "diametrali": [
+            40,
+            51
+        ],
+        "score": 175,
+        "countdown": 5
+    },
+    "Firenze": {
+        "ultima": [
+            70,
+            2,
+            71,
+            41,
+            40
+        ],
+        "ambo": [
+            47,
+            85
+        ],
+        "diametrali": [
+            2,
+            40
+        ],
+        "score": 176,
+        "countdown": 5
+    },
+    "Genova": {
+        "ultima": [
+            51,
+            80,
+            25,
+            69,
+            30
+        ],
+        "ambo": [
+            6,
+            24
+        ],
+        "diametrali": [
+            51,
+            69
+        ],
+        "score": 177,
+        "countdown": 5
+    },
+    "Milano": {
+        "ultima": [
+            23,
+            28,
+            89,
+            2,
+            64
+        ],
+        "ambo": [
+            47,
+            73
+        ],
+        "diametrali": [
+            2,
+            28
+        ],
+        "score": 177,
+        "countdown": 5
+    },
+    "Napoli": {
+        "ultima": [
+            16,
+            54,
+            41,
+            8,
+            56
+        ],
+        "ambo": [
+            53,
+            11
+        ],
+        "diametrali": [
+            8,
+            56
+        ],
+        "score": 177,
+        "countdown": 5
+    },
+    "Palermo": {
+        "ultima": [
+            18,
+            25,
+            11,
+            66,
+            36
+        ],
+        "ambo": [
+            63,
+            21
+        ],
+        "diametrali": [
+            18,
+            66
+        ],
+        "score": 177,
+        "countdown": 5
+    },
+    "Roma": {
+        "ultima": [
+            28,
+            7,
+            3,
+            47,
+            76
+        ],
+        "ambo": [
+            2,
+            52
+        ],
+        "diametrali": [
+            47,
+            7
+        ],
+        "score": 178,
+        "countdown": 5
+    },
+    "Torino": {
+        "ultima": [
+            72,
+            24,
+            1,
+            7,
+            70
+        ],
+        "ambo": [
+            69,
+            46
+        ],
+        "diametrali": [
+            24,
+            1
+        ],
+        "score": 176,
+        "countdown": 5
+    },
+    "Venezia": {
+        "ultima": [
+            10,
+            80,
+            17,
+            69,
+            13
+        ],
+        "ambo": [
+            55,
+            58
+        ],
+        "diametrali": [
+            10,
+            13
+        ],
+        "score": 177,
+        "countdown": 5
+    }
+}
