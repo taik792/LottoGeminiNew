@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lotto Elite Pro V5 - Geometric Mirror</title>
+    <title>Lotto Elite Pro V4 - Geometric Mirror</title>
     <style>
         :root {
             --bg-dark: #0f0f0f;
@@ -11,23 +11,22 @@
             --gold: #ffcc00;
             --cyan: #00d4ff;
             --green: #28a745;
-            --red: #ff3366;
         }
 
         body { background-color: var(--bg-dark); color: #e0e0e0; font-family: 'Segoe UI', sans-serif; text-align: center; margin: 0; padding-bottom: 50px; }
         h1 { color: #fff; text-shadow: 0 0 10px var(--gold); margin-top: 30px; letter-spacing: 2px; }
-        .subtitle { color: var(--cyan); font-weight: bold; margin-bottom: 30px; text-transform: uppercase; font-size: 0.9em; }
+        .subtitle { color: var(--cyan); font-weight: bold; margin-bottom: 30px; text-transform: uppercase; font-size: 0.8em; letter-spacing: 1px; }
 
         /* Container Top 3 */
         #top-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin: 0 auto 40px; max-width: 1200px; padding: 0 20px; }
-        .top-card { border: 2px solid var(--gold); border-radius: 12px; padding: 15px; background: rgba(255,204,0,0.05); min-width: 250px; box-shadow: 0 0 15px rgba(255,204,0,0.2); }
+        .top-card { border: 2px solid var(--gold); border-radius: 12px; padding: 15px; background: rgba(255,204,0,0.05); min-width: 260px; box-shadow: 0 0 15px rgba(255,204,0,0.2); }
         
         /* Container Ruote */
         .container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; padding: 0 30px; max-width: 1300px; margin: auto; }
         
         .card { background: var(--card-bg); border: 1px solid #333; border-radius: 15px; padding: 20px; position: relative; transition: all 0.3s ease; }
         .card:hover { transform: translateY(-5px); border-color: var(--cyan); box-shadow: 0 5px 20px rgba(0,0,0,0.6); }
-        .card.gold-border { border: 2px solid var(--gold); box-shadow: 0 0 10px rgba(255,204,0,0.1); }
+        .card.gold-border { border: 2px solid var(--gold); }
 
         .ruota-nome { font-size: 1.5em; font-weight: bold; color: var(--cyan); margin-bottom: 5px; }
         .partner-label { font-size: 0.75em; color: var(--gold); font-weight: bold; margin-bottom: 15px; display: block; }
@@ -37,14 +36,14 @@
         
         .palla-ambo { display: inline-block; background: var(--green); color: white; border-radius: 50%; width: 60px; height: 60px; line-height: 60px; margin: 10px; font-size: 1.6em; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
         
-        .tecnica-info { color: #888; font-size: 0.8em; font-style: italic; margin-top: 15px; }
-        .score-tag { position: absolute; top: 10px; right: 10px; padding: 3px 10px; border-radius: 5px; font-size: 0.8em; font-weight: bold; color: #000; background: var(--gold); }
-        .info-footer { font-size: 0.75em; color: #666; margin-top: 15px; }
+        .tecnica-info { color: #888; font-size: 0.75em; font-style: italic; margin-top: 15px; }
+        .score-tag { position: absolute; top: 10px; right: 10px; padding: 3px 10px; border-radius: 5px; font-size: 0.75em; font-weight: bold; color: #000; background: var(--gold); }
+        .info-footer { font-size: 0.75em; color: #666; margin-top: 10px; text-transform: uppercase; }
     </style>
 </head>
 <body>
 
-    <h1>💎 LOTTO ELITE PRO V5 💎</h1>
+    <h1>💎 LOTTO ELITE PRO V4 💎</h1>
     <div class="subtitle">Geometric Mirror - Analisi Simmetrie Isotope</div>
 
     <div id="top-container">
@@ -54,9 +53,9 @@
         </div>
 
     <script>
-        async function caricaDatiV5() {
+        async function caricaDatiV4() {
             try {
-                // Fetch del nuovo JSON Geometrico
+                // Fetch del JSON V4 con logica geometrica
                 const response = await fetch('risultati_v4.json?t=' + Date.now());
                 const data = await response.json();
                 
@@ -67,40 +66,53 @@
                 container.innerHTML = '';
                 topDiv.innerHTML = '';
 
-                // 1. Ordiniamo le ruote per score (dal più alto al più basso)
-                const ruoteOrdinate = Object.keys(risultati).sort((a, b) => risultati[b].score - risultati[a].score);
+                // --- LOGICA DI ORDINAMENTO RICHIESTA ---
+                // Definiamo l'ordine manuale: Bari, poi Genova, poi le altre in ordine alfabetico
+                const ordineManuale = ["Bari", "Genova"];
+                
+                const ruoteOrdinate = Object.keys(risultati).sort((a, b) => {
+                    let indexA = ordineManuale.indexOf(a);
+                    let indexB = ordineManuale.indexOf(b);
 
-                // 2. Visualizziamo i Top 3 in alto
-                ruoteOrdinate.slice(0, 3).forEach((ruota, i) => {
+                    // Se entrambe sono nella lista manuale, usa quell'ordine
+                    if (indexA !== -1 && indexB !== -1) return indexA - indexB;
+                    // Se solo una è nella lista manuale, quella va prima
+                    if (indexA !== -1) return -1;
+                    if (indexB !== -1) return 1;
+                    // Altrimenti, ordine alfabetico per le rimanenti
+                    return a.localeCompare(b);
+                });
+
+                // 1. TOP 3 SELECTION (basate sullo score più alto)
+                const top3 = Object.keys(risultati).sort((a, b) => risultati[b].score - risultati[a].score).slice(0, 3);
+                
+                top3.forEach((ruota, i) => {
                     const info = risultati[ruota];
                     topDiv.innerHTML += `
                         <div class="top-card">
-                            <div style="color:var(--gold); font-size:0.8em">TOP SELECTION #${i+1}</div>
-                            <div style="font-size:1.3em; font-weight:bold">${ruota}</div>
-                            <div style="font-size:1.8em; color:var(--green); margin:10px 0">${info.ambo[0]} - ${info.ambo[1]}</div>
-                            <div style="font-size:0.7em; color:#888">SPECULARITÀ CON: ${info.partner}</div>
+                            <div style="color:var(--gold); font-size:0.7em; font-weight:bold">TOP SELECTION #${i+1}</div>
+                            <div style="font-size:1.4em; font-weight:bold; margin:5px 0">${ruota}</div>
+                            <div style="font-size:1.8em; color:var(--green); font-weight:bold">${info.ambo[0]} - ${info.ambo[1]}</div>
+                            <div style="font-size:0.7em; color:#888; margin-top:5px">SPECULARITÀ: ${info.partner}</div>
                         </div>
                     `;
                 });
 
-                // 3. Creiamo tutte le card
+                // 2. TUTTE LE CARD (nell'ordine Bari -> Genova -> Altre)
                 ruoteOrdinate.forEach(ruota => {
                     const info = risultati[ruota];
                     const card = document.createElement('div');
                     card.className = `card ${info.score >= 180 ? 'gold-border' : ''}`;
                     
                     const ultimaHtml = info.ultima.map(n => `<span class="palla-grigia">${n}</span>`).join('');
-                    const partnerText = info.partner !== "Nessuno" ? `In specchio con: ${info.partner}` : "Analisi Singola";
+                    const partnerLabel = info.partner !== "Nessuno" ? `In specchio con: ${info.partner}` : "Analisi Singola";
 
                     card.innerHTML = `
-                        <div class="score-tag" style="background:${info.score >= 180 ? 'var(--gold)' : '#555'}">
-                            ${info.score}
-                        </div>
+                        <div class="score-tag">${info.score}</div>
                         <div class="ruota-nome">${ruota}</div>
-                        <span class="partner-label">${partnerText}</span>
+                        <span class="partner-label">${partnerLabel}</span>
                         
                         <div class="ultima-estrazione">
-                            <div style="font-size:0.7em; color:#666; margin-bottom:5px">ULTIMA USCITA</div>
                             ${ultimaHtml}
                         </div>
 
@@ -110,18 +122,18 @@
                         </div>
 
                         <div class="tecnica-info">${info.tecnica}</div>
-                        <div class="info-footer">ATTESA ESTIMATA: ${info.countdown} ESTRAZIONI</div>
+                        <div class="info-footer">ATTESA: ${info.countdown} ESTRAZIONI</div>
                     `;
                     container.appendChild(card);
                 });
 
             } catch (error) {
-                console.error("Errore caricamento V5:", error);
-                document.getElementById('container-ruote').innerHTML = "<p style='color:red'>Dati V5 non ancora disponibili. Attendi l'aggiornamento automatico.</p>";
+                console.error("Errore caricamento:", error);
+                document.getElementById('container-ruote').innerHTML = "<p style='color:red'>Dati in fase di aggiornamento...</p>";
             }
         }
 
-        window.onload = caricaDatiV5;
+        window.onload = caricaDatiV4;
     </script>
 </body>
 </html>
