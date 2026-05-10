@@ -1,171 +1,35 @@
-<!DOCTYPE html>
-<html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lotto Elite Pro V4 - Cyclo Edition</title>
-    <style>
-        :root {
-            --bg-color: #121212;
-            --card-bg: #1e1e1e;
-            --text-color: #e0e0e0;
-            --accent-color: #00ffcc; /* Colore Ciclometrico */
-            --gold: #ffcc00;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 20px;
-            text-align: center;
-        }
-        .header { margin-bottom: 30px; }
-        .top-container {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-        }
-        .top-card {
-            background: linear-gradient(145deg, #2c2c2c, #1a1a1a);
-            border: 2px solid var(--gold);
-            border-radius: 15px;
-            padding: 15px;
-            width: 220px;
-            box-shadow: 0 4px 15px rgba(255, 204, 0, 0.2);
-        }
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .card {
-            background-color: var(--card-bg);
-            border-radius: 12px;
-            padding: 20px;
-            position: relative;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-            border-bottom: 3px solid #333;
-        }
-        .ruota-nome { font-size: 1.4em; color: var(--accent-color); margin-bottom: 15px; font-weight: bold; }
-        .palla-estratta {
-            display: inline-block;
-            width: 30px;
-            height: 30px;
-            background: #444;
-            border-radius: 50%;
-            line-height: 30px;
-            margin: 2px;
-            font-size: 0.8em;
-        }
-        .numeri-container {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin: 15px 0;
-        }
-        .palla-ambo {
-            width: 50px;
-            height: 50px;
-            background: #28a745;
-            border-radius: 50%;
-            line-height: 50px;
-            font-size: 1.3em;
-            font-weight: bold;
-            box-shadow: 0 0 10px rgba(40, 167, 69, 0.5);
-        }
-        .ciclometria-box {
-            color: var(--accent-color);
-            border-top: 1px solid #333;
-            margin-top: 10px;
-            padding-top: 10px;
-            font-weight: bold;
-            font-size: 0.9em;
-        }
-        .countdown { font-size: 0.75em; color: #888; margin-top: 10px; text-transform: uppercase; }
-    </style>
-</head>
-<body>
+async function aggiornaSito() {
+    try {
+        // Cache buster per forzare l'aggiornamento dei dati
+        const r = await fetch('risultati_v4.json?t=' + Date.now());
+        const risultati = await r.json();
+        
+        const grid = document.getElementById('container-ruote');
+        grid.innerHTML = '';
 
-    <div class="header">
-        <h1>🔥 LOTTO ELITE PRO V4 🔥</h1>
-        <p style="color: var(--accent-color);">Analisi Ciclometrica - Distanza 45 (Diametrali)</p>
-    </div>
+        Object.keys(risultati).forEach(ruota => {
+            const dati = risultati[ruota];
+            const card = `
+                <div class="card">
+                    <div class="ruota-nome">${ruota}</div>
+                    <div class="punti">SCORE: ${dati.score}</div>
+                    <div class="ambo-container">
+                        <span class="palla">${dati.ambo[0]}</span>
+                        <span class="palla">${dati.ambo[1]}</span>
+                    </div>
+                    <div class="info-extra">
+                        <small>DIAMETRALI D45:</small><br>
+                        <strong>${dati.diametrali.join(' - ')}</strong>
+                    </div>
+                    <div class="countdown">Rimanenti: ${dati.countdown} estr.</div>
+                </div>
+            `;
+            grid.innerHTML += card;
+        });
+    } catch (err) {
+        console.error("Errore caricamento:", err);
+    }
+}
 
-    <div id="top-three" class="top-container"></div>
-
-    <div id="container-ruote" class="grid-container"></div>
-
-    <script>
-        async function fetchDati() {
-            try {
-                const cb = new Date().getTime();
-                // Assicurati che il file si chiami risultati_v4.json su GitHub
-                const [resR, resE] = await Promise.all([
-                    fetch('risultati_v4.json?t=' + cb),
-                    fetch('estrazioni.json?t=' + cb)
-                ]);
-                
-                const risultati = await resR.json();
-                const estrazioni = await resE.json();
-
-                const container = document.getElementById('container-ruote');
-                const topContainer = document.getElementById('top-three');
-                
-                // 1. Preparazione dati
-                const ruoteList = Object.keys(risultati).map(key => ({ nome: key, ...risultati[key] }));
-
-                // 2. Classifica per lo Score (Top 3)
-                const classifica = [...ruoteList].sort((a, b) => b.score - a.score);
-
-                // 3. Generazione Top 3
-                topContainer.innerHTML = '';
-                classifica.slice(0, 3).forEach((r, i) => {
-                    topContainer.innerHTML += `
-                        <div class="top-card">
-                            <h2 style="margin:0; font-size: 1.1em;">#${i+1} ${r.nome}</h2>
-                            <div style="color:var(--gold); font-size: 0.9em;">SCORE: ${r.score}</div>
-                            <div style="font-size: 1.4em; margin: 10px 0;">🎯 ${r.ambo.join(' - ')}</div>
-                        </div>`;
-                });
-
-                // 4. Generazione Card (Ordine Ruota Fisso)
-                container.innerHTML = '';
-                ruoteList.forEach(r => {
-                    const est = estrazioni[r.nome] ? estrazioni[r.nome][estrazioni[r.nome].length - 1] : [];
-                    container.innerHTML += `
-                        <div class="card">
-                            <div style="position:absolute; top:10px; right:15px; color:var(--gold); font-weight:bold;">${r.score}</div>
-                            <div class="ruota-nome">${r.nome}</div>
-                            
-                            <div style="margin-bottom:10px;">
-                                ${est.map(n => `<div class="palla-estratta">${n}</div>`).join('')}
-                            </div>
-
-                            <div class="numeri-container">
-                                <div class="palla-ambo">${r.ambo[0]}</div>
-                                <div class="palla-ambo">${r.ambo[1]}</div>
-                            </div>
-
-                            <div class="ciclometria-box">
-                                DIAMETRALI D45: ${r.diametrali.join(' - ')}
-                            </div>
-
-                            <div class="countdown">
-                                CICLO: ${r.tipo} | ${r.countdown} ESTR.
-                            </div>
-                        </div>`;
-                });
-
-            } catch (err) { console.error("Errore:", err); }
-        }
-
-        fetchDati();
-        setInterval(fetchDati, 10000); // Aggiorna ogni 10 secondi
-    </script>
-</body>
-</html>
+// Avvia al caricamento della pagina
+window.onload = aggiornaSito;
