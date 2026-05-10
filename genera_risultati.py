@@ -1,77 +1,80 @@
 import json
 import os
-import random
 
 # CONFIGURAZIONE RUOTE
 RUOTE = ["Bari", "Cagliari", "Firenze", "Genova", "Milano", "Napoli", "Palermo", "Roma", "Torino", "Venezia"]
 
-def calcola_diametrale(n):
-    """Calcola il diametrale (distanza 45) nel cerchio ciclometrico a 90 numeri"""
-    if n <= 45:
-        return n + 45
-    else:
-        return n - 45
+def calcola_distanza(a, b):
+    dist = abs(a - b)
+    return dist if dist <= 45 else 90 - dist
 
-def elabora_v4():
+def fuori_90(n):
+    while n > 90: n -= 90
+    while n < 1: n += 90
+    return n
+
+def elabora_v5_geometric():
     try:
-        # Carica le estrazioni storiche
         with open('estrazioni.json', 'r', encoding='utf-8') as f:
-            database = json.load(f)
-    except Exception as e:
-        print(f"Errore caricamento estrazioni: {e}")
+            estrazioni = json.load(f)
+    except:
+        print("Errore: estrazioni.json non trovato.")
         return
 
-    risultati_v4 = {}
+    risultati_v5 = {}
+    
+    # 1. Analizziamo le estrazioni recenti (ultime due)
+    # Cerchiamo armonie geometriche tra coppie di ruote
+    for i in range(len(RUOTE)):
+        for j in range(i + 1, len(RUOTE)):
+            r1, r2 = RUOTE[i], RUOTE[j]
+            est1 = estrazioni.get(r1, [[]])[-1]
+            est2 = estrazioni.get(r2, [[]])[-1]
+            
+            # Cerchiamo isotopi (stessa posizione) con distanza 45 o 30
+            for pos in range(5):
+                n1 = est1[pos]
+                n2 = est2[pos]
+                dist = calcola_distanza(n1, n2)
+                
+                if dist == 45 or dist == 30:
+                    # Abbiamo trovato una condizione geometrica!
+                    # Calcoliamo la "Chiusura del Quadrato"
+                    ambo_base = [fuori_90(n1 + n2), fuori_90(abs(n1 - n2))]
+                    
+                    # Evitiamo numeri doppi o 0
+                    if ambo_base[0] == ambo_base[1]: ambo_base[1] = fuori_90(ambo_base[1] + 1)
+                    
+                    score = 180 if dist == 45 else 172
+                    
+                    # Salviamo per entrambe le ruote interessate
+                    for r in [r1, r2]:
+                        if r not in risultati_v5 or score > risultati_v5[r]["score"]:
+                            risultati_v5[r] = {
+                                "ultima": est1 if r == r1 else est2,
+                                "ambo": ambo_base,
+                                "score": score,
+                                "countdown": 6,
+                                "tecnica": f"Geometric Mirror (Pos {pos+1})",
+                                "partner": r2 if r == r1 else r1
+                            }
 
-    for ruota in RUOTE:
-        # Recuperiamo la lista di estrazioni per la ruota
-        estrazioni_ruota = database.get(ruota, [])
-        
-        # Prendiamo l'ultima (la più recente nel tuo file)
-        ultima_estrazione = estrazioni_ruota[-1] if estrazioni_ruota else []
-        
-        # LOGICA CICLOMETRICA V4
-        # Inizializziamo i pesi (base minima per evitare score piatti)
-        pesi = {i: random.randint(1, 10) for i in range(1, 91)}
-        
-        # Se ci sono estrazioni, calcoliamo i pesi basati sulla Distanza 45
-        for n in ultima_estrazione:
-            if 1 <= n <= 90:
-                diam = calcola_diametrale(n)
-                # Il diametrale di un numero uscito riceve un bonus alto
-                pesi[diam] += 75 
-        
-        # Ordiniamo per punteggio
-        classifica = sorted(pesi.items(), key=lambda x: x[1], reverse=True)
-        
-        # Selezioniamo l'ambo migliore (escludendo numeri appena usciti)
-        ambo = []
-        for num, score in classifica:
-            if num not in ultima_estrazione:
-                ambo.append(num)
-            if len(ambo) == 2: break
+    # Riempire le ruote mancanti con logica standard se non trovano specchi
+    for r in RUOTE:
+        if r not in risultati_v5:
+            est = estrazioni.get(r, [[]])[-1]
+            risultati_v5[r] = {
+                "ultima": est,
+                "ambo": [fuori_90(est[0]+est[1]), fuori_90(abs(est[0]-est[1]))],
+                "score": 150,
+                "countdown": 6,
+                "tecnica": "Analisi Standard",
+                "partner": "Nessuno"
+            }
 
-        # Calcolo Score Finale (170-180)
-        score_base = 165
-        bonus_ciclometrico = random.randint(5, 12)
-        score_finale = score_base + bonus_ciclometrico
-
-        # Componiamo l'oggetto per la card
-        risultati_v4[ruota] = {
-            "ultima": ultima_estrazione,  # Per i pallini grigi
-            "ambo": ambo,                 # Per i palloni verdi
-            "score": int(score_finale),
-            "countdown": 5,
-            "diametrali": [calcola_diametrale(n) for n in ambo] # Calcolo D45 della previsione
-        }
-
-    # Salvataggio finale
-    try:
-        with open('risultati_v4.json', 'w', encoding='utf-8') as f:
-            json.dump(risultati_v4, f, indent=4)
-        print("Successo: risultati_v4.json generato correttamente.")
-    except Exception as e:
-        print(f"Errore nel salvataggio del file: {e}")
+    with open('risultati_v5.json', 'w', encoding='utf-8') as f:
+        json.dump(risultati_v5, f, indent=4)
+    print("V5: Motore Geometrico completato.")
 
 if __name__ == "__main__":
-    elabora_v4()
+    elabora_v5_geometric()
