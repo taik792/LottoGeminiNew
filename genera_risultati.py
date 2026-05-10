@@ -13,68 +13,74 @@ def fuori_90(n):
     while n < 1: n += 90
     return n
 
-def elabora_v5_geometric():
+def elabora_v4_geometric():
     try:
+        # Carichiamo le estrazioni dal tuo file
         with open('estrazioni.json', 'r', encoding='utf-8') as f:
             estrazioni = json.load(f)
-    except:
-        print("Errore: estrazioni.json non trovato.")
+    except Exception as e:
+        print(f"Errore caricamento: {e}")
         return
 
-    risultati_v5 = {}
+    risultati_v4 = {}
     
-    # 1. Analizziamo le estrazioni recenti (ultime due)
-    # Cerchiamo armonie geometriche tra coppie di ruote
+    # 1. Scansione Geometrica tra coppie di ruote (Simmetria Isotopa)
     for i in range(len(RUOTE)):
         for j in range(i + 1, len(RUOTE)):
             r1, r2 = RUOTE[i], RUOTE[j]
+            # Prendiamo l'ultima estrazione di ogni ruota
             est1 = estrazioni.get(r1, [[]])[-1]
             est2 = estrazioni.get(r2, [[]])[-1]
             
-            # Cerchiamo isotopi (stessa posizione) con distanza 45 o 30
+            if not est1 or not est2: continue
+
+            # Cerchiamo numeri nella stessa posizione con Distanza 45 o 30
             for pos in range(5):
-                n1 = est1[pos]
-                n2 = est2[pos]
+                n1, n2 = est1[pos], est2[pos]
                 dist = calcola_distanza(n1, n2)
                 
+                # Se troviamo una condizione ottimale (D45 o D30)
                 if dist == 45 or dist == 30:
-                    # Abbiamo trovato una condizione geometrica!
-                    # Calcoliamo la "Chiusura del Quadrato"
-                    ambo_base = [fuori_90(n1 + n2), fuori_90(abs(n1 - n2))]
+                    # Calcolo chiusura quadrato ciclometrico
+                    ambo = [fuori_90(n1 + n2), fuori_90(abs(n1 - n2))]
+                    if ambo[0] == ambo[1]: ambo[1] = fuori_90(ambo[1] + 1)
                     
-                    # Evitiamo numeri doppi o 0
-                    if ambo_base[0] == ambo_base[1]: ambo_base[1] = fuori_90(ambo_base[1] + 1)
-                    
+                    # Score basato sulla forza della figura
                     score = 180 if dist == 45 else 172
                     
-                    # Salviamo per entrambe le ruote interessate
+                    # Aggiorniamo i risultati per le due ruote coinvolte
                     for r in [r1, r2]:
-                        if r not in risultati_v5 or score > risultati_v5[r]["score"]:
-                            risultati_v5[r] = {
+                        if r not in risultati_v4 or score > risultati_v4[r]["score"]:
+                            risultati_v4[r] = {
                                 "ultima": est1 if r == r1 else est2,
-                                "ambo": ambo_base,
+                                "ambo": ambo,
                                 "score": score,
-                                "countdown": 6,
-                                "tecnica": f"Geometric Mirror (Pos {pos+1})",
-                                "partner": r2 if r == r1 else r1
+                                "countdown": 5,
+                                "tecnica": f"Geometric Mirror (Isotopia Pos {pos+1})",
+                                "partner": r2 if r == r1 else r1,
+                                "diametrali": [fuori_90(n + 45) for n in ambo]
                             }
 
-    # Riempire le ruote mancanti con logica standard se non trovano specchi
+    # 2. Riempimento ruote senza condizioni (Analisi Standard)
     for r in RUOTE:
-        if r not in risultati_v5:
+        if r not in risultati_v4:
             est = estrazioni.get(r, [[]])[-1]
-            risultati_v5[r] = {
+            # Calcolo standard basato sui primi due estratti
+            ambo_std = [fuori_90(est[0]+est[1]), fuori_90(abs(est[0]-est[1]))]
+            risultati_v4[r] = {
                 "ultima": est,
-                "ambo": [fuori_90(est[0]+est[1]), fuori_90(abs(est[0]-est[1]))],
+                "ambo": ambo_std,
                 "score": 150,
-                "countdown": 6,
-                "tecnica": "Analisi Standard",
-                "partner": "Nessuno"
+                "countdown": 5,
+                "tecnica": "Analisi Lineare Standard",
+                "partner": "Nessuno",
+                "diametrali": [fuori_90(n + 45) for n in ambo_std]
             }
 
-    with open('risultati_v5.json', 'w', encoding='utf-8') as f:
-        json.dump(risultati_v5, f, indent=4)
-    print("V5: Motore Geometrico completato.")
+    # Salvataggio nel file che il sito già legge
+    with open('risultati_v4.json', 'w', encoding='utf-8') as f:
+        json.dump(risultati_v4, f, indent=4)
+    print("V4 aggiornata con successo al motore Geometric Mirror.")
 
 if __name__ == "__main__":
-    elabora_v5_geometric()
+    elabora_v4_geometric()
