@@ -3,7 +3,7 @@ import os
 
 # CONFIGURAZIONE RUOTE (Cagliari segue Bari)
 RUOTE = ["Bari", "Cagliari", "Firenze", "Genova", "Milano", "Napoli", "Palermo", "Roma", "Torino", "Venezia"]
-CO_BACK = 3  # Memoria delle ultime 3 estrazioni
+CO_BACK = 3  # Prende le ultime 3 estrazioni in fondo al file
 
 def calcola_distanza(a, b):
     dist = abs(a - b)
@@ -33,17 +33,16 @@ def genera_risultati():
         with open('estrazioni.json', 'r', encoding='utf-8') as f:
             dati_grezzi = json.load(f)
         
-        # 2. Ordina matematicamente i concorsi per ID numerico (791, 792, 793...)
-        chiavi_valide = [k for k in dati_grezzi.keys() if k.isdigit()]
-        chiavi_ordinate = sorted(chiavi_valide, key=lambda x: int(x))
+        # 2. STRATEGIA BLINDATA: Prendiamo le chiavi nell'ordine ESATTO in cui sono scritte nel file
+        chiavi_tutte = list(dati_grezzi.keys())
         
-        # Prende le ultime 3 estrazioni (la più recente è l'ultima della lista)
-        estrazioni_lista = [dati_grezzi[k] for k in chiavi_ordinate]
-        ultime_3 = estrazioni_lista[-CO_BACK:]
+        # Estraiamo gli ultimi 3 blocchi in assoluto (l'estrazione in fondo sarà considerata la più recente)
+        ultime_chiavi = chiavi_tutte[-CO_BACK:]
+        ultime_3 = [dati_grezzi[k] for k in ultime_chiavi]
         
         risultati_finali = []
 
-        # 3. Analisi ciclica a ritroso (i=0 è l'estrazione di stasera)
+        # 3. Analisi ciclica a ritroso (i=0 è l'estrazione in fondo al file, ovvero stasera)
         for i, est in enumerate(reversed(ultime_3)):
             colpo = i + 1
             
@@ -82,11 +81,10 @@ def genera_risultati():
         with open('risultati_v4.json', 'w', encoding='utf-8') as f:
             json.dump(risultati_finali, f, indent=4)
         
-        print(f"✅ Ottimizzazione completata! Generati {len(risultati_finali)} pronostici.")
+        print(f"✅ Ottimizzazione completata! Analizzati gli ultimi {len(ultime_3)} blocchi inseriti nel database.")
 
     except Exception as e:
         print(f"❌ Errore nel motore: {e}")
 
 if __name__ == "__main__":
-    # CORREZIONE RIGIDISSIMA DELLA RIGA 76:
     genera_risultati()
