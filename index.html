@@ -3,117 +3,223 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lotto Elite Pro V4 - Geometric Mirror</title>
+    <title>Lotto Elite Pro - Geometric Mirror V4</title>
     <style>
         :root {
-            --bg-dark: #0f0f0f;
-            --card-bg: #1a1a1a;
-            --gold: #ffcc00;
-            --cyan: #00d4ff;
-            --green: #28a745;
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-color: #ffffff;
+            --accent-color: #ff9800;
+            --secondary-text: #b0b0b0;
+            --shadow: 0 4px 6px rgba(0,0,0,0.3);
         }
 
-        body { background-color: var(--bg-dark); color: #e0e0e0; font-family: 'Segoe UI', sans-serif; text-align: center; margin: 0; padding-bottom: 50px; }
-        h1 { color: #fff; text-shadow: 0 0 10px var(--gold); margin-top: 30px; letter-spacing: 2px; }
-        .subtitle { color: var(--cyan); font-weight: bold; margin-bottom: 30px; text-transform: uppercase; font-size: 0.8em; letter-spacing: 1px; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-        #top-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin: 0 auto 40px; max-width: 1200px; padding: 0 20px; }
-        .top-card { border: 2px solid var(--gold); border-radius: 12px; padding: 15px; background: rgba(255,204,0,0.05); min-width: 260px; box-shadow: 0 0 15px rgba(255,204,0,0.2); }
-        
-        .container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; padding: 0 30px; max-width: 1300px; margin: auto; }
-        
-        .card { background: var(--card-bg); border: 1px solid #333; border-radius: 15px; padding: 20px; position: relative; transition: all 0.3s ease; }
-        .card:hover { transform: translateY(-5px); border-color: var(--cyan); box-shadow: 0 5px 20px rgba(0,0,0,0.6); }
-        .card.gold-border { border: 2px solid var(--gold); }
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            width: 100%;
+            max-width: 800px;
+        }
 
-        .ruota-nome { font-size: 1.5em; font-weight: bold; color: var(--cyan); margin-bottom: 5px; }
-        .partner-label { font-size: 0.75em; color: var(--gold); font-weight: bold; margin-bottom: 15px; display: block; }
+        h1 {
+            color: var(--accent-color);
+            margin-bottom: 5px;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .subtitle {
+            color: var(--secondary-text);
+            margin-top: 0;
+            font-size: 1.1rem;
+        }
+
+        #container {
+            width: 100%;
+            max-width: 800px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            border-left: 5px solid var(--accent-color);
+            transition: transform 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .ruote-titolo {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .badge {
+            background-color: #333;
+            color: var(--accent-color);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            border: 1px solid var(--accent-color);
+        }
+
+        .badge.nuova {
+            background-color: var(--accent-color);
+            color: #000;
+        }
+
+        .numeri-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .cerchio-numero {
+            background: radial-gradient(circle at 30% 30%, #333, #1a1a1a);
+            color: #fff;
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            box-shadow: inset 0 2px 4px rgba(255,255,255,0.1), 0 4px 6px rgba(0,0,0,0.4);
+            border: 1px solid #444;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            color: var(--secondary-text);
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+
+        .error-message, .no-data {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 4px 20px;
+            background-color: #2a1a1a;
+            border: 1px solid #cc3333;
+            color: #ff6666;
+            border-radius: 8px;
+            font-size: 1.1rem;
+        }
         
-        .ultima-estrazione { margin-bottom: 20px; border-top: 1px solid #333; padding-top: 15px; }
-        .palla-grigia { display: inline-block; background: #333; color: #999; border-radius: 50%; width: 30px; height: 30px; line-height: 30px; margin: 2px; font-size: 0.85em; font-weight: bold; }
-        
-        .palla-ambo { display: inline-block; background: var(--green); color: white; border-radius: 50%; width: 60px; height: 60px; line-height: 60px; margin: 10px; font-size: 1.6em; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-        
-        .tecnica-info { color: #888; font-size: 0.75em; font-style: italic; margin-top: 15px; }
-        .score-tag { position: absolute; top: 10px; right: 10px; padding: 3px 10px; border-radius: 5px; font-size: 0.75em; font-weight: bold; color: #000; background: var(--gold); }
-        .info-footer { font-size: 0.75em; color: #666; margin-top: 10px; text-transform: uppercase; }
+        .no-data {
+            background-color: #1a242f;
+            border-color: #2980b9;
+            color: #3498db;
+        }
+
+        .loading {
+            grid-column: 1 / -1;
+            text-align: center;
+            font-size: 1.2rem;
+            color: var(--secondary-text);
+            padding: 40px;
+        }
     </style>
 </head>
 <body>
 
-    <h1>💎 LOTTO ELITE PRO V4 💎</h1>
-    <div class="subtitle">Geometric Mirror - Analisi Simmetrie Isotope</div>
+    <header>
+        <h1>LOTTO ELITE PRO V4</h1>
+        <p class="subtitle">Motore di Ricerca Spaziale - Logica Geometric Mirror</p>
+    </header>
 
-    <div id="top-container"></div>
-    <div class="container" id="container-ruote"></div>
+    <main id="container">
+        <div class="loading">Caricamento delle ultime previsioni in corso...</div>
+    </main>
 
     <script>
-        async function caricaDatiV4() {
-            try {
-                const response = await fetch('risultati.json?t=' + Date.now());
-                const data = await response.json();
-                const risultati = data.ruote ? data.ruote : data;
-                
-                const container = document.getElementById('container-ruote');
-                const topDiv = document.getElementById('top-container');
-                
-                container.innerHTML = '';
-                topDiv.innerHTML = '';
+        document.addEventListener("DOMContentLoaded", () => {
+            const container = document.getElementById("container");
 
-                // --- ORDINE CORRETTO DEL BOLLETTINO ---
-                const ordineUfficiale = [
-                    "Bari", "Cagliari", "Firenze", "Genova", "Milano", 
-                    "Napoli", "Palermo", "Roma", "Torino", "Venezia"
-                ];
+            // ATTENZIONE CRUCIALE: Punta a risultati_v4.json per combaciare con Python e Git!
+            fetch('risultati_v4.json?t=' + new Date().getTime()) 
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Impossibile caricare il file dei risultati.");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    container.innerHTML = ""; // Svuota il caricamento
 
-                // 1. TOP 3 (Sempre visibili in alto per score)
-                const top3Keys = Object.keys(risultati)
-                    .sort((a, b) => risultati[b].score - risultati[a].score)
-                    .slice(0, 3);
-                
-                top3Keys.forEach((ruota, i) => {
-                    const info = risultati[ruota];
-                    topDiv.innerHTML += `
-                        <div class="top-card">
-                            <div style="color:var(--gold); font-size:0.7em; font-weight:bold">TOP SELECTION #${i+1}</div>
-                            <div style="font-size:1.4em; font-weight:bold; margin:5px 0">${ruota}</div>
-                            <div style="font-size:1.8em; color:var(--green); font-weight:bold">${info.ambo[0]} - ${info.ambo[1]}</div>
-                            <div style="font-size:0.7em; color:#888; margin-top:5px">PARTNER: ${info.partner}</div>
+                    if (!data || data.length === 0) {
+                        container.innerHTML = `<div class="no-data">Nessuna previsione geometrica attiva rilevata nelle ultime estrazioni. Il database è aggiornato ma non ci sono distanze 30 o 45 isotope attive.</div>`;
+                        return;
+                    }
+
+                    // Ciclo per creare le card sul sito
+                    data.forEach(item => {
+                        const card = document.createElement("div");
+                        card.className = "card";
+
+                        // Determina lo stile del badge (Nuova o Colpo di memoria)
+                        const isNuova = item.tag === "NUOVA" || item.colpo === 1;
+                        const badgeClass = isNuova ? "badge nuova" : "badge";
+                        const badgeTesto = item.tag ? item.tag : `Colpo ${item.colpo}`;
+
+                        card.innerHTML = `
+                            <div class="card-header">
+                                <span class="ruote-titolo">${item.ruota} - ${item.partner}</span>
+                                <span class="${badgeClass}">${badgeTesto}</span>
+                            </div>
+                            <div class="numeri-container">
+                                <div class="cerchio-numero">${item.numeri[0]}</div>
+                                <div class="cerchio-numero">${item.numeri[1]}</div>
+                            </div>
+                            <div class="card-footer">
+                                <span>Indice Ciclo: Dist. ${item.score === 180 ? '45' : '30'}</span>
+                                <span>Accuratezza: ${item.score}%</span>
+                            </div>
+                        `;
+                        container.appendChild(card);
+                    });
+                })
+                .catch(error => {
+                    console.error(error);
+                    container.innerHTML = `
+                        <div class="error-message">
+                            <strong>Attenzione:</strong> Errore nel caricamento dei dati del sito.<br>
+                            Assicurati che il file 'risultati_v4.json' esista sul repository e che l'Action di GitHub sia completata con successo.
                         </div>
                     `;
                 });
-
-                // 2. CARD ORDINATE SECONDO IL BOLLETTINO (Bari -> Cagliari -> Firenze...)
-                ordineUfficiale.forEach(ruota => {
-                    if (risultati[ruota]) {
-                        const info = risultati[ruota];
-                        const card = document.createElement('div');
-                        card.className = `card ${info.score >= 180 ? 'gold-border' : ''}`;
-                        
-                        const ultimaHtml = info.ultima.map(n => `<span class="palla-grigia">${n}</span>`).join('');
-                        const partnerLabel = info.partner !== "Nessuno" ? `In specchio con: ${info.partner}` : "Analisi Standard";
-
-                        card.innerHTML = `
-                            <div class="score-tag">${info.score}</div>
-                            <div class="ruota-nome">${ruota}</div>
-                            <span class="partner-label">${partnerLabel}</span>
-                            <div class="ultima-estrazione">${ultimaHtml}</div>
-                            <div class="previsione">
-                                <div class="palla-ambo">${info.ambo[0]}</div>
-                                <div class="palla-ambo">${info.ambo[1]}</div>
-                            </div>
-                            <div class="tecnica-info">${info.tecnica}</div>
-                            <div class="info-footer">ATTESA: ${info.countdown} ESTRAZIONI</div>
-                        `;
-                        container.appendChild(card);
-                    }
-                });
-
-            } catch (error) {
-                console.error("Errore:", error);
-            }
-        }
-        window.onload = caricaDatiV4;
+        });
     </script>
 </body>
 </html>
