@@ -50,7 +50,7 @@
     <script>
         async function caricaDatiV4() {
             try {
-                const response = await fetch('risultati_v4.json?t=' + Date.now());
+                const response = await fetch('risultati.json?t=' + Date.now());
                 const data = await response.json();
                 const risultati = data.ruote ? data.ruote : data;
                 
