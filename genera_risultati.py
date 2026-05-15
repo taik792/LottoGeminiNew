@@ -1,9 +1,7 @@
 import json
-import os
 
-# CONFIGURAZIONE
+# CONFIGURAZIONE RUOTE
 RUOTE = ["Bari", "Cagliari", "Firenze", "Genova", "Milano", "Napoli", "Palermo", "Roma", "Torino", "Venezia"]
-CO_BACK = 3 
 
 def calcola_distanza(a, b):
     dist = abs(a - b)
@@ -14,55 +12,51 @@ def fuori_90(n):
     while n < 1: n += 90
     return n
 
-def elabora_v5():
+def genera_risultati():
     try:
         with open('estrazioni.json', 'r', encoding='utf-8') as f:
-            db = json.load(f)
-            # Gestione formati diversi del database
-            estrazioni = list(db.values()) if isinstance(db, dict) else db
-    except:
-        print("Errore: estrazioni.json non trovato")
-        return
+            dati_grezzi = json.load(f)
+        
+        # TRASFORMAZIONE DIZIONARIO -> LISTA
+        # Dato che le tue chiavi sono "1", "2", "3", le ordiniamo numericamente
+        chiavi_ordinate = sorted(dati_grezzi.keys(), key=lambda x: int(x))
+        estrazioni_lista = [dati_grezzi[k] for k in chiavi_ordinate]
+        
+        # Prendiamo le ultime 3 (le più recenti, in fondo al file)
+        ultime_3 = estrazioni_lista[-3:]
+        risultati_finali = []
 
-    risultati = []
-    # Analizza le ultime 3 estrazioni per la memoria
-    per_analisi = estrazioni[-CO_BACK:]
-    
-    for i, est in enumerate(reversed(per_analisi)):
-        colpo = i + 1
-        # Se l'estrazione è una lista (senza nomi ruote), usiamo gli indici
-        for idx1 in range(len(RUOTE)):
-            for idx2 in range(idx1 + 1, len(RUOTE)):
-                r1, r2 = RUOTE[idx1], RUOTE[idx2]
-                
-                try:
-                    # Tenta di leggere come dizionario, altrimenti usa l'indice della lista
-                    numeri1 = est.get(r1) if isinstance(est, dict) else est[idx1]
-                    numeri2 = est.get(r2) if isinstance(est, dict) else est[idx2]
+        # Analisi dalla più recente alla meno recente
+        for i, est in enumerate(reversed(ultime_3)):
+            colpo = i + 1
+            for idx1 in range(len(RUOTE)):
+                for idx2 in range(idx1 + 1, len(RUOTE)):
+                    r1, r2 = RUOTE[idx1], RUOTE[idx2]
                     
-                    if numeri1 and numeri2:
+                    if r1 in est and r2 in est:
                         for pos in range(5):
-                            n1, n2 = numeri1[pos], numeri2[pos]
+                            n1, n2 = est[r1][pos], est[r2][pos]
                             dist = calcola_distanza(n1, n2)
                             
                             if dist == 45 or dist == 30:
                                 ambo = [fuori_90(n1 + n2), abs(n1 - n2) if n1 != n2 else 90]
-                                risultati.append({
+                                risultati_finali.append({
                                     "ruota": r1,
                                     "partner": r2,
                                     "numeri": ambo,
                                     "score": 180 if dist == 45 else 172,
                                     "colpo": colpo,
-                                    "info": f"Memoria: Colpo {colpo}"
+                                    "tag": "NUOVA" if colpo == 1 else f"Colpo {colpo}"
                                 })
-                except:
-                    continue
 
-    # Salvataggio col nome corretto cercato dal sito
-    with open('risultati.json', 'w', encoding='utf-8') as f:
-        json.dump(risultati, f, indent=4)
-    
-    print(f"✅ Creato risultati.json con {len(risultati)} previsioni.")
+        # Scrittura sul file che legge il sito
+        with open('risultati.json', 'w', encoding='utf-8') as f:
+            json.dump(risultati_finali, f, indent=4)
+        
+        print(f"✅ Elaborazione completata! Trovate {len(risultati_finali)} previsioni.")
+
+    except Exception as e:
+        print(f"❌ Errore durante l'elaborazione: {e}")
 
 if __name__ == "__main__":
-    elabora_v5()
+    genera_risultati()
