@@ -1,6 +1,6 @@
 import json
 
-# CONFIGURAZIONE RUOTE
+# CONFIGURAZIONE RUOTE (Assicurati che l'ordine sia quello corretto per il tuo script)
 RUOTE = ["Bari", "Cagliari", "Firenze", "Genova", "Milano", "Napoli", "Palermo", "Roma", "Torino", "Venezia"]
 
 def calcola_distanza(a, b):
@@ -14,19 +14,22 @@ def fuori_90(n):
 
 def genera_risultati():
     try:
+        # 1. Carica il file estrazioni.json
         with open('estrazioni.json', 'r', encoding='utf-8') as f:
             dati_grezzi = json.load(f)
         
-        # TRASFORMAZIONE DIZIONARIO -> LISTA
-        # Dato che le tue chiavi sono "1", "2", "3", le ordiniamo numericamente
-        chiavi_ordinate = sorted(dati_grezzi.keys(), key=lambda x: int(x))
-        estrazioni_lista = [dati_grezzi[k] for k in chiavi_ordinate]
+        # 2. Ordina le chiavi numeriche (es. "790", "791", "792")
+        # Filtriamo solo le chiavi che sono effettivamente numeri per evitare errori
+        chiavi_valide = [k for k in dati_grezzi.keys() if k.isdigit()]
+        chiavi_ordinate = sorted(chiavi_valide, key=lambda x: int(x))
         
-        # Prendiamo le ultime 3 (le più recenti, in fondo al file)
+        # Trasformiamo in lista per prendere le ultime 3 estrazioni
+        estrazioni_lista = [dati_grezzi[k] for k in chiavi_ordinate]
         ultime_3 = estrazioni_lista[-3:]
+        
         risultati_finali = []
 
-        # Analisi dalla più recente alla meno recente
+        # 3. Analisi dalla più recente (Colpo 1) alla meno recente (Colpo 3)
         for i, est in enumerate(reversed(ultime_3)):
             colpo = i + 1
             for idx1 in range(len(RUOTE)):
@@ -34,10 +37,14 @@ def genera_risultati():
                     r1, r2 = RUOTE[idx1], RUOTE[idx2]
                     
                     if r1 in est and r2 in est:
+                        numeri1 = est[r1]
+                        numeri2 = est[r2]
+                        
                         for pos in range(5):
-                            n1, n2 = est[r1][pos], est[r2][pos]
+                            n1, n2 = numeri1[pos], numeri2[pos]
                             dist = calcola_distanza(n1, n2)
                             
+                            # Logica Geometric Mirror: Distanza 45 o 30
                             if dist == 45 or dist == 30:
                                 ambo = [fuori_90(n1 + n2), abs(n1 - n2) if n1 != n2 else 90]
                                 risultati_finali.append({
@@ -46,17 +53,17 @@ def genera_risultati():
                                     "numeri": ambo,
                                     "score": 180 if dist == 45 else 172,
                                     "colpo": colpo,
-                                    "tag": "NUOVA" if colpo == 1 else f"Colpo {colpo}"
+                                    "info": f"Memoria: Colpo {colpo}"
                                 })
 
-        # Scrittura sul file che legge il sito
+        # 4. Scrittura del file risultati.json per il sito
         with open('risultati.json', 'w', encoding='utf-8') as f:
             json.dump(risultati_finali, f, indent=4)
         
-        print(f"✅ Elaborazione completata! Trovate {len(risultati_finali)} previsioni.")
+        print(f"✅ Analisi completata con successo! Generate {len(risultati_finali)} previsioni.")
 
     except Exception as e:
-        print(f"❌ Errore durante l'elaborazione: {e}")
+        print(f"❌ Errore critico: {e}")
 
 if __name__ == "__main__":
     genera_risultati()
