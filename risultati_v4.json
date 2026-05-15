@@ -1,1 +1,255 @@
-[]
+[
+    {
+        "ruota": "Bari",
+        "partner": "Napoli",
+        "numeri": [
+            26,
+            30
+        ],
+        "score": 172,
+        "colpo": 1,
+        "tag": "NUOVA"
+    },
+    {
+        "ruota": "Bari",
+        "partner": "Roma",
+        "numeri": [
+            53,
+            45
+        ],
+        "score": 180,
+        "colpo": 1,
+        "tag": "NUOVA"
+    },
+    {
+        "ruota": "Cagliari",
+        "partner": "Palermo",
+        "numeri": [
+            88,
+            60
+        ],
+        "score": 172,
+        "colpo": 1,
+        "tag": "NUOVA"
+    },
+    {
+        "ruota": "Firenze",
+        "partner": "Milano",
+        "numeri": [
+            82,
+            60
+        ],
+        "score": 172,
+        "colpo": 1,
+        "tag": "NUOVA"
+    },
+    {
+        "ruota": "Firenze",
+        "partner": "Napoli",
+        "numeri": [
+            51,
+            45
+        ],
+        "score": 180,
+        "colpo": 1,
+        "tag": "NUOVA"
+    },
+    {
+        "ruota": "Firenze",
+        "partner": "Torino",
+        "numeri": [
+            35,
+            45
+        ],
+        "score": 180,
+        "colpo": 1,
+        "tag": "NUOVA"
+    },
+    {
+        "ruota": "Milano",
+        "partner": "Roma",
+        "numeri": [
+            8,
+            30
+        ],
+        "score": 172,
+        "colpo": 1,
+        "tag": "NUOVA"
+    },
+    {
+        "ruota": "Napoli",
+        "partner": "Torino",
+        "numeri": [
+            66,
+            60
+        ],
+        "score": 172,
+        "colpo": 1,
+        "tag": "NUOVA"
+    },
+    {
+        "ruota": "Bari",
+        "partner": "Napoli",
+        "numeri": [
+            77,
+            45
+        ],
+        "score": 180,
+        "colpo": 2,
+        "tag": "Colpo 2"
+    },
+    {
+        "ruota": "Bari",
+        "partner": "Roma",
+        "numeri": [
+            47,
+            45
+        ],
+        "score": 180,
+        "colpo": 2,
+        "tag": "Colpo 2"
+    },
+    {
+        "ruota": "Cagliari",
+        "partner": "Torino",
+        "numeri": [
+            28,
+            60
+        ],
+        "score": 172,
+        "colpo": 2,
+        "tag": "Colpo 2"
+    },
+    {
+        "ruota": "Firenze",
+        "partner": "Genova",
+        "numeri": [
+            39,
+            45
+        ],
+        "score": 180,
+        "colpo": 2,
+        "tag": "Colpo 2"
+    },
+    {
+        "ruota": "Firenze",
+        "partner": "Roma",
+        "numeri": [
+            20,
+            30
+        ],
+        "score": 172,
+        "colpo": 2,
+        "tag": "Colpo 2"
+    },
+    {
+        "ruota": "Napoli",
+        "partner": "Torino",
+        "numeri": [
+            4,
+            30
+        ],
+        "score": 172,
+        "colpo": 2,
+        "tag": "Colpo 2"
+    },
+    {
+        "ruota": "Palermo",
+        "partner": "Venezia",
+        "numeri": [
+            48,
+            30
+        ],
+        "score": 172,
+        "colpo": 2,
+        "tag": "Colpo 2"
+    },
+    {
+        "ruota": "Torino",
+        "partner": "Venezia",
+        "numeri": [
+            50,
+            30
+        ],
+        "score": 172,
+        "colpo": 2,
+        "tag": "Colpo 2"
+    },
+    {
+        "ruota": "Bari",
+        "partner": "Cagliari",
+        "numeri": [
+            70,
+            30
+        ],
+        "score": 172,
+        "colpo": 3,
+        "tag": "Colpo 3"
+    },
+    {
+        "ruota": "Firenze",
+        "partner": "Palermo",
+        "numeri": [
+            70,
+            60
+        ],
+        "score": 172,
+        "colpo": 3,
+        "tag": "Colpo 3"
+    },
+    {
+        "ruota": "Firenze",
+        "partner": "Torino",
+        "numeri": [
+            39,
+            45
+        ],
+        "score": 180,
+        "colpo": 3,
+        "tag": "Colpo 3"
+    },
+    {
+        "ruota": "Genova",
+        "partner": "Venezia",
+        "numeri": [
+            1,
+            45
+        ],
+        "score": 180,
+        "colpo": 3,
+        "tag": "Colpo 3"
+    },
+    {
+        "ruota": "Palermo",
+        "partner": "Torino",
+        "numeri": [
+            24,
+            30
+        ],
+        "score": 172,
+        "colpo": 3,
+        "tag": "Colpo 3"
+    },
+    {
+        "ruota": "Roma",
+        "partner": "Torino",
+        "numeri": [
+            24,
+            30
+        ],
+        "score": 172,
+        "colpo": 3,
+        "tag": "Colpo 3"
+    },
+    {
+        "ruota": "Roma",
+        "partner": "Venezia",
+        "numeri": [
+            37,
+            45
+        ],
+        "score": 180,
+        "colpo": 3,
+        "tag": "Colpo 3"
+    }
+]
