@@ -49,7 +49,7 @@
             width: 100%;
             max-width: 800px;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 20px;
         }
 
@@ -59,11 +59,6 @@
             padding: 20px;
             box-shadow: var(--shadow);
             border-left: 5px solid var(--accent-color);
-            transition: transform 0.2s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-2px);
         }
 
         .card-header {
@@ -91,11 +86,6 @@
             border: 1px solid var(--accent-color);
         }
 
-        .badge.nuova {
-            background-color: var(--accent-color);
-            color: #000;
-        }
-
         .numeri-container {
             display: flex;
             justify-content: center;
@@ -104,51 +94,63 @@
         }
 
         .cerchio-numero {
-            background: radial-gradient(circle at 30% 30%, #333, #1a1a1a);
-            color: #fff;
+            background: radial-gradient(circle at 30% 30%, #444, #1a1a1a);
+            color: var(--accent-color);
             width: 55px;
             height: 55px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             font-weight: bold;
-            box-shadow: inset 0 2px 4px rgba(255,255,255,0.1), 0 4px 6px rgba(0,0,0,0.4);
-            border: 1px solid #444;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.4);
+            border: 1px solid var(--accent-color);
+        }
+
+        /* STILE PER LA VISUALIZZAZIONE DELLE CINQUE ESTRAZIONI REALI */
+        .storico-estrazioni {
+            background-color: #151515;
+            border-radius: 6px;
+            padding: 10px;
+            margin-top: 15px;
+            font-size: 0.85rem;
+            border: 1px solid #252525;
+        }
+
+        .riga-estrazione {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            color: var(--secondary-text);
+        }
+
+        .riga-estrazione:last-child {
+            margin-bottom: 0;
+        }
+
+        .valori-estrazione {
+            color: #fff;
+            font-weight: bold;
+            letter-spacing: 2px;
         }
 
         .card-footer {
             display: flex;
             justify-content: space-between;
             color: var(--secondary-text);
-            font-size: 0.9rem;
-            margin-top: 10px;
+            font-size: 0.85rem;
+            margin-top: 15px;
+            border-top: 1px solid #2a2a2a;
+            padding-top: 8px;
         }
 
-        .error-message, .no-data {
+        .loading, .no-data {
             grid-column: 1 / -1;
             text-align: center;
-            padding: 4px 20px;
-            background-color: #2a1a1a;
-            border: 1px solid #cc3333;
-            color: #ff6666;
-            border-radius: 8px;
-            font-size: 1.1rem;
-        }
-        
-        .no-data {
-            background-color: #1a242f;
-            border-color: #2980b9;
-            color: #3498db;
-        }
-
-        .loading {
-            grid-column: 1 / -1;
-            text-align: center;
-            font-size: 1.2rem;
+            padding: 30px;
             color: var(--secondary-text);
-            padding: 40px;
+            font-size: 1.2rem;
         }
     </style>
 </head>
@@ -160,50 +162,52 @@
     </header>
 
     <main id="container">
-        <div class="loading">Caricamento delle ultime previsioni in corso...</div>
+        <div class="loading">Caricamento in corso...</div>
     </main>
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const container = document.getElementById("container");
 
-            // ATTENZIONE CRUCIALE: Punta a risultati_v4.json per combaciare con Python e Git!
             fetch('risultati_v4.json?t=' + new Date().getTime()) 
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error("Impossibile caricare il file dei risultati.");
-                    }
-                    return response.json();
-                })
+                .then(response => response.json())
                 .then(data => {
-                    container.innerHTML = ""; // Svuota il caricamento
+                    container.innerHTML = ""; 
 
                     if (!data || data.length === 0) {
-                        container.innerHTML = `<div class="no-data">Nessuna previsione geometrica attiva rilevata nelle ultime estrazioni. Il database è aggiornato ma non ci sono distanze 30 o 45 isotope attive.</div>`;
+                        container.innerHTML = `<div class="no-data">Nessun pronostico generato. Inserisci l'ID numerico corretto del concorso nel JSON.</div>`;
                         return;
                     }
 
-                    // Ciclo per creare le card sul sito
                     data.forEach(item => {
                         const card = document.createElement("div");
                         card.className = "card";
 
-                        // Determina lo stile del badge (Nuova o Colpo di memoria)
-                        const isNuova = item.tag === "NUOVA" || item.colpo === 1;
-                        const badgeClass = isNuova ? "badge nuova" : "badge";
-                        const badgeTesto = item.tag ? item.tag : `Colpo ${item.colpo}`;
+                        // Estrae le stringhe dei 5 numeri reali separati dal punto
+                        const stringa_r1 = item.estrazione_r1 ? item.estrazione_r1.join('.') : '-';
+                        const stringa_r2 = item.estrazione_r2 ? item.estrazione_r2.join('.') : '-';
 
                         card.innerHTML = `
                             <div class="card-header">
                                 <span class="ruote-titolo">${item.ruota} - ${item.partner}</span>
-                                <span class="${badgeClass}">${badgeTesto}</span>
+                                <span class="badge">${item.tag}</span>
                             </div>
                             <div class="numeri-container">
                                 <div class="cerchio-numero">${item.numeri[0]}</div>
                                 <div class="cerchio-numero">${item.numeri[1]}</div>
                             </div>
+                            <div class="storico-estrazioni">
+                                <div class="riga-estrazione">
+                                    <span>${item.ruota}:</span>
+                                    <span class="valori-estrazione">${stringa_r1}</span>
+                                </div>
+                                <div class="riga-estrazione">
+                                    <span>${item.partner}:</span>
+                                    <span class="valori-estrazione">${stringa_r2}</span>
+                                </div>
+                            </div>
                             <div class="card-footer">
-                                <span>Indice Ciclo: Dist. ${item.score === 180 ? '45' : '30'}</span>
+                                <span>Ciclo: Dist. ${item.score === 180 ? '45' : '30'}</span>
                                 <span>Accuratezza: ${item.score}%</span>
                             </div>
                         `;
@@ -211,13 +215,7 @@
                     });
                 })
                 .catch(error => {
-                    console.error(error);
-                    container.innerHTML = `
-                        <div class="error-message">
-                            <strong>Attenzione:</strong> Errore nel caricamento dei dati del sito.<br>
-                            Assicurati che il file 'risultati_v4.json' esista sul repository e che l'Action di GitHub sia completata con successo.
-                        </div>
-                    `;
+                    container.innerHTML = `<div class="no-data">Errore di caricamento dati.</div>`;
                 });
         });
     </script>
