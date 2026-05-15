@@ -1,67 +1,76 @@
 import json
 import os
 
-# CONFIGURAZIONE RUOTE (Nell'ordine corretto basato sulle correzioni precedenti)
-RUOTE = ["Bari", "Cagliari", "Firenze", "Genova", "Milano", "Napoli", "Palermo", "Roma", "Torino", "Venezia"]
+def genera_risultati():
+    file_input = 'estrazioni.json'
+    file_output = 'risultati_v4.json'
+    
+    # 1. Controllo se il file esiste
+    if not os.path.exists(file_input):
+        print(f"❌ ERRORE: Il file {file_input} non esiste nella cartella!")
+        return
 
-def calcola_distanza(a, b):
-    dist = abs(a - b)
-    return dist if dist <= 45 else 90 - dist
-
-def fuori_90(n):
-    while n > 90: n -= 90
-    while n < 1: n += 90
-    return n
-
-def elabora_v5_geometric():
     try:
-        if not os.path.exists('estrazioni.json'):
-            print("❌ Errore: estrazioni.json non trovato.")
-            return
+        with open(file_input, 'r', encoding='utf-8') as f:
+            database = json.load(f)
+        
+        print(f"✅ File caricato. Trovate {len(database)} chiavi nel database.")
+
+        # 2. Trasformiamo tutto in una lista ordinata
+        # Usiamo un metodo più robusto per estrarre i dati
+        estrazioni_lista = []
+        chiavi_ordinate = sorted([k for k in database.keys() if k.isdigit()], key=int)
+        
+        for k in chiavi_ordinate:
+            estrazioni_lista.append(database[k])
             
-        with open('estrazioni.json', 'r', encoding='utf-8') as f:
-            dati_grezzi = json.load(f)
-        
-        chiavi_valide = [k for k in dati_grezzi.keys() if k.isdigit()]
-        chiavi_ordinate = sorted(chiavi_valide, key=lambda x: int(x))
-        
-        estrazioni_lista = [dati_grezzi[k] for k in chiavi_ordinate]
-        ultime_3 = estrazioni_lista[-3:]
-        
-        risultati_finali = []
+        print(f"✅ Estrazioni convertite in lista: {len(estrazioni_lista)}")
 
-        for i, est in enumerate(reversed(ultime_3)):
+        # 3. Prendiamo le ultime 5 (più memoria per sicurezza)
+        ultime = estrazioni_lista[-5:]
+        risultati = []
+        
+        ruote = ["Bari", "Cagliari", "Firenze", "Genova", "Milano", "Napoli", "Palermo", "Roma", "Torino", "Venezia"]
+
+        # 4. Analisi semplificata (cerchiamo DISTANZA 45 ovunque)
+        for i, est in enumerate(reversed(ultime)):
             colpo = i + 1
-            for idx1 in range(len(RUOTE)):
-                for idx2 in range(idx1 + 1, len(RUOTE)):
-                    r1, r2 = RUOTE[idx1], RUOTE[idx2]
+            for r1 in ruote:
+                for r2 in ruote:
+                    if r1 == r2 or r1 not in est or r2 not in est:
+                        continue
+                        
+                    v1, v2 = est[r1], est[r2]
                     
-                    if r1 in est and r2 in est:
-                        for pos in range(5):
-                            n1 = est[r1][pos]
-                            n2 = est[r2][pos]
-                            dist = calcola_distanza(n1, n2)
+                    for p in range(5):
+                        n1, n2 = v1[p], v2[p]
+                        dist = abs(n1 - n2)
+                        if dist > 45: dist = 90 - dist
+                        
+                        if dist == 45 or dist == 30:
+                            # Calcolo previsione
+                            somma = n1 + n2
+                            if somma > 90: somma -= 90
+                            diff = abs(n1 - n2)
+                            if diff == 0: diff = 90
                             
-                            # TEST: Accettiamo tutte le distanze superiori a 10 per vedere se scrive il file!
-                            if dist >= 10:
-                                ambo = [fuori_90(n1 + n2), abs(n1 - n2) if n1 != n2 else 90]
-                                risultati_finali.append({
-                                    "ruota": r1,
-                                    "partner": r2,
-                                    "numeri": ambo,
-                                    "score": 180 if dist == 45 else 172,
-                                    "colpo": colpo,
-                                    "tag": "NUOVA" if colpo == 1 else f"Colpo {colpo}"
-                                })
+                            risultati.append({
+                                "ruota": r1,
+                                "partner": r2,
+                                "numeri": [somma, diff],
+                                "score": 180 if dist == 45 else 172,
+                                "colpo": colpo,
+                                "tag": "NUOVA" if colpo == 1 else f"Colpo {colpo}"
+                            })
 
-        # Salva nel file richiesto dall'Action
-        with open('risultati_v4.json', 'w', encoding='utf-8') as f:
-            json.dump(risultati_finali, f, indent=4)
-        
-        print(f"✅ TEST COMPLETATO! Generato 'risultati_v4.json' con {len(risultati_finali)} condizioni.")
+        # 5. Scrittura forzata
+        with open(file_output, 'w', encoding='utf-8') as f:
+            json.dump(risultati, f, indent=4)
+            
+        print(f"🚀 OPERAZIONE COMPLETATA: Scritto {file_output} con {len(risultati)} previsioni.")
 
     except Exception as e:
-        print(f"❌ Errore: {e}")
+        print(f"❌ ERRORE CRITICO: {str(e)}")
 
 if __name__ == "__main__":
-    elabora_v5_geometric()
+    genera_risultati()
