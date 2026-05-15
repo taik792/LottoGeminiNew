@@ -1,9 +1,8 @@
 import json
 import os
 
-# CONFIGURAZIONE RUOTE (Cagliari segue Bari)
 RUOTE = ["Bari", "Cagliari", "Firenze", "Genova", "Milano", "Napoli", "Palermo", "Roma", "Torino", "Venezia"]
-CO_BACK = 3  # Prende le ultime 3 estrazioni in fondo al file
+CO_BACK = 3
 
 def calcola_distanza(a, b):
     dist = abs(a - b)
@@ -15,7 +14,6 @@ def fuori_90(n):
     return n
 
 def pulisci_numeri(valore):
-    """Trasforma stringhe con punti '10.20...' o liste in veri numeri interi"""
     if isinstance(valore, list):
         try: return [int(n) for n in valore]
         except: return []
@@ -29,23 +27,32 @@ def pulisci_numeri(valore):
 
 def genera_risultati():
     try:
-        # 1. Carica il file estrazioni.json
         with open('estrazioni.json', 'r', encoding='utf-8') as f:
             dati_grezzi = json.load(f)
         
-        # 2. STRATEGIA BLINDATA: Prendiamo le chiavi nell'ordine ESATTO in cui sono scritte nel file
         chiavi_tutte = list(dati_grezzi.keys())
-        
-        # Estraiamo gli ultimi 3 blocchi in assoluto (l'estrazione in fondo sarà considerata la più recente)
         ultime_chiavi = chiavi_tutte[-CO_BACK:]
-        ultime_3 = [dati_grezzi[k] for k in ultime_chiavi]
         
+        # --- LOG DI CONTROLLO ---
+        print("\n=== VERIFICA COSA LEGGE PYTHON ===")
+        print(f"Chiavi totali nel file: {len(chiavi_tutte)}")
+        print(f"Le ultime {CO_BACK} chiavi lette in fondo al file sono: {ultime_chiavi}")
+        
+        for k in ultime_chiavi:
+            print(f"\nContenuto chiave '{k}':")
+            for r in ["Bari", "Cagliari"]:
+                if r in dati_grezzi[k]:
+                    print(f"  - {r}: {dati_grezzi[k][r]} -> Numeri puliti: {puli_numeri(dati_grezzi[k][r])}")
+                else:
+                    print(f"  - {r} NON TROVATA in questa estrazione!")
+        print("==================================\n")
+        # ------------------------
+
+        ultime_3 = [dati_grezzi[k] for k in ultime_chiavi]
         risultati_finali = []
 
-        # 3. Analisi ciclica a ritroso (i=0 è l'estrazione in fondo al file, ovvero stasera)
         for i, est in enumerate(reversed(ultime_3)):
             colpo = i + 1
-            
             for idx1 in range(len(RUOTE)):
                 for idx2 in range(idx1 + 1, len(RUOTE)):
                     r1 = RUOTE[idx1]
@@ -61,27 +68,23 @@ def genera_risultati():
                                 n2 = numeri2[pos]
                                 dist = calcola_distanza(n1, n2)
                                 
-                                # Condizione Geometric Mirror
                                 if dist == 45 or dist == 30:
                                     ambo = [fuori_90(n1 + n2), abs(n1 - n2) if n1 != n2 else 90]
-                                    
-                                    # Inviamo al JSON anche i 5 numeri reali estratti per il sito!
                                     risultati_finali.append({
                                         "ruota": r1,
                                         "partner": r2,
                                         "numeri": ambo,
-                                        "estrazione_r1": numeri1,  # Cinque numeri reali ruota 1
-                                        "estrazione_r2": numeri2,  # Cinque numeri reali ruota 2
+                                        "estrazione_r1": numeri1,
+                                        "estrazione_r2": numeri2,
                                         "score": 180 if dist == 45 else 172,
                                         "colpo": colpo,
                                         "tag": f"Colpo {colpo}"
                                     })
 
-        # 4. Scrittura finale nel file dei risultati
         with open('risultati_v4.json', 'w', encoding='utf-8') as f:
             json.dump(risultati_finali, f, indent=4)
         
-        print(f"✅ Ottimizzazione completata! Analizzati gli ultimi {len(ultime_3)} blocchi inseriti nel database.")
+        print(f"✅ Fatto. Combinazioni trovate: {len(risultati_finali)}")
 
     except Exception as e:
         print(f"❌ Errore nel motore: {e}")
