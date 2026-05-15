@@ -3,7 +3,7 @@ import os
 
 # CONFIGURAZIONE RUOTE (Con l'ordine esatto: Cagliari segue Bari)
 RUOTE = ["Bari", "Cagliari", "Firenze", "Genova", "Milano", "Napoli", "Palermo", "Roma", "Torino", "Venezia"]
-CO_BACK = 3  # Memoria delle ultime 3 estrazioni
+CO_BACK = 15  # Memoria delle ultime 3 estrazioni
 
 def calcola_distanza(a, b):
     dist = abs(a - b)
