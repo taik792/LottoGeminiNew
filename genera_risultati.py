@@ -1,9 +1,9 @@
 import json
 import os
 
-# CONFIGURAZIONE RUOTE (Cagliari segue Bari)
+# CONFIGURAZIONE RUOTE (Nell'ordine corretto: Cagliari segue Bari)
 RUOTE = ["Bari", "Cagliari", "Firenze", "Genova", "Milano", "Napoli", "Palermo", "Roma", "Torino", "Venezia"]
-CO_BACK = 3  # Memoria delle ultime 3 estrazioni
+CO_BACK = 3  # Analizziamo gli ultimi 3 concorsi presenti in fondo alle liste
 
 def calcola_distanza(a, b):
     dist = abs(a - b)
@@ -14,77 +14,68 @@ def fuori_90(n):
     while n < 1: n += 90
     return n
 
-def pulisci_numeri(valore):
-    """Converte i numeri in lista di interi, sia che siano [1,2] o testo '1.2.3'"""
-    if isinstance(valore, list):
-        try:
-            return [int(n) for n in valore]
-        except:
-            return []
-    if isinstance(valore, str):
-        try:
-            valore_pulito = valore.replace(" ", ".").replace("-", ".")
-            parti = [p for p in valore_pulito.split(".") if p.strip().isdigit()]
-            return [int(n) for n in parti]
-        except:
-            return []
-    return []
-
 def genera_risultati():
     try:
-        # 1. Torna a leggere estrazioni.json
+        if not os.path.exists('estrazioni.json'):
+            print("❌ Errore: estrazioni.json non trovato.")
+            return
+
+        # 1. Caricamento del file JSON reale
         with open('estrazioni.json', 'r', encoding='utf-8') as f:
-            dati_grezzi = json.load(f)
-        
-        # 2. Ordina le chiavi numeriche (es. "791", "792", "793")
-        chiavi_valide = [k for k in dati_grezzi.keys() if k.isdigit()]
-        chiavi_ordinate = sorted(chiavi_valide, key=lambda x: int(x))
-        
-        # Prendiamo le ultime 3 estrazioni (le più giovani in fondo)
-        estrazioni_lista = [dati_grezzi[k] for k in chiavi_ordinate]
-        ultime_3 = estrazioni_lista[-CO_BACK:]
+            database = json.load(f)
         
         risultati_finali = []
 
-        # 3. Analisi a ritroso (La più recente in fondo diventa Colpo 1 / NUOVA)
-        for i, est in enumerate(reversed(ultime_3)):
-            colpo = i + 1
+        # 2. Analisi sui 3 colpi a ritroso (1 = ultima estrazione, 2 = penultima, 3 = terzultima)
+        for colpo in range(1, CO_BACK + 1):
+            # L'indice a ritroso nella lista Python: -1 è l'ultimo, -2 il penultimo, -3 il terzultimo
+            indice_estrazione = -colpo 
             
             for idx1 in range(len(RUOTE)):
                 for idx2 in range(idx1 + 1, len(RUOTE)):
                     r1 = RUOTE[idx1]
                     r2 = RUOTE[idx2]
                     
-                    if r1 in est and r2 in est:
-                        numeri1 = pulisci_numeri(est[r1])
-                        numeri2 = pulisci_numeri(est[r2])
+                    # Verifichiamo che entrambe le ruote esistano nel database
+                    if r1 in database and r2 in database:
+                        lista_r1 = database[r1]
+                        lista_r2 = database[r2]
                         
-                        if len(numeri1) == 5 and len(numeri2) == 5:
-                            for pos in range(5):
-                                n1 = numeri1[pos]
-                                n2 = numeri2[pos]
-                                dist = calcola_distanza(n1, n2)
-                                
-                                # Logica Geometric Mirror
-                                if dist == 45 or dist == 30:
-                                    ambo = [fuori_90(n1 + n2), abs(n1 - n2) if n1 != n2 else 90]
-                                    risultati_finali.append({
-                                        "ruota": r1,
-                                        "partner": r2,
-                                        "numeri": ambo,
-                                        "score": 180 if dist == 45 else 172,
-                                        "colpo": colpo,
-                                        "tag": "NUOVA" if colpo == 1 else f"Colpo {colpo}"
-                                    })
+                        # Verifichiamo che ci siano abbastanza estrazioni storiche da analizzare
+                        if len(lista_r1) >= colpo and len(lista_r2) >= colpo:
+                            numeri1 = lista_r1[indice_estrazione]
+                            numeri2 = lista_r2[indice_estrazione]
+                            
+                            # Controllo di sicurezza: devono essere due cinquine valide
+                            if isinstance(numeri1, list) and isinstance(numeri2, list) and len(numeri1) == 5 and len(numeri2) == 5:
+                                for pos in range(5):
+                                    n1 = numeri1[pos]
+                                    n2 = numeri2[pos]
+                                    dist = calcola_distanza(n1, n2)
+                                    
+                                    # Condizione Geometric Mirror: Distanza 45 o 30 isotopa
+                                    if dist == 45 or dist == 30:
+                                        somma_fuori90 = fuori_90(n1 + n2)
+                                        diff_geometrica = abs(n1 - n2) if n1 != n2 else 90
+                                        ambo = [somma_fuori90, diff_geometrica]
+                                        
+                                        risultati_finali.append({
+                                            "ruota": r1,
+                                            "partner": r2,
+                                            "numeri": ambo,
+                                            "score": 180 if dist == 45 else 172,
+                                            "colpo": colpo,
+                                            "tag": "NUOVA" if colpo == 1 else f"Colpo {colpo}"
+                                        })
 
-        # 4. Scrittura nel file v4 richiesto dall'Action di Git
+        # 3. Scrittura del file finale atteso dal sito
         with open('risultati_v4.json', 'w', encoding='utf-8') as f:
             json.dump(risultati_finali, f, indent=4)
         
-        print(f"✅ Analisi completata da estrazioni.json! Trovate {len(risultati_finali)} combinazioni.")
+        print(f"✅ Motore eseguito con successo sulla struttura reale! Trovate {len(risultati_finali)} combinazioni.")
 
     except Exception as e:
-        print(f"❌ Errore nel motore JSON: {e}")
+        print(f"❌ Errore critico nel motore strutturato: {e}")
 
 if __name__ == "__main__":
-    genera_risultati()
+    genera_results = genera_risultati()
