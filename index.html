@@ -3,221 +3,310 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lotto Elite Pro - Geometric Mirror V4</title>
+    <title>Lotto Elite Pro V4 - Dashboard</title>
     <style>
         :root {
-            --bg-color: #121212;
-            --card-bg: #1e1e1e;
-            --text-color: #ffffff;
-            --accent-color: #ff9800;
-            --secondary-text: #b0b0b0;
-            --shadow: 0 4px 6px rgba(0,0,0,0.3);
+            --bg-principal: #121214;
+            --bg-card: #1a1a1e;
+            --accento: #ff7a00;
+            --verde-neon: #39ff14;
+            --testo-main: #ffffff;
+            --testo-mutato: #a0a0aa;
+            --bordo: #2b2b32;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
+            background-color: var(--bg-principal);
+            color: var(--testo-main);
             padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            min-height: 100vh;
         }
 
         header {
             text-align: center;
-            margin-bottom: 30px;
-            width: 100%;
-            max-width: 800px;
+            margin-bottom: 25px;
         }
 
-        h1 {
-            color: var(--accent-color);
-            margin-bottom: 5px;
-            font-size: 2.5rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        header h1 {
+            font-size: 1.8rem;
+            letter-spacing: 2px;
+            color: var(--testo-main);
+            text-transform: uppercase;
         }
 
-        .subtitle {
-            color: var(--secondary-text);
-            margin-top: 0;
-            font-size: 1.1rem;
+        header p {
+            color: var(--accento);
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-top: 5px;
+            letter-spacing: 1px;
         }
 
-        #container {
-            width: 100%;
-            max-width: 800px;
+        /* CONTROLLI TAB (PULSANTI FILTRO) */
+        .tab-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 25px;
+            background: #1e1e24;
+            padding: 6px;
+            border-radius: 8px;
+            max-width: 450px;
+            margin-left: auto;
+            margin-right: auto;
+            border: 1px solid var(--bordo);
+        }
+
+        .tab-btn {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--testo-mutato);
+            padding: 10px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+        }
+
+        .tab-btn.active {
+            background: var(--accento);
+            color: #000000;
+            box-shadow: 0 2px 8px rgba(255, 122, 0, 0.4);
+        }
+
+        /* GRIGLIA DASHBOARD COMPATTA */
+        .grid-risultati {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 15px;
+            max-width: 1300px;
+            margin: 0 auto;
         }
 
-        .card {
-            background-color: var(--card-bg);
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: var(--shadow);
-            border-left: 5px solid var(--accent-color);
+        .card-pronostico {
+            background-color: var(--bg-card);
+            border: 1px solid var(--bordo);
+            border-radius: 10px;
+            padding: 15px;
+            position: relative;
+            transition: transform 0.2s ease, border-color 0.2s ease;
         }
 
+        .card-pronostico:hover {
+            border-color: var(--accento);
+            transform: translateY(-2px);
+        }
+
+        /* INTESTAZIONE CARD */
         .card-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid #333;
-            padding-bottom: 10px;
-            margin-bottom: 15px;
+            border-bottom: 1px solid #26262b;
+            padding-bottom: 8px;
+            margin-bottom: 12px;
         }
 
-        .ruote-titolo {
-            font-size: 1.3rem;
+        .coppia-ruote {
+            font-size: 1rem;
             font-weight: bold;
-            color: #fff;
+            color: var(--testo-main);
         }
 
-        .badge {
-            background-color: #333;
-            color: var(--accent-color);
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.85rem;
+        .tag-stato {
+            font-size: 0.7rem;
+            background: rgba(255, 122, 0, 0.15);
+            color: var(--accento);
+            padding: 3px 8px;
+            border-radius: 4px;
             font-weight: bold;
-            border: 1px solid var(--accent-color);
+            border: 1px solid rgba(255, 122, 0, 0.3);
         }
 
-        .numeri-container {
+        /* AMBO CENTRALE */
+        .ambo-container {
             display: flex;
             justify-content: center;
             gap: 15px;
             margin: 15px 0;
         }
 
-        .cerchio-numero {
-            background: radial-gradient(circle at 30% 30%, #444, #1a1a1a);
-            color: var(--accent-color);
-            width: 55px;
-            height: 55px;
+        .sfera-numero {
+            width: 44px;
+            height: 44px;
+            background: radial-gradient(circle at 30% 30%, #2e2e36, #15151a);
+            border: 2px solid var(--verde-neon);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.6rem;
+            font-size: 1.1rem;
             font-weight: bold;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.4);
-            border: 1px solid var(--accent-color);
+            color: var(--verde-neon);
+            box-shadow: 0 0 10px rgba(57, 255, 20, 0.2);
         }
 
-        /* STILE PER LA VISUALIZZAZIONE DELLE CINQUE ESTRAZIONI REALI */
-        .storico-estrazioni {
-            background-color: #151515;
+        /* ESTRAZIONI REALI ORIZZONTALI COMPATTE */
+        .dettaglio-estrazioni {
+            background: #16161a;
+            padding: 8px;
             border-radius: 6px;
-            padding: 10px;
-            margin-top: 15px;
-            font-size: 0.85rem;
-            border: 1px solid #252525;
+            font-size: 0.75rem;
         }
 
         .riga-estrazione {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 5px;
-            color: var(--secondary-text);
+            align-items: center;
+            margin: 4px 0;
         }
 
-        .riga-estrazione:last-child {
-            margin-bottom: 0;
+        .nome-r {
+            color: var(--testo-mutato);
+            font-weight: 500;
+            width: 55px;
         }
 
-        .valori-estrazione {
-            color: #fff;
-            font-weight: bold;
+        .numeri-r {
+            color: #d4d4d8;
             letter-spacing: 2px;
+            font-family: monospace;
+            font-size: 0.8rem;
         }
 
+        /* CARD FOOTER INFO */
         .card-footer {
             display: flex;
             justify-content: space-between;
-            color: var(--secondary-text);
-            font-size: 0.85rem;
-            margin-top: 15px;
-            border-top: 1px solid #2a2a2a;
-            padding-top: 8px;
+            font-size: 0.7rem;
+            color: var(--testo-mutato);
+            margin-top: 10px;
+            padding-top: 6px;
+            border-top: 1px solid #26262b;
         }
 
-        .loading, .no-data {
+        .messaggio-vuoto {
             grid-column: 1 / -1;
             text-align: center;
-            padding: 30px;
-            color: var(--secondary-text);
-            font-size: 1.2rem;
+            padding: 40px;
+            background: var(--bg-card);
+            border: 1px dashed var(--bordo);
+            border-radius: 10px;
+            color: var(--testo-mutato);
+            font-size: 0.9rem;
         }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>LOTTO ELITE PRO V4</h1>
-        <p class="subtitle">Motore di Ricerca Spaziale - Logica Geometric Mirror</p>
+        <h1>💎 Lotto Elite Pro V4 💎</h1>
+        <p>Geometric Mirror • Analisi Simmetrie Isotope</p>
     </header>
 
-    <main id="container">
-        <div class="loading">Caricamento in corso...</div>
-    </main>
+    <div class="tab-container">
+        <button class="tab-btn active" onclick="filtraColpo(1, this)">Nuove</button>
+        <button class="tab-btn" onclick="filtraColpo(2, this)">Colpo 2</button>
+        <button class="tab-btn" onclick="filtraColpo(3, this)">Colpo 3</button>
+    </div>
+
+    <div class="grid-risultati" id="pannello-pronostici">
+        </div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const container = document.getElementById("container");
+        let tuttiIPronto = [];
+        let colpoAttivo = 1;
 
-            fetch('risultati_v4.json?t=' + new Date().getTime()) 
-                .then(response => response.json())
-                .then(data => {
-                    container.innerHTML = ""; 
+        async function caricaDati() {
+            try {
+                // Aggiungiamo un timestamp per evitare che il telefono usi la vecchia cache memorizzata
+                const risposta = await fetch('risultati_v4.json?t=' + new Date().getTime());
+                tuttiIPronto = await risposta.json();
+                renderizzaContenuto();
+            } catch (e) {
+                console.error("Errore caricamento dati:", e);
+                document.getElementById('pannello-pronostici').innerHTML = `
+                    <div class="messaggio-vuoto">❌ Impossibile caricare i dati dei pronostici.</div>
+                `;
+            }
+        }
 
-                    if (!data || data.length === 0) {
-                        container.innerHTML = `<div class="no-data">Nessun pronostico generato. Inserisci l'ID numerico corretto del concorso nel JSON.</div>`;
-                        return;
-                    }
+        function filtraColpo(numeroColpo, bottone) {
+            colpoAttivo = numeroColpo;
+            
+            // Gestione classi attive sui bottoni
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            bottone.classList.add('active');
+            
+            renderizzaContenuto();
+        }
 
-                    data.forEach(item => {
-                        const card = document.createElement("div");
-                        card.className = "card";
+        function renderizzaContenuto() {
+            const contenitore = document.getElementById('pannello-pronostici');
+            contenitore.innerHTML = '';
 
-                        // Estrae le stringhe dei 5 numeri reali separati dal punto
-                        const stringa_r1 = item.estrazione_r1 ? item.estrazione_r1.join('.') : '-';
-                        const stringa_r2 = item.estrazione_r2 ? item.estrazione_r2.join('.') : '-';
+            // Filtra l'array in base al colpo selezionato nel Tab
+            const filtrati = tuttiIPronto.filter(p => p.colpo === colpoAttivo);
 
-                        card.innerHTML = `
-                            <div class="card-header">
-                                <span class="ruote-titolo">${item.ruota} - ${item.partner}</span>
-                                <span class="badge">${item.tag}</span>
-                            </div>
-                            <div class="numeri-container">
-                                <div class="cerchio-numero">${item.numeri[0]}</div>
-                                <div class="cerchio-numero">${item.numeri[1]}</div>
-                            </div>
-                            <div class="storico-estrazioni">
-                                <div class="riga-estrazione">
-                                    <span>${item.ruota}:</span>
-                                    <span class="valori-estrazione">${stringa_r1}</span>
-                                </div>
-                                <div class="riga-estrazione">
-                                    <span>${item.partner}:</span>
-                                    <span class="valori-estrazione">${stringa_r2}</span>
-                                </div>
-                            </div>
-                            <div class="card-footer">
-                                <span>Ciclo: Dist. ${item.score === 180 ? '45' : '30'}</span>
-                                <span>Accuratezza: ${item.score}%</span>
-                            </div>
-                        `;
-                        container.appendChild(card);
-                    });
-                })
-                .catch(error => {
-                    container.innerHTML = `<div class="no-data">Errore di caricamento dati.</div>`;
-                });
-        });
+            if (filtrati.length === 0) {
+                contenitore.innerHTML = `
+                    <div class="messaggio-vuoto">
+                        Nessuna previsione attiva rilevata per questa sezione.
+                    </div>
+                `;
+                return;
+            }
+
+            // Generazione delle card compatte tridimensionali
+            filtrati.forEach(p => {
+                const stringaN1 = p.estrazione_r1 ? p.estrazione_r1.join(' . ') : '- . - . - . - . -';
+                const stringaN2 = p.estrazione_r2 ? p.estrazione_r2.join(' . ') : '- . - . - . - . -';
+                
+                const card = document.createElement('div');
+                card.className = 'card-pronostico';
+                card.innerHTML = `
+                    <div class="card-header">
+                        <div class="coppia-ruote">${p.ruota} - ${p.partner}</div>
+                        <div class="tag-stato">${p.tag}</div>
+                    </div>
+                    
+                    <div class="ambo-container">
+                        <div class="sfera-numero">${p.numeri[0]}</div>
+                        <div class="sfera-numero">${p.numeri[1]}</div>
+                    </div>
+                    
+                    <div class="dettaglio-estrazioni">
+                        <div class="riga-estrazione">
+                            <span class="nome-r">${p.ruota}</span>
+                            <span class="numeri-r">${stringaN1}</span>
+                        </div>
+                        <div class="riga-estrazione">
+                            <span class="nome-r">${p.partner}</span>
+                            <span class="numeri-r">${stringaN2}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="card-footer">
+                        <span>Accuratezza: ${p.score}%</span>
+                        <span>Ciclo: Attivo</span>
+                    </div>
+                `;
+                contenitore.appendChild(card);
+            });
+        }
+
+        // Avvio automatico al caricamento della pagina
+        window.onload = caricaDati;
     </script>
 </body>
 </html>
