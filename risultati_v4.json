@@ -1,6 +1,131 @@
 [
     {
         "ruota": "Bari",
+        "partner": "Torino",
+        "numeri": [
+            74,
+            30
+        ],
+        "estrazione_r1": [
+            84,
+            57,
+            9,
+            22,
+            60
+        ],
+        "estrazione_r2": [
+            15,
+            62,
+            82,
+            52,
+            67
+        ],
+        "score": 172,
+        "colpo": 1,
+        "tag": "NUOVA"
+    },
+    {
+        "ruota": "Cagliari",
+        "partner": "Milano",
+        "numeri": [
+            44,
+            30
+        ],
+        "estrazione_r1": [
+            52,
+            58,
+            80,
+            57,
+            76
+        ],
+        "estrazione_r2": [
+            82,
+            68,
+            29,
+            16,
+            10
+        ],
+        "score": 172,
+        "colpo": 1,
+        "tag": "NUOVA"
+    },
+    {
+        "ruota": "Cagliari",
+        "partner": "Roma",
+        "numeri": [
+            54,
+            30
+        ],
+        "estrazione_r1": [
+            52,
+            58,
+            80,
+            57,
+            76
+        ],
+        "estrazione_r2": [
+            30,
+            15,
+            2,
+            87,
+            52
+        ],
+        "score": 172,
+        "colpo": 1,
+        "tag": "NUOVA"
+    },
+    {
+        "ruota": "Genova",
+        "partner": "Milano",
+        "numeri": [
+            65,
+            45
+        ],
+        "estrazione_r1": [
+            8,
+            30,
+            61,
+            75,
+            55
+        ],
+        "estrazione_r2": [
+            82,
+            68,
+            29,
+            16,
+            10
+        ],
+        "score": 180,
+        "colpo": 1,
+        "tag": "NUOVA"
+    },
+    {
+        "ruota": "Palermo",
+        "partner": "Torino",
+        "numeri": [
+            14,
+            30
+        ],
+        "estrazione_r1": [
+            46,
+            29,
+            73,
+            74,
+            37
+        ],
+        "estrazione_r2": [
+            15,
+            62,
+            82,
+            52,
+            67
+        ],
+        "score": 172,
+        "colpo": 1,
+        "tag": "NUOVA"
+    },
+    {
+        "ruota": "Bari",
         "partner": "Napoli",
         "numeri": [
             26,
@@ -21,8 +146,8 @@
             58
         ],
         "score": 172,
-        "colpo": 1,
-        "tag": "NUOVA"
+        "colpo": 2,
+        "tag": "Colpo 2"
     },
     {
         "ruota": "Bari",
@@ -46,8 +171,8 @@
             48
         ],
         "score": 180,
-        "colpo": 1,
-        "tag": "NUOVA"
+        "colpo": 2,
+        "tag": "Colpo 2"
     },
     {
         "ruota": "Cagliari",
@@ -71,8 +196,8 @@
             14
         ],
         "score": 172,
-        "colpo": 1,
-        "tag": "NUOVA"
+        "colpo": 2,
+        "tag": "Colpo 2"
     },
     {
         "ruota": "Firenze",
@@ -96,8 +221,8 @@
             57
         ],
         "score": 172,
-        "colpo": 1,
-        "tag": "NUOVA"
+        "colpo": 2,
+        "tag": "Colpo 2"
     },
     {
         "ruota": "Firenze",
@@ -121,8 +246,8 @@
             58
         ],
         "score": 180,
-        "colpo": 1,
-        "tag": "NUOVA"
+        "colpo": 2,
+        "tag": "Colpo 2"
     },
     {
         "ruota": "Firenze",
@@ -146,8 +271,8 @@
             11
         ],
         "score": 180,
-        "colpo": 1,
-        "tag": "NUOVA"
+        "colpo": 2,
+        "tag": "Colpo 2"
     },
     {
         "ruota": "Milano",
@@ -171,8 +296,8 @@
             48
         ],
         "score": 172,
-        "colpo": 1,
-        "tag": "NUOVA"
+        "colpo": 2,
+        "tag": "Colpo 2"
     },
     {
         "ruota": "Napoli",
@@ -196,8 +321,8 @@
             11
         ],
         "score": 172,
-        "colpo": 1,
-        "tag": "NUOVA"
+        "colpo": 2,
+        "tag": "Colpo 2"
     },
     {
         "ruota": "Bari",
@@ -221,8 +346,8 @@
             11
         ],
         "score": 180,
-        "colpo": 2,
-        "tag": "Colpo 2"
+        "colpo": 3,
+        "tag": "Colpo 3"
     },
     {
         "ruota": "Bari",
@@ -246,8 +371,8 @@
             37
         ],
         "score": 180,
-        "colpo": 2,
-        "tag": "Colpo 2"
+        "colpo": 3,
+        "tag": "Colpo 3"
     },
     {
         "ruota": "Cagliari",
@@ -271,8 +396,8 @@
             19
         ],
         "score": 172,
-        "colpo": 2,
-        "tag": "Colpo 2"
+        "colpo": 3,
+        "tag": "Colpo 3"
     },
     {
         "ruota": "Firenze",
@@ -296,8 +421,8 @@
             25
         ],
         "score": 180,
-        "colpo": 2,
-        "tag": "Colpo 2"
+        "colpo": 3,
+        "tag": "Colpo 3"
     },
     {
         "ruota": "Firenze",
@@ -321,8 +446,8 @@
             37
         ],
         "score": 172,
-        "colpo": 2,
-        "tag": "Colpo 2"
+        "colpo": 3,
+        "tag": "Colpo 3"
     },
     {
         "ruota": "Napoli",
@@ -346,8 +471,8 @@
             19
         ],
         "score": 172,
-        "colpo": 2,
-        "tag": "Colpo 2"
+        "colpo": 3,
+        "tag": "Colpo 3"
     },
     {
         "ruota": "Palermo",
@@ -371,8 +496,8 @@
             20
         ],
         "score": 172,
-        "colpo": 2,
-        "tag": "Colpo 2"
+        "colpo": 3,
+        "tag": "Colpo 3"
     },
     {
         "ruota": "Torino",
@@ -396,181 +521,6 @@
             20
         ],
         "score": 172,
-        "colpo": 2,
-        "tag": "Colpo 2"
-    },
-    {
-        "ruota": "Bari",
-        "partner": "Cagliari",
-        "numeri": [
-            70,
-            30
-        ],
-        "estrazione_r1": [
-            63,
-            50,
-            72,
-            81,
-            69
-        ],
-        "estrazione_r2": [
-            80,
-            20,
-            78,
-            61,
-            36
-        ],
-        "score": 172,
-        "colpo": 3,
-        "tag": "Colpo 3"
-    },
-    {
-        "ruota": "Firenze",
-        "partner": "Palermo",
-        "numeri": [
-            70,
-            60
-        ],
-        "estrazione_r1": [
-            65,
-            13,
-            82,
-            87,
-            26
-        ],
-        "estrazione_r2": [
-            5,
-            17,
-            45,
-            72,
-            36
-        ],
-        "score": 172,
-        "colpo": 3,
-        "tag": "Colpo 3"
-    },
-    {
-        "ruota": "Firenze",
-        "partner": "Torino",
-        "numeri": [
-            39,
-            45
-        ],
-        "estrazione_r1": [
-            65,
-            13,
-            82,
-            87,
-            26
-        ],
-        "estrazione_r2": [
-            61,
-            79,
-            21,
-            42,
-            36
-        ],
-        "score": 180,
-        "colpo": 3,
-        "tag": "Colpo 3"
-    },
-    {
-        "ruota": "Genova",
-        "partner": "Venezia",
-        "numeri": [
-            1,
-            45
-        ],
-        "estrazione_r1": [
-            23,
-            48,
-            30,
-            68,
-            75
-        ],
-        "estrazione_r2": [
-            41,
-            33,
-            36,
-            23,
-            70
-        ],
-        "score": 180,
-        "colpo": 3,
-        "tag": "Colpo 3"
-    },
-    {
-        "ruota": "Palermo",
-        "partner": "Torino",
-        "numeri": [
-            24,
-            30
-        ],
-        "estrazione_r1": [
-            5,
-            17,
-            45,
-            72,
-            36
-        ],
-        "estrazione_r2": [
-            61,
-            79,
-            21,
-            42,
-            36
-        ],
-        "score": 172,
-        "colpo": 3,
-        "tag": "Colpo 3"
-    },
-    {
-        "ruota": "Roma",
-        "partner": "Torino",
-        "numeri": [
-            24,
-            30
-        ],
-        "estrazione_r1": [
-            86,
-            42,
-            7,
-            72,
-            61
-        ],
-        "estrazione_r2": [
-            61,
-            79,
-            21,
-            42,
-            36
-        ],
-        "score": 172,
-        "colpo": 3,
-        "tag": "Colpo 3"
-    },
-    {
-        "ruota": "Roma",
-        "partner": "Venezia",
-        "numeri": [
-            37,
-            45
-        ],
-        "estrazione_r1": [
-            86,
-            42,
-            7,
-            72,
-            61
-        ],
-        "estrazione_r2": [
-            41,
-            33,
-            36,
-            23,
-            70
-        ],
-        "score": 180,
         "colpo": 3,
         "tag": "Colpo 3"
     }
