@@ -9,7 +9,7 @@ def calcola_distanza(n1, n2):
     return dist
 
 def genera_risultati():
-    # 1. Caricamento dell'archivio estrazioni
+    # 1. Caricamento dell'archivio estrazioni strutturato per Ruote
     if not os.path.exists('estrazioni.json'):
         print("Errore: file estrazioni.json non trovato.")
         return
@@ -17,19 +17,18 @@ def genera_risultati():
     with open('estrazioni.json', 'r', encoding='utf-8') as f:
         archivio = json.load(f)
 
-    # Gestione flessibile se l'archivio è una lista o un dizionario
-    if isinstance(archivio, list):
-        # Se è una lista di estrazioni, usiamo gli indici come chiavi ordinate
-        chiavi_ordinate = list(range(len(archivio)))
-    else:
-        # Se è il classico dizionario con le date
-        chiavi_ordinate = sorted(list(archivio.keys()))
-
-    if len(chiavi_ordinate) < 1:
-        print("Errore: l'archivio non contiene abbastanza estrazioni.")
+    # Elenco delle ruote canoniche da analizzare
+    ruote_elenco = ["Bari", "Cagliari", "Firenze", "Genova", "Milano", "Napoli", "Palermo", "Roma", "Torino", "Venezia"]
+    
+    # Verifica che ci siano estrazioni a sufficienza controllando una ruota pilota (es. Bari)
+    if "Bari" not in archivio or not isinstance(archivio["Bari"], list) or len(archivio["Bari"]) < 3:
+        print("Errore: Struttura dati non conforme o estrazioni insufficienti.")
         return
 
-    # Struttura dati V5 finale richiesta dalla dashboard
+    num_estrazioni = len(archivio["Bari"])
+    print(f"Rilevate {num_estrazioni} estrazioni storiche memorizzate per ruota.")
+
+    # Struttura dati V5 finale richiesta dalla dashboard web
     risultati = {
         "nuove": [],
         "colpo2": [],
@@ -37,73 +36,64 @@ def genera_risultati():
         "mappa_colore": {}
     }
 
-    # Inizializziamo il contatore delle tensioni per tutte le ruote
-    ruote_elenco = ["Bari", "Cagliari", "Firenze", "Genova", "Milano", "Napoli", "Palermo", "Roma", "Torino", "Venezia"]
+    # Inizializziamo il contatore delle tensioni per la mappa del calore
     conteggio_ruote = {r: 0 for r in ruote_elenco}
 
-    # Definiamo i blocchi di estrazioni per i rispettivi colpi
+    # Mappatura dei colpi basata sugli indici negativi (dal più recente a ritroso)
     mappa_colpi = {
-        "nuove": chiavi_ordinate[-1] if len(chiavi_ordinate) >= 1 else None,
-        "colpo2": chiavi_ordinate[-2] if len(chiavi_ordinate) >= 2 else None,
-        "colpo3": chiavi_ordinate[-3] if len(chiavi_ordinate) >= 3 else None
+        "nuove": -1,   # L'ultima estrazione inserita (la più recente)
+        "colpo2": -2,  # La penultima
+        "colpo3": -3   # La terzultima
     }
 
-    # 2. Elaborazione per ciascun colpo
-    for etichetta_colpo, chiave_estrazione in mappa_colpi.items():
-        if chiave_estrazione is None:
-            continue
-
-        estrazione_corrente = archivio[chiave_estrazione]
+    # 2. Elaborazione dei tre colpi ciclometrici
+    for etichetta_colpo, indice_storico in mappa_colpi.items():
         
-        # 🛠️ CORREZIONE ERROR: Gestiamo se l'estrazione interna è una lista di dizionari o un dizionario diretto
-        if isinstance(estrazione_corrente, list):
-            # Se è una lista (es. [{"ruota": "Bari", "numeri": [...]}]), la convertiamo al volo in dizionario
-            temp_dict = {}
-            for item in estrazione_corrente:
-                if isinstance(item, dict) and "ruota" in item:
-                    temp_dict[item["ruota"]] = item.get("numeri", [])
-                elif isinstance(item, dict):
-                    # Se ha le ruote come chiavi dentro dizionari singoli scritti in lista
-                    temp_dict.update(item)
-            estrazione_corrente = temp_dict
+        # Confronto tra tutte le coppie di ruote per l'estrazione corrente identificata dall'indice
+        for i in range(len(ruote_elenco)):
+            for j in range(i + 1, len(ruote_elenco)):
+                ruota1 = ruote_elenco[i]
+                ruota2 = ruote_elenco[j]
 
-        ruote = list(estrazione_corrente.keys())
-
-        # Confronto tra tutte le coppie di ruote (Isotopia e Simmetria)
-        for i in range(len(ruote)):
-            for j in range(i + 1, len(ruote)):
-                ruota1 = ruote[i]
-                ruota2 = ruote[j]
-
-                if ruota1 == "Nazionale" or ruota2 == "Nazionale":
+                # Saltiamo se la ruota non è presente nel file json corrente
+                if ruota1 not in archivio or ruota2 not in archivio:
                     continue
 
-                num_r1 = estrazione_corrente[ruota1]
-                num_r2 = estrazione_corrente[ruota2]
+                # Estrazione dei 5 numeri per ciascuna ruota basandosi sull'indice cronologico
+                try:
+                    num_r1 = archivio[ruota1][indice_storico]
+                    num_r2 = archivio[ruota2][indice_storico]
+                except IndexError:
+                    continue # Salto di sicurezza in caso di indici fuori portata
 
-                # Salto di sicurezza se mancano i dati della ruota o non sono liste valide
+                # Controllo formale sulla validità della cinquina
                 if not isinstance(num_r1, list) or not isinstance(num_r2, list) or len(num_r1) < 5 or len(num_r2) < 5:
                     continue
 
-                # Controllo posizione per posizione (Isotopia)
+                # Controllo posizione per posizione (Isotopia geometrica)
                 for pos in range(5):
-                    n1 = num_r1[pos]
-                    n2 = num_r2[pos]
+                    try:
+                        n1 = int(num_r1[pos])
+                        n2 = int(num_r2[pos])
+                    except (ValueError, IndexError):
+                        continue
 
                     dist = calcola_distanza(n1, n2)
 
+                    # Intercettazione delle distanze armoniche della simmetria specchio
                     if dist in [45, 30, 15]:
                         score = 172
                         if dist == 45:
                             score = 180
 
+                        # Calcolo matematico dei pronostici speculari
                         pronostico_1 = (n1 + 30) % 90
                         pronostico_2 = (n2 + 30) % 90
                         if pronostico_1 == 0: pronostico_1 = 90
                         if pronostico_2 == 0: pronostico_2 = 90
 
                         # =======================================================
-                        # 🛠️ LOGICA FILTRO SALVA-PORTAFOGLIO V5 (CORREZIONE ANOMALIE)
+                        # 🛠️ FILTRO SALVA-PORTAFOGLIO V5 (CORREZIONE ANOMALIA DOPPIONI)
                         # =======================================================
                         if pronostico_1 == pronostico_2:
                             if pronostico_1 <= 45:
@@ -112,9 +102,10 @@ def genera_risultati():
                                 pronostico_2 = pronostico_1 - 45
                         # =======================================================
 
+                        # Alimenta la tensione della mappa del calore solo sulle nuove condizioni attive
                         if etichetta_colpo == "nuove":
-                            if ruota1 in conteggio_ruote: conteggio_ruote[ruota1] += 1
-                            if ruota2 in conteggio_ruote: conteggio_ruote[ruota2] += 1
+                            conteggio_ruote[ruota1] += 1
+                            conteggio_ruote[ruota2] += 1
 
                         card = {
                             "ruota1": ruota1,
@@ -128,13 +119,14 @@ def genera_risultati():
                         
                         risultati[etichetta_colpo].append(card)
 
+        # Ordinamento decrescente per Score qualitativo ed estrazione dei primi 9 pronostici top
         risultati[etichetta_colpo] = sorted(
             risultati[etichetta_colpo], 
             key=lambda x: x['score'], 
             reverse=True
         )[:9]
 
-    # 3. Generazione dei dati per la Mappa del Calore
+    # 3. Calcolo e assegnazione dei livelli di colore per la Heatmap
     for ruota, colpi in conteggio_ruote.items():
         if colpi == 0:
             risultati["mappa_colore"][ruota] = "calore-basso"
@@ -143,11 +135,11 @@ def genera_risultati():
         else:
             risultati["mappa_colore"][ruota] = "calore-alto"
 
-    # 4. Scrittura del file dei risultati per la dashboard web
+    # 4. Scrittura del file JSON finale atteso dalla dashboard
     with open('risultati_v4.json', 'w', encoding='utf-8') as f:
         json.dump(risultati, f, ensure_ascii=False, indent=4)
     
-    print("Sviluppo V5 completato con patch di stabilità per strutture a lista.")
+    print("Sviluppo Lotto Elite Pro V5 completato con successo. Dati scritti correttamente.")
 
 if __name__ == "__main__":
     genera_risultati()
