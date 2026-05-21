@@ -6,6 +6,7 @@
             "num1": 75,
             "num2": 30,
             "score": 180,
+            "filtro_budget": false,
             "dati_r1": "5 . 64 . 45 . 80 . 74",
             "dati_r2": "29 . 31 . 90 . 15 . 17"
         },
@@ -15,6 +16,7 @@
             "num1": 30,
             "num2": 75,
             "score": 180,
+            "filtro_budget": false,
             "dati_r1": "29 . 31 . 90 . 15 . 17",
             "dati_r2": "73 . 61 . 45 . 85 . 48"
         },
@@ -24,6 +26,7 @@
             "num1": 45,
             "num2": 90,
             "score": 180,
+            "filtro_budget": false,
             "dati_r1": "29 . 31 . 90 . 15 . 17",
             "dati_r2": "23 . 68 . 57 . 60 . 26"
         },
@@ -33,6 +36,7 @@
             "num1": 89,
             "num2": 14,
             "score": 172,
+            "filtro_budget": false,
             "dati_r1": "88 . 65 . 11 . 87 . 59",
             "dati_r2": "5 . 64 . 45 . 80 . 74"
         },
@@ -42,6 +46,7 @@
             "num1": 28,
             "num2": 13,
             "score": 172,
+            "filtro_budget": false,
             "dati_r1": "88 . 65 . 11 . 87 . 59",
             "dati_r2": "73 . 61 . 45 . 85 . 48"
         },
@@ -51,6 +56,7 @@
             "num1": 4,
             "num2": 34,
             "score": 172,
+            "filtro_budget": false,
             "dati_r1": "5 . 64 . 45 . 80 . 74",
             "dati_r2": "44 . 4 . 76 . 5 . 57"
         },
@@ -60,6 +66,7 @@
             "num1": 20,
             "num2": 35,
             "score": 172,
+            "filtro_budget": false,
             "dati_r1": "5 . 64 . 45 . 80 . 74",
             "dati_r2": "44 . 4 . 76 . 5 . 57"
         },
@@ -69,6 +76,7 @@
             "num1": 66,
             "num2": 81,
             "score": 172,
+            "filtro_budget": false,
             "dati_r1": "37 . 56 . 25 . 19 . 36",
             "dati_r2": "40 . 2 . 66 . 87 . 51"
         },
@@ -78,6 +86,7 @@
             "num1": 86,
             "num2": 26,
             "score": 172,
+            "filtro_budget": false,
             "dati_r1": "37 . 56 . 25 . 19 . 36",
             "dati_r2": "79 . 86 . 19 . 29 . 40"
         }
@@ -89,6 +98,7 @@
             "num1": 78,
             "num2": 33,
             "score": 180,
+            "filtro_budget": false,
             "dati_r1": "66 . 23 . 78 . 64 . 48",
             "dati_r2": "10 . 26 . 15 . 5 . 3"
         },
@@ -98,6 +108,7 @@
             "num1": 53,
             "num2": 8,
             "score": 180,
+            "filtro_budget": false,
             "dati_r1": "66 . 23 . 78 . 64 . 48",
             "dati_r2": "38 . 68 . 69 . 22 . 7"
         },
@@ -107,6 +118,7 @@
             "num1": 5,
             "num2": 20,
             "score": 172,
+            "filtro_budget": false,
             "dati_r1": "31 . 86 . 56 . 69 . 65",
             "dati_r2": "37 . 35 . 74 . 85 . 80"
         },
@@ -116,6 +128,7 @@
             "num1": 26,
             "num2": 56,
             "score": 172,
+            "filtro_budget": false,
             "dati_r1": "31 . 86 . 56 . 69 . 65",
             "dati_r2": "10 . 26 . 15 . 5 . 3"
         },
@@ -125,6 +138,7 @@
             "num1": 78,
             "num2": 48,
             "score": 172,
+            "filtro_budget": false,
             "dati_r1": "66 . 23 . 78 . 64 . 48",
             "dati_r2": "75 . 47 . 20 . 71 . 18"
         },
@@ -134,6 +148,7 @@
             "num1": 42,
             "num2": 27,
             "score": 172,
+            "filtro_budget": false,
             "dati_r1": "43 . 30 . 56 . 2 . 12",
             "dati_r2": "75 . 66 . 53 . 89 . 87"
         },
@@ -143,6 +158,7 @@
             "num1": 73,
             "num2": 88,
             "score": 172,
+            "filtro_budget": false,
             "dati_r1": "43 . 30 . 56 . 2 . 12",
             "dati_r2": "58 . 42 . 9 . 38 . 8"
         },
@@ -152,6 +168,7 @@
             "num1": 48,
             "num2": 33,
             "score": 172,
+            "filtro_budget": false,
             "dati_r1": "75 . 47 . 20 . 71 . 18",
             "dati_r2": "10 . 26 . 15 . 5 . 3"
         },
@@ -161,6 +178,7 @@
             "num1": 39,
             "num2": 9,
             "score": 172,
+            "filtro_budget": false,
             "dati_r1": "58 . 42 . 9 . 38 . 8",
             "dati_r2": "38 . 68 . 69 . 22 . 7"
         }
@@ -172,6 +190,7 @@
             "num1": 85,
             "num2": 40,
             "score": 180,
+            "filtro_budget": false,
             "dati_r1": "8 . 30 . 61 . 75 . 55",
             "dati_r2": "82 . 68 . 29 . 16 . 10"
         },
@@ -181,6 +200,7 @@
             "num1": 52,
             "num2": 82,
             "score": 172,
+            "filtro_budget": false,
             "dati_r1": "84 . 57 . 9 . 22 . 60",
             "dati_r2": "15 . 62 . 82 . 52 . 67"
         },
@@ -190,6 +210,7 @@
             "num1": 82,
             "num2": 22,
             "score": 172,
+            "filtro_budget": false,
             "dati_r1": "52 . 58 . 80 . 57 . 76",
             "dati_r2": "82 . 68 . 29 . 16 . 10"
         },
@@ -199,6 +220,7 @@
             "num1": 87,
             "num2": 27,
             "score": 172,
+            "filtro_budget": false,
             "dati_r1": "52 . 58 . 80 . 57 . 76",
             "dati_r2": "30 . 15 . 2 . 87 . 52"
         },
@@ -208,6 +230,7 @@
             "num1": 45,
             "num2": 60,
             "score": 172,
+            "filtro_budget": false,
             "dati_r1": "50 . 15 . 63 . 58 . 60",
             "dati_r2": "8 . 30 . 61 . 75 . 55"
         },
@@ -217,6 +240,7 @@
             "num1": 60,
             "num2": 45,
             "score": 172,
+            "filtro_budget": false,
             "dati_r1": "8 . 30 . 61 . 75 . 55",
             "dati_r2": "30 . 15 . 2 . 87 . 52"
         },
@@ -226,6 +250,7 @@
             "num1": 67,
             "num2": 82,
             "score": 172,
+            "filtro_budget": false,
             "dati_r1": "46 . 29 . 73 . 74 . 37",
             "dati_r2": "30 . 15 . 2 . 87 . 52"
         },
@@ -235,6 +260,7 @@
             "num1": 67,
             "num2": 7,
             "score": 172,
+            "filtro_budget": false,
             "dati_r1": "46 . 29 . 73 . 74 . 37",
             "dati_r2": "15 . 62 . 82 . 52 . 67"
         },
@@ -244,6 +270,7 @@
             "num1": 60,
             "num2": 45,
             "score": 172,
+            "filtro_budget": false,
             "dati_r1": "30 . 15 . 2 . 87 . 52",
             "dati_r2": "15 . 62 . 82 . 52 . 67"
         }
