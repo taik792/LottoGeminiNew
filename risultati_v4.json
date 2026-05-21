@@ -2,5 +2,16 @@
     "nuove": [],
     "colpo2": [],
     "colpo3": [],
-    "mappa_calore": {}
+    "mappa_colore": {
+        "Bari": "calore-basso",
+        "Cagliari": "calore-basso",
+        "Firenze": "calore-basso",
+        "Genova": "calore-basso",
+        "Milano": "calore-basso",
+        "Napoli": "calore-basso",
+        "Palermo": "calore-basso",
+        "Roma": "calore-basso",
+        "Torino": "calore-basso",
+        "Venezia": "calore-basso"
+    }
 }
