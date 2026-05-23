@@ -8,6 +8,30 @@ def calcola_distanza(n1, n2):
         dist = 90 - dist
     return dist
 
+def estrai_ultimi_numeri(archivio, ruota1, ruota2, limite=5):
+    """Estrae una lista di tutti i numeri usciti nelle ultime X estrazioni sulle due ruote"""
+    numeri_recenti = set()
+    for ruota in [ruota1, ruota2]:
+        if ruota in archivio:
+            # Prende le ultime 'limite' estrazioni disponibili nell'archivio
+            ultime_estrazioni = archivio[ruota][-limite:]
+            for estrazione in ultime_estrazioni:
+                if isinstance(estrazione, list):
+                    for num in estrazione:
+                        numeri_recenti.add(int(num))
+    return numeri_recenti
+
+def trova_compagno_sincrono(base_num, numeri_esclusi):
+    """Trova un compagno d'ambo che non sia uscito di recente, mantenendo la logica di cadenza"""
+    candidato = base_num
+    # Se il candidato teorico è uscito da poco, ci spostiamo di +10 (stessa cadenza) finché non ne troviamo uno libero
+    for _ in range(9):
+        if candidato not in numeri_esclusi:
+            return candidato
+        candidato = (candidato + 10) % 90
+        if candidato == 0: candidato = 90
+    return base_num  # Ritorna il base se non trova alternative (salvagente)
+
 def genera_risultati():
     if not os.path.exists('estrazioni.json'):
         print("Errore: file estrazioni.json non trovato.")
@@ -18,7 +42,7 @@ def genera_risultati():
 
     ruote_elenco = ["Bari", "Cagliari", "Firenze", "Genova", "Milano", "Napoli", "Palermo", "Roma", "Torino", "Venezia"]
     
-    if "Bari" not in archivio or not isinstance(archivio["Bari"], list) or len(archivio["Bari"]) < 3:
+    if "Bari" not in archivio or not isinstance(archivio["Bari"], list) or len(archivio["Bari"]) < 5:
         print("Errore: Struttura dati non conforme o estrazioni insufficienti.")
         return
 
@@ -53,6 +77,9 @@ def genera_risultati():
                 if not isinstance(num_r1, list) or not isinstance(num_r2, list) or len(num_r1) < 5 or len(num_r2) < 5:
                     continue
 
+                # Generiamo la lista nera dei numeri usciti nelle ultime 5 estrazioni su queste due ruote
+                numeri_da_escludere = estrai_ultimi_numeri(archivio, ruota1, ruota2, limite=5)
+
                 for pos in range(5):
                     try:
                         n1 = int(num_r1[pos])
@@ -68,11 +95,16 @@ def genera_risultati():
                             score = 180
 
                         pronostico_1 = (n1 + 30) % 90
-                        pronostico_2 = (n2 + 30) % 90
                         if pronostico_1 == 0: pronostico_1 = 90
-                        if pronostico_2 == 0: pronostico_2 = 90
+                        
+                        # Calcoliamo il secondo numero teorico
+                        teorico_2 = (n2 + 30) % 90
+                        if teorico_2 == 0: teorico_2 = 90
 
-                        # Controllo e attivazione Filtro Budget
+                        # Applichiamo il filtro anti-ripetizione sul secondo numero
+                        pronostico_2 = trova_compagno_sincrono(teorico_2, numeri_da_escludere)
+
+                        # Controllo di sicurezza se i due numeri coincidono
                         filtro_attivo = False
                         if pronostico_1 == pronostico_2:
                             filtro_attivo = True
@@ -106,7 +138,7 @@ def genera_risultati():
 
     with open('risultati_v4.json', 'w', encoding='utf-8') as f:
         json.dump(risultati, f, ensure_ascii=False, indent=4)
-    print("Elaborazione completata.")
+    print("Elaborazione completata con filtro sincronismo attivo.")
 
 if __name__ == "__main__":
-    genera_results = genera_risultati()
+    genera_risultati()
