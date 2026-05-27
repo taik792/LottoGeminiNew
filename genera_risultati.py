@@ -20,26 +20,31 @@ def determina_esagono(numero):
     return 15 if resto == 0 else resto
 
 def esegui_elaborazione_motore():
-    print("=== AVVIO MOTORE GEOMETRICO: ESAGONI CICLOMETRICI CASI REALI ===")
+    print("=== AVVIO MOTORE GEOMETRICO: ESAGONI SENZA DUPLICATI ===")
     archivio = carica_dati_estrazioni()
     if not archivio:
         print("Errore: file estrazioni vuoto o non trovato.")
         return
 
-    # 1. Normalizzazione ruote (elimina i conflitti MAIUSCOLO/minuscolo)
+    # 1. Pulizia totale e normalizzazione dei nomi delle ruote (Niente più "BARI" e "Bari" separati)
     ruote_pulite = {}
     for chiave, estrazioni_ruota in archivio.items():
-        if chiave.lower() in ['data', 'concorso', 'id', 'id_estrazione']:
+        # Saltiamo le chiavi di servizio dell'estrazione
+        if chiave.lower() in ['data', 'concorso', 'id', 'id_estrazione', 'frequenze', 'ritardi']:
             continue
         
+        # Rendiamo standard il nome: prima lettera maiuscola, il resto minuscolo
         nome_standard = chiave.strip().capitalize()
-        
+        if nome_standard == "Nazionale":
+            nome_standard = "Nazionale"
+
         if isinstance(estrazioni_ruota, list) and len(estrazioni_ruota) > 0:
             ultima = estrazioni_ruota[-1]
             if isinstance(ultima, list) and len(ultima) >= 5:
+                # Prendiamo solo i 5 numeri reali convertiti in interi
                 ruote_pulite[nome_standard] = [int(x) for x in ultima[:5]]
 
-    # 2. Definizione colori delle ruote (Mappa del calore fissa e ordinata)
+    # 2. Assegnazione RIGIDA e UNIVOCA dei colori (Evita rotture sul front-end)
     ruote_rosse = ["Palermo", "Roma", "Torino"]
     ruote_grigie = ["Milano"]
     
@@ -54,12 +59,11 @@ def esegui_elaborazione_motore():
         else:
             mappa_calore[r] = "gialla"
 
-    # 3. Calcolo geometrico reale sui 15 esagoni regolari
     tabellone_nuovi = []
     tabellone_colpo2 = []
     tabellone_colpo3 = []
 
-    # Confronto isotopo tra coppie di ruote
+    # 3. Analisi ciclometrica pura sulle posizioni isotope
     for i in range(len(elenco_ruote)):
         for j in range(i + 1, len(elenco_ruote)):
             r1 = elenco_ruote[i]
@@ -68,91 +72,69 @@ def esegui_elaborazione_motore():
             estratti_r1 = ruote_pulite[r1]
             estratti_r2 = ruote_pulite[r2]
 
-            # Analisi sui 5 estratti paralleli (isotopi)
             for p in range(5):
                 n1 = estratti_r1[p]
                 n2 = estratti_r2[p]
 
-                # Controlliamo se appartengono allo stesso esagono sul cerchio
+                # Rileviamo se fanno parte della stessa spina esagonale
                 if determina_esagono(n1) == determina_esagono(n2) and n1 != n2:
                     dist = calcola_distanza_ciclometrica(n1, n2)
                     
-                    # Calcolo della chiusura armonica dell'esagono
-                    # Ambata: il diametrale (+45) della somma o del numero base
+                    # Calcolo base della chiusura armonica (Diametrale del primo elemento)
                     ambata = (n1 + 45) % 90 or 90
                     
-                    # Abbinamento scelto per completare la tripletta esagonale (passo 15 o 30)
-                    abbinamento = (n2 + 15) % 90 or 90
-                    if abbinamento == n1 or abbinamento == n2:
-                        abbinamento = (n2 + 30) % 90 or 90
+                    # Calcolo dinamico dell'abbinamento (Passo geometrico protetto da duplicati)
+                    passi_esagono = [15, 30, 60, 75]
+                    abbinamento = None
                     
-                    # Assegnazione dello Score in base alla precisione geometrica della distanza
+                    for passo in passi_esagono:
+                        candidato = (n2 + passo) % 90 or 90
+                        # Il numero candidato NON deve essere uguale a n1, n2 o all'ambata stessa!
+                        if candidato not in [n1, n2, ambata]:
+                            abbinamento = candidato
+                            break
+                    
+                    # Se non si trova un passo libero (rarissimo), usiamo il diametrale di n2
+                    if not abbinamento:
+                        abbinamento = (n2 + 45) % 90 or 90
+
+                    previsione = {
+                        "ruote": f"{r1} - {r2}",
+                        "numeri": [ambata, abbinamento],
+                        "score": f"{180 if dist == 15 else 172 if dist == 30 else 164}%",
+                        "colore_r1": mappa_calore[r1],
+                        "colore_r2": mappa_calore[r2]
+                    }
+
+                    # Smistamento nei tabelloni corretti a seconda della distanza ciclometrica rilevata
                     if dist == 15:
-                        score = 180  # Distanza minima (vertici consecutivi dell'esagono)
-                        previsione = {
-                            "ruote": f"{r1} - {r2}",
-                            "numeri": [ambata, abbinamento],
-                            "score": "180%",
-                            "colore_r1": mappa_calore[r1],
-                            "colore_r2": mappa_calore[r2]
-                        }
                         tabellone_nuovi.append(previsione)
-                        
                     elif dist == 30:
-                        score = 172  # Vertici alterni dell'esagono
-                        previsione = {
-                            "ruote": f"{r1} - {r2}",
-                            "numeri": [ambata, abbinamento],
-                            "score": "172%",
-                            "colore_r1": mappa_calore[r1],
-                            "colore_r2": mappa_calore[r2]
-                        }
                         tabellone_colpo2.append(previsione)
-                        
                     elif dist == 45:
-                        score = 164  # Vertici opposti (Asse diametrale perfetto dell'esagono)
-                        previsione = {
-                            "ruote": f"{r1} - {r2}",
-                            "numeri": [ambata, abbinamento],
-                            "score": "164%",
-                            "colore_r1": mappa_calore[r1],
-                            "colore_r2": mappa_calore[r2]
-                        }
                         tabellone_colpo3.append(previsione)
 
-    # Sistemi di sicurezza in caso di estrazioni senza particolari armonie esagonali pure
+    # 4. Copertura di sicurezza se l'estrazione non contiene armonie esagonali isotope pure
     if not tabellone_nuovi:
-        # Se non ci sono distanze 15 perfette, spostiamo le distanze 30 o usiamo la ruota Nazionale/Bari come perno
-        tabellone_nuovi = tabellone_colpo2[:4] if tabellone_colpo2 else []
-        
-    if not tabellone_nuovi:
-        # Generazione geometrica protetta se l'estrazione non ha nessun legame esagonale isotopo
-        for r_emergenza in elenco_ruote[:3]:
-            primo_estratto = ruote_pulite[r_emergenza][0]
-            # Chiudiamo una figura esagonale artificiale partendo dal primo estratto
-            n_esagonale1 = (primo_estratto + 15) % 90 or 90
-            n_esagonale2 = (primo_estratto + 45) % 90 or 90
-            tabellone_nuovi.append({
-                "ruote": f"{r_emergenza} - Tutte",
-                "numeri": [n_esagonale1, n_esagonale2],
-                "score": "180%",
-                "colore_r1": mappa_calore[r_emergenza],
-                "colore_r2": "gialla"
-            })
+        tabellone_nuovi = tabellone_colpo2[:3] if tabellone_colpo2 else []
+    if not tabellone_colpo2:
+        tabellone_colpo2 = tabellone_nuovi[1:4] if len(tabellone_nuovi) > 1 else tabellone_nuovi
+    if not tabellone_colpo3:
+        tabellone_colpo3 = tabellone_nuovi[2:5] if len(tabellone_nuovi) > 2 else tabellone_nuovi
 
-    # Limitiamo l'output per rendere le schede pulite ed evitare calcoli infiniti nel front-end
+    # Costruzione dell'output finale pulito
     risultati_finali = {
         "mappa_calore": mappa_calore,
         "tabelloni": {
             "nuovi": tabellone_nuovi[:6],
-            "colpo2": tabellone_colpo2[:6] if tabellone_colpo2 else tabellone_nuovi[1:4],
-            "colpo3": tabellone_colpo3[:6] if tabellone_colpo3 else tabellone_nuovi[2:5]
+            "colpo2": tabellone_colpo2[:6],
+            "colpo3": tabellone_colpo3[:6]
         }
     }
 
     with open(RISULTATI_FILE, 'w', encoding='utf-8') as f:
         json.dump(risultati_finali, f, indent=4, ensure_ascii=False)
-    print("Salvataggio completato con successo! Esagoni ciclometrici reali calcolati.")
+    print("Salvataggio completato. Struttura dati rigenerata e corretta!")
 
 if __name__ == "__main__":
     esegui_elaborazione_motore()
