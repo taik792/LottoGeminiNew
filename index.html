@@ -295,9 +295,9 @@
         async function caricaDati() {
             const cardsGrid = document.getElementById('cardsGrid');
             try {
-                // MODIFICA PROTETTIVA ANTICACHE AUTOMATICA
+                // Timbro del tempo (Date.now()) per costringere il browser a scaricare i dati reali
                 const risposta = await fetch('risultati_v4.json?v=' + Date.now());
-                if (!risp.ok) {
+                if (!risposta.ok) {
                     throw new Error("Impossibile leggere il file dei risultati.");
                 }
                 globaleDati = await risposta.json();
@@ -314,13 +314,13 @@
             const heatmapGrid = document.getElementById('heatmapGrid');
             heatmapGrid.innerHTML = '';
 
-            // BLINDATURA DI SICUREZZA CONTRO GLI ERRORI UNDEFINED/NULL SU OBJECT.ENTRIES
+            // Blocco di protezione contro i dati non ancora pronti
             if (!data || !data.mappa_calore) {
-                console.warn("Mappa calore non trovata o non ancora disponibile.");
+                console.warn("Mappa calore non trovata o non disponibile.");
                 return;
             }
 
-            // Usiamo un set per evitare di mostrare i duplicati generati salvavita dal Python
+            // Set di controllo per non duplicare le ruote a schermo
             const ruoteInserite = new Set();
 
             Object.entries(data.mappa_calore).forEach(([ruota, stato]) => {
@@ -346,4 +346,52 @@
                 return;
             }
 
-            const elencoPrevisioni =
+            const elencoPrevisioni = globaleDati.tabelloni[tabKey];
+
+            if (elencoPrevisioni.length === 0) {
+                cardsGrid.innerHTML = `<div class="error-message">Nessuna previsione disponibile.</div>`;
+                return;
+            }
+
+            elencoPrevisioni.forEach(info => {
+                const card = document.createElement('div');
+                card.className = 'previsione-card';
+
+                let pallineHtml = '';
+                if(Array.isArray(info.numeri)) {
+                    info.numeri.forEach(num => {
+                        pallineHtml += `<div class="ball">${num}</div>`;
+                    });
+                }
+
+                card.innerHTML = `
+                    <div class="card-tag">${tabKey === 'nuovi' ? 'Nuova' : tabKey.toUpperCase()}</div>
+                    <div class="card-ruote">${info.ruote}</div>
+                    <div class="numbers-row">${pallineHtml}</div>
+                    <div class="info-row">
+                        <div class="budget-box">
+                            <span class="budget-label">Budget Consigliato:</span>
+                            <span class="budget-val">4.00€</span>
+                        </div>
+                        <div class="accuracy-box">
+                            <div class="accuracy-label">Accuratezza:</div>
+                            <div class="accuracy-val">${info.score}</div>
+                        </div>
+                    </div>
+                `;
+                cardsGrid.appendChild(card);
+            });
+        }
+
+        function switchTab(tabKey) {
+            tabAttivo = tabKey;
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            renderTabellone(tabKey);
+        }
+
+        // Inizializzazione della pagina
+        window.onload = caricaDati;
+    </script>
+</body>
+</html>
