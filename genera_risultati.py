@@ -20,13 +20,13 @@ def determina_esagono(numero):
     return 15 if resto == 0 else resto
 
 def esegui_elaborazione_motore():
-    print("=== AVVIO MOTORE CICLOMETRICO: ESAGONI E QUADRATURE SIMMETRICHE ===")
+    print("=== ASSIOMA ESAGONALE: QUADRATURA FINALE v5.5 ===")
     archivio = carica_dati_estrazioni()
     if not archivio:
         print("Errore: file estrazioni vuoto o non trovato.")
         return
 
-    # 1. Normalizzazione ruote
+    # 1. Normalizzazione ruote (Maiuscole/Minuscole azzerate)
     ruote_pulite = {}
     for chiave, estrazioni_ruota in archivio.items():
         if chiave.lower() in ['data', 'concorso', 'id', 'id_estrazione', 'frequenze', 'ritardi']:
@@ -39,7 +39,7 @@ def esegui_elaborazione_motore():
             if isinstance(ultima, list) and len(ultima) >= 5:
                 ruote_pulite[nome_standard] = [int(x) for x in ultima[:5]]
 
-    # 2. Configurazione colori fissi della Mappa del Calore
+    # 2. Configurazione colori Mappa del Calore (Rigida)
     ruote_rosse = ["Palermo", "Roma", "Torino"]
     ruote_grigie = ["Milano"]
     
@@ -58,7 +58,7 @@ def esegui_elaborazione_motore():
     tabellone_colpo2 = []
     tabellone_colpo3 = []
 
-    # 3. Calcolo Ciclometrico Strutturale (Chiusura delle Figure)
+    # 3. Calcolo Ciclometrico Strutturale ad Alta Fedeltà
     for i in range(len(elenco_ruote)):
         for j in range(i + 1, len(elenco_ruote)):
             r1 = elenco_ruote[i]
@@ -71,38 +71,47 @@ def esegui_elaborazione_motore():
                 n1 = estratti_r1[p]
                 n2 = estratti_r2[p]
 
-                # Rileviamo se i due numeri fanno parte dello stesso esagono
+                # Rileviamo la coesione armonica nell'esagono
                 if determina_esagono(n1) == determina_esagono(n2) and n1 != n2:
                     dist = calcola_distanza_ciclometrica(n1, n2)
                     
-                    # ---------------------------------------------------------
-                    # LOGICA GEOMETRICA PURA DI CHIUSURA DELL'ESAGONO
-                    # ---------------------------------------------------------
                     if dist == 15:
-                        # Elementi consecutivi nell'esagono. Chiusura con l'elemento successivo
+                        # Chiusura lineare consecutiva
                         ambata = (max(n1, n2) + 15) % 90 or 90
                         abbinamento = (min(n1, n2) - 15) % 90 or 90
                         if abbinamento <= 0: abbinamento += 90
                         score = "180%"
                         
                     elif dist == 30:
-                        # Elementi con un vuoto in mezzo nell'esagono. La chiusura inserisce il punto medio
-                        ambata = (min(n1, n2) + 15) % 90 or 90
-                        # E il suo rispettivo diametrale simmetrico sul cerchio
+                        # VERA CHIUSURA AD ESAGONO: Calcolo del Punto Medio Ciclometrico
+                        p_min = min(n1, n2)
+                        p_max = max(n1, n2)
+                        
+                        # Se la distanza diretta è 30, il punto medio è a +15 dal minore
+                        if (p_max - p_min) == 30:
+                            ambata = (p_min + 15) % 90 or 90
+                        else: # Se la distanza sul cerchio gira intorno al 90
+                            ambata = (p_max + 15) % 90 or 90
+                        
+                        # Abbinamento speculare: il Diametrale del punto medio
                         abbinamento = (ambata + 45) % 90 or 90
                         score = "172%"
                         
-                    else: # Distanza 45 (Asse diametrale perfetto dell'esagono)
-                        # Troviamo la spina perpendicolare per formare il rettangolo esagonale
+                    else: # Distanza 45
+                        # Chiusura ortogonale simmetrica
                         ambata = (n1 + 15) % 90 or 90
                         abbinamento = (n2 + 15) % 90 or 90
                         score = "164%"
 
-                    # CONTROLLO DI SICUREZZA ANTI-DOPPIONE INDISPENSABILE
+                    # BARRIERA MATEMATICA ANTI-DOPPIONE E ANTI-COLLASSO
                     if ambata == abbinamento or ambata in [n1, n2] or abbinamento in [n1, n2]:
-                        # Se la figura collassa, calcoliamo la chiusura con la Somma Isotopa Fuori 90
+                        # Calcolo dinamico di emergenza con la Somma Condivisa Fuori 90
                         ambata = (n1 + n2) % 90 or 90
                         abbinamento = (ambata + 45) % 90 or 90
+                    
+                    # Se per assurdo matematico collassa ancora, stacchiamo di un passo fisso (+1)
+                    if ambata == abbinamento:
+                        abbinamento = (ambata + 1) % 90 or 90
 
                     previsione = {
                         "ruote": f"{r1} - {r2}",
@@ -119,7 +128,7 @@ def esegui_elaborazione_motore():
                     elif dist == 45:
                         tabellone_colpo3.append(previsione)
 
-    # 4. Generazione Paracadute Indipendente (Evita travasi di codice tra tabelloni diversi)
+    # 4. Paracadute Autonomi e Separati (Zero travasi o copie incollate)
     if not tabellone_nuovi:
         for r_nome in ["Bari", "Cagliari", "Firenze"]:
             if r_nome in ruote_pulite:
@@ -150,13 +159,13 @@ def esegui_elaborazione_motore():
                 e3 = ruote_pulite[r_nome][2]
                 tabellone_colpo3.append({
                     "ruote": f"{r_nome} - Tutte",
-                    "numeri": [(e3 + 45) % 90 or 90, (e3 + 1) % 90 or 90],
+                    "numeri": [(e3 + 45) % 90 or 90, (e3 + 60) % 90 or 90],
                     "score": "164%",
                     "colore_r1": mappa_calore[r_nome],
                     "colore_r2": "gialla"
                 })
 
-    # Costruzione finale del dizionario dei risultati
+    # Output finale pulito senza sbavature
     risultati_finali = {
         "mappa_calore": mappa_calore,
         "tabelloni": {
@@ -168,7 +177,7 @@ def esegui_elaborazione_motore():
 
     with open(RISULTATI_FILE, 'w', encoding='utf-8') as f:
         json.dump(risultati_finali, f, indent=4, ensure_ascii=False)
-    print("Elaborazione completata con armonie ciclometriche reali ed esagoni puliti!")
+    print("=== FINALE: MOTORE COMPLETATO CON SUCCESSO! ===")
 
 if __name__ == "__main__":
     esegui_elaborazione_motore()
