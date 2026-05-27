@@ -18,7 +18,7 @@ def esegui_elaborazione_motore():
     print(" INIZIO ELABORAZIONE MOTORE GEOMETRICO ELITE PRO v5")
     print("====================================================")
     
-    # 1. Caricamento database strutturato per ruote (dal vecchio in alto al giovane in basso)
+    # 1. Caricamento database strutturato per ruote
     archivio = carica_dati_estrazioni()
     if not archivio:
         print("Impossibile procedere: archivio estrazioni vuoto o mancante.")
@@ -26,51 +26,71 @@ def esegui_elaborazione_motore():
         
     print("Archivio caricato con successo. Analisi struttura verticale delle ruote.")
 
-    # Lista delle ruote presenti nel tuo file
-    ruote_effettive = [r for r in archivio.keys() if r not in ['data', 'concorso', 'id', 'Data', 'ID', 'id_estrazione']]
+    # Elenco standard e fisso delle 11 ruote per evitare discrepanze con index.html
+    ruote_standard = [
+        "Bari", "Cagliari", "Firenze", "Genova", "Milano", 
+        "Napoli", "Palermo", "Roma", "Torino", "Venezia", "Nazionale"
+    ]
     
+    # Filtriamo solo le ruote effettivamente presenti nel file json (gestendo le maiuscole)
+    ruote_effettive = []
+    chiave_mappata_ruota = {} # Mappa il nome standard alla chiave reale del file
+    
+    for r_std in ruote_standard:
+        for chiave_reale in archivio.keys():
+            if chiave_reale.strip().lower() == r_std.lower():
+                ruote_effettive.append(r_std)
+                chiave_mappata_ruota[r_std] = chiave_reale
+                break
+
+    # Se non trova corrispondenze, usa le chiavi del file originali
+    if not ruote_effettive:
+        ruote_effettive = [r for r in archivio.keys() if r not in ['data', 'concorso', 'id', 'Data', 'ID', 'id_estrazione']]
+        chiave_mappata_ruota = {r: r for r in ruote_effettive}
+
     # 2. Calcolo dello Stato di Forma (Filtro Frequenti)
-    # Estraiamo gli ultimi 15 concorsi (gli ultimi elementi in fondo alle liste di ciascuna ruota)
     stato_forma = {}
     profondita = 15
     
-    for ruota in ruote_effettive:
-        lista_estrazioni_ruota = archivio[ruota]
+    for r_std in ruote_effettive:
+        ch_reale = chiave_mappata_ruota[r_std]
+        lista_estrazioni_ruota = archivio[ch_reale]
         if isinstance(lista_estrazioni_ruota, list):
-            # Prendiamo le ultime 15 estrazioni in fondo alla lista (le più giovani)
             recenti = lista_estrazioni_ruota[-profondita:]
-            stato_forma[ruota] = {n: 0 for n in range(1, 91)}
+            stato_forma[r_std] = {n: 0 for n in range(1, 91)}
             for estrazione in recenti:
                 if isinstance(estrazione, list):
                     for n in estrazione:
                         if isinstance(n, int) and 1 <= n <= 90:
-                            stato_forma[ruota][n] += 1
+                            stato_forma[r_std][n] += 1
 
-    # 3. Definizione della Mappa del Calore (Direttive colori originali)
+    # 3. Definizione della Mappa del Calore con TUTTE le ruote standard presenti
     ruote_tensione_rossa = ["Firenze", "Roma", "Torino", "Napoli"]
     mappa_calore = {}
-    for ruota in ruote_effettive:
-        if ruota in ruote_tensione_rossa:
-            mappa_calore[ruota] = "rossa"
+    for r_std in ruote_standard:
+        if r_std in ruote_tensione_rossa:
+            mappa_calore[r_std] = "rossa"
         else:
-            mappa_calore[ruota] = "gialla"  # Milano e le altre sono gialle
+            mappa_calore[r_std] = "gialla"  # Garantisce che ogni singola ruota abbia una proprietà definita
 
     tabellone_nuovi = []
     tabellone_colpo2 = []
     tabellone_colpo3 = []
 
-    # 4. Doppi cicli FOR per il calcolo delle distanze geometriche sulle ultime estrazioni reali
+    # 4. Doppi cicli FOR per il calcolo delle distanze geometriche
     for i in range(len(ruote_effettive)):
         for j in range(i + 1, len(ruote_effettive)):
             ruota1 = ruote_effettive[i]
             ruota2 = ruote_effettive[j]
             
-            # L'ultima estrazione inserita è l'ultimo elemento [-1] della lista di quella ruota
-            if len(archivio[ruota1]) == 0 or len(archivio[ruota2]) == 0:
+            ch_reale1 = chiave_mappata_ruota[ruota1]
+            ch_reale2 = chiave_mappata_ruota[ruota2]
+            
+            if len(archivio[ch_reale1]) == 0 or len(archivio[ch_reale2]) == 0:
                 continue
                 
-            estratti_r1 = archivio[ruota1][-1]
-            estratti_r2 = archivio[ruota2][-1]
+            estratti_r1 = archivio[ch_reale1][-1]
+            estratti_r2 = archivio[ch_reale2][-1]
             
             if isinstance(estratti_r1, list) and isinstance(estratti_r2, list):
                 if len(estratti_r1) >= 2 and len(estratti_r2) >= 2:
@@ -90,8 +110,6 @@ def esegui_elaborazione_motore():
                     presenza_n1 = stato_forma.get(ruota1, {}).get(num1, 0)
                     presenza_n2 = stato_forma.get(ruota2, {}).get(num2, 0)
                     
-                    # Se entrambi i numeri dell'ambo geometrico sono assenti da 15 estrazioni,
-                    # abbassiamo lo score di 8 punti per proteggerci dai laterali (+1 / -1)
                     if presenza_n1 == 0 and presenza_n2 == 0:
                         score_finale = score_geometrico - 8
                     else:
@@ -112,9 +130,11 @@ def esegui_elaborazione_motore():
                     else:
                         tabellone_colpo3.append(card_previsione)
 
-    # 5. Riempimento di sicurezza dei tabelloni della dashboard
+    # 5. Riempimento di sicurezza dei tabelloni per evitare array vuoti sul frontend
     if not tabellone_nuovi and tabellone_colpo2:
         tabellone_nuovi = tabellone_colpo2[:2]
+    if not tabellone_colpo2 and tabellone_nuovi:
+        tabellone_colpo2 = tabellone_nuovi[:2]
     if not tabellone_colpo3:
         tabellone_colpo3.append({
             "ruote": "Bari - Palermo",
@@ -124,22 +144,22 @@ def esegui_elaborazione_motore():
             "colore_r2": mappa_calore.get("Palermo", "gialla")
         })
 
-    # Struttura finale dell'oggetto JSON pronta per il frontend index.html
+    # Struttura finale dell'oggetto JSON pronta per l'interfaccia
     risultati_finali = {
         "mappa_calore": mappa_calore,
         "tabelloni": {
-            "nuovi": tabellone_nuovi[:4],
-            "colpo2": tabellone_colpo2[:4],
-            "colpo3": tabellone_colpo3[:4]
+            "nuovi": tabellone_nuovi,
+            "colpo2": tabellone_colpo2,
+            "colpo3": tabellone_colpo3
         }
     }
 
-    # Scrittura definitiva e popolamento del file risultati_v4.json
+    # Scrittura definitiva del file risultati_v4.json
     with open(RISULTATI_FILE, 'w', encoding='utf-8') as f:
         json.dump(risultati_finali, f, indent=4, ensure_ascii=False)
         
     print("====================================================")
-    print(f" ELABORAZIONE COMPLETATA! File {RISULTATI_FILE} correttamente popolato.")
+    print(f" ELABORAZIONE COMPLETATA! File {RISULTATI_FILE} strutturato correttamente.")
     print("====================================================")
 
 if __name__ == "__main__":
