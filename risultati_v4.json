@@ -2,9 +2,101 @@
     "nuove": [
         {
             "ruota1": "Bari",
+            "ruota2": "Cagliari",
+            "num1": 14,
+            "num2": 79,
+            "score": 180,
+            "filtro_budget": false,
+            "dati_r1": "37 . 35 . 74 . 51 . 18",
+            "dati_r2": "72 . 17 . 29 . 1 . 88"
+        },
+        {
+            "ruota1": "Bari",
+            "ruota2": "Torino",
+            "num1": 67,
+            "num2": 32,
+            "score": 180,
+            "filtro_budget": false,
+            "dati_r1": "37 . 35 . 74 . 51 . 18",
+            "dati_r2": "82 . 23 . 74 . 76 . 70"
+        },
+        {
+            "ruota1": "Cagliari",
+            "ruota2": "Torino",
+            "num1": 59,
+            "num2": 14,
+            "score": 180,
+            "filtro_budget": false,
+            "dati_r1": "72 . 17 . 29 . 1 . 88",
+            "dati_r2": "82 . 23 . 74 . 76 . 70"
+        },
+        {
+            "ruota1": "Torino",
+            "ruota2": "Venezia",
+            "num1": 53,
+            "num2": 8,
+            "score": 180,
+            "filtro_budget": false,
+            "dati_r1": "82 . 23 . 74 . 76 . 70",
+            "dati_r2": "79 . 68 . 33 . 87 . 3"
+        },
+        {
+            "ruota1": "Bari",
+            "ruota2": "Venezia",
+            "num1": 48,
+            "num2": 43,
+            "score": 172,
+            "filtro_budget": false,
+            "dati_r1": "37 . 35 . 74 . 51 . 18",
+            "dati_r2": "79 . 68 . 33 . 87 . 3"
+        },
+        {
+            "ruota1": "Cagliari",
+            "ruota2": "Palermo",
+            "num1": 31,
+            "num2": 16,
+            "score": 172,
+            "filtro_budget": false,
+            "dati_r1": "72 . 17 . 29 . 1 . 88",
+            "dati_r2": "72 . 26 . 34 . 76 . 18"
+        },
+        {
+            "ruota1": "Cagliari",
+            "ruota2": "Torino",
+            "num1": 31,
+            "num2": 16,
+            "score": 172,
+            "filtro_budget": false,
+            "dati_r1": "72 . 17 . 29 . 1 . 88",
+            "dati_r2": "82 . 23 . 74 . 76 . 70"
+        },
+        {
+            "ruota1": "Genova",
+            "ruota2": "Milano",
+            "num1": 67,
+            "num2": 7,
+            "score": 172,
+            "filtro_budget": false,
+            "dati_r1": "44 . 30 . 37 . 60 . 1",
+            "dati_r2": "18 . 29 . 67 . 2 . 86"
+        },
+        {
+            "ruota1": "Milano",
+            "ruota2": "Roma",
+            "num1": 48,
+            "num2": 33,
+            "score": 172,
+            "filtro_budget": false,
+            "dati_r1": "18 . 29 . 67 . 2 . 86",
+            "dati_r2": "3 . 31 . 20 . 84 . 39"
+        }
+    ],
+    "colpo2": [
+        {
+            "ruota1": "Bari",
             "ruota2": "Milano",
             "num1": 23,
-            "num2": 78,
+            "num2": 68,
             "score": 180,
             "filtro_budget": false,
             "dati_r1": "19 . 83 . 72 . 49 . 7",
@@ -14,7 +106,7 @@
             "ruota1": "Firenze",
             "ruota2": "Venezia",
             "num1": 74,
-            "num2": 39,
+            "num2": 59,
             "score": 180,
             "filtro_budget": false,
             "dati_r1": "15 . 34 . 10 . 44 . 19",
@@ -91,7 +183,7 @@
             "dati_r2": "88 . 44 . 56 . 90 . 41"
         }
     ],
-    "colpo2": [
+    "colpo3": [
         {
             "ruota1": "Bari",
             "ruota2": "Roma",
@@ -116,9 +208,9 @@
             "ruota1": "Cagliari",
             "ruota2": "Torino",
             "num1": 72,
-            "num2": 27,
+            "num2": 52,
             "score": 172,
-            "filtro_budget": true,
+            "filtro_budget": false,
             "dati_r1": "61 . 42 . 13 . 26 . 21",
             "dati_r2": "81 . 12 . 33 . 84 . 22"
         },
@@ -136,7 +228,7 @@
             "ruota1": "Genova",
             "ruota2": "Torino",
             "num1": 67,
-            "num2": 72,
+            "num2": 52,
             "score": 172,
             "filtro_budget": false,
             "dati_r1": "62 . 77 . 10 . 13 . 37",
@@ -146,7 +238,7 @@
             "ruota1": "Napoli",
             "ruota2": "Palermo",
             "num1": 87,
-            "num2": 72,
+            "num2": 82,
             "score": 172,
             "filtro_budget": false,
             "dati_r1": "25 . 16 . 57 . 50 . 43",
@@ -183,108 +275,16 @@
             "dati_r2": "81 . 12 . 33 . 84 . 22"
         }
     ],
-    "colpo3": [
-        {
-            "ruota1": "Cagliari",
-            "ruota2": "Genova",
-            "num1": 75,
-            "num2": 40,
-            "score": 180,
-            "filtro_budget": false,
-            "dati_r1": "5 . 64 . 45 . 80 . 74",
-            "dati_r2": "29 . 31 . 90 . 15 . 17"
-        },
-        {
-            "ruota1": "Genova",
-            "ruota2": "Milano",
-            "num1": 30,
-            "num2": 5,
-            "score": 180,
-            "filtro_budget": false,
-            "dati_r1": "29 . 31 . 90 . 15 . 17",
-            "dati_r2": "73 . 61 . 45 . 85 . 48"
-        },
-        {
-            "ruota1": "Genova",
-            "ruota2": "Roma",
-            "num1": 45,
-            "num2": 40,
-            "score": 180,
-            "filtro_budget": false,
-            "dati_r1": "29 . 31 . 90 . 15 . 17",
-            "dati_r2": "23 . 68 . 57 . 60 . 26"
-        },
-        {
-            "ruota1": "Bari",
-            "ruota2": "Cagliari",
-            "num1": 89,
-            "num2": 14,
-            "score": 172,
-            "filtro_budget": false,
-            "dati_r1": "88 . 65 . 11 . 87 . 59",
-            "dati_r2": "5 . 64 . 45 . 80 . 74"
-        },
-        {
-            "ruota1": "Bari",
-            "ruota2": "Milano",
-            "num1": 28,
-            "num2": 13,
-            "score": 172,
-            "filtro_budget": false,
-            "dati_r1": "88 . 65 . 11 . 87 . 59",
-            "dati_r2": "73 . 61 . 45 . 85 . 48"
-        },
-        {
-            "ruota1": "Cagliari",
-            "ruota2": "Torino",
-            "num1": 4,
-            "num2": 34,
-            "score": 172,
-            "filtro_budget": false,
-            "dati_r1": "5 . 64 . 45 . 80 . 74",
-            "dati_r2": "44 . 4 . 76 . 5 . 57"
-        },
-        {
-            "ruota1": "Cagliari",
-            "ruota2": "Torino",
-            "num1": 20,
-            "num2": 35,
-            "score": 172,
-            "filtro_budget": false,
-            "dati_r1": "5 . 64 . 45 . 80 . 74",
-            "dati_r2": "44 . 4 . 76 . 5 . 57"
-        },
-        {
-            "ruota1": "Firenze",
-            "ruota2": "Palermo",
-            "num1": 66,
-            "num2": 1,
-            "score": 172,
-            "filtro_budget": false,
-            "dati_r1": "37 . 56 . 25 . 19 . 36",
-            "dati_r2": "40 . 2 . 66 . 87 . 51"
-        },
-        {
-            "ruota1": "Firenze",
-            "ruota2": "Venezia",
-            "num1": 86,
-            "num2": 26,
-            "score": 172,
-            "filtro_budget": false,
-            "dati_r1": "37 . 56 . 25 . 19 . 36",
-            "dati_r2": "79 . 86 . 19 . 29 . 40"
-        }
-    ],
     "mappa_colore": {
-        "Bari": "calore-medio",
-        "Cagliari": "calore-medio",
-        "Firenze": "calore-alto",
-        "Genova": "calore-alto",
+        "Bari": "calore-alto",
+        "Cagliari": "calore-alto",
+        "Firenze": "calore-basso",
+        "Genova": "calore-medio",
         "Milano": "calore-medio",
-        "Napoli": "calore-alto",
+        "Napoli": "calore-medio",
         "Palermo": "calore-medio",
         "Roma": "calore-medio",
         "Torino": "calore-alto",
-        "Venezia": "calore-medio"
+        "Venezia": "calore-alto"
     }
 }
