@@ -16,8 +16,8 @@
             {
                 "ruote": "Bari - Venezia",
                 "numeri": [
-                    63,
-                    18
+                    33,
+                    78
                 ],
                 "score": "180%",
                 "colore_r1": "gialla",
@@ -26,8 +26,8 @@
             {
                 "ruote": "Cagliari - Palermo",
                 "numeri": [
-                    46,
-                    1
+                    77,
+                    32
                 ],
                 "score": "180%",
                 "colore_r1": "gialla",
@@ -36,8 +36,8 @@
             {
                 "ruote": "Cagliari - Torino",
                 "numeri": [
-                    46,
-                    1
+                    77,
+                    32
                 ],
                 "score": "180%",
                 "colore_r1": "gialla",
@@ -46,8 +46,8 @@
             {
                 "ruote": "Milano - Roma",
                 "numeri": [
-                    63,
-                    18
+                    33,
+                    78
                 ],
                 "score": "180%",
                 "colore_r1": "grigia",
@@ -56,8 +56,8 @@
             {
                 "ruote": "Napoli - Roma",
                 "numeri": [
-                    24,
-                    9
+                    9,
+                    54
                 ],
                 "score": "180%",
                 "colore_r1": "gialla",
@@ -66,8 +66,8 @@
             {
                 "ruote": "Palermo - Venezia",
                 "numeri": [
-                    63,
-                    18
+                    33,
+                    78
                 ],
                 "score": "180%",
                 "colore_r1": "rossa",
@@ -78,8 +78,8 @@
             {
                 "ruote": "Genova - Milano",
                 "numeri": [
-                    82,
-                    52
+                    52,
+                    7
                 ],
                 "score": "172%",
                 "colore_r1": "gialla",
@@ -90,8 +90,8 @@
             {
                 "ruote": "Bari - Cagliari",
                 "numeri": [
-                    29,
-                    89
+                    89,
+                    44
                 ],
                 "score": "164%",
                 "colore_r1": "gialla",
@@ -100,8 +100,8 @@
             {
                 "ruote": "Bari - Torino",
                 "numeri": [
-                    82,
-                    52
+                    52,
+                    7
                 ],
                 "score": "164%",
                 "colore_r1": "gialla",
@@ -110,8 +110,8 @@
             {
                 "ruote": "Cagliari - Torino",
                 "numeri": [
-                    74,
-                    44
+                    44,
+                    89
                 ],
                 "score": "164%",
                 "colore_r1": "gialla",
@@ -120,8 +120,8 @@
             {
                 "ruote": "Torino - Venezia",
                 "numeri": [
-                    68,
-                    38
+                    38,
+                    83
                 ],
                 "score": "164%",
                 "colore_r1": "rossa",
