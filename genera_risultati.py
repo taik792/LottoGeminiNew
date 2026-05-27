@@ -6,22 +6,37 @@ ESTRAZIONI_FILE = 'estrazioni.json'
 RISULTATI_FILE = 'risultati_v4.json'
 
 def carica_dati_estrazioni():
-    """Carica l'archivio storico dal file JSON."""
+    """Carica l'archivio storico dal file JSON adattandosi a liste o dizionari."""
     if not os.path.exists(ESTRAZIONI_FILE):
         print(f"Errore: Il file {ESTRAZIONI_FILE} non esiste.")
         return []
     with open(ESTRAZIONI_FILE, 'r', encoding='utf-8') as f:
-        return json.load(f)
+        dati = json.load(f)
+        # Se l'archivio è un dizionario, estraiamo i valori per renderlo una lista ordinata
+        if isinstance(dati, dict):
+            # Ordina le chiavi numericamente o cronologicamente se possibile
+            try:
+                chiavi_ordinate = sorted(dati.keys(), key=lambda x: int(x) if x.isdigit() else x)
+                return [dati[k] for k in chiavi_ordinate]
+            except Exception:
+                return list(dati.values())
+        return dati
 
 def analizza_stato_forma(archivio, profondita=15):
     """
-    Analizza le ultime estrazioni inserite (in fondo al file JSON)
+    Analizza le ultime estrazioni inserite (in fondo all'archivio)
     per determinare quanti estratti attivi ha ogni numero su ciascuna ruota.
     """
     stato_forma = {}
-    estrazioni_recenti = archivio[-profondita:]
+    if not archivio:
+        return stato_forma
+        
+    # Essendo una lista ora lo slice funziona perfettamente
+    estrazioni_recenti = archivio[-min(profondita, len(archivio)):]
     
     for estrazione in estrazioni_recenti:
+        if not isinstance(estrazione, dict):
+            continue
         for ruota, numeri in estrazione.items():
             if ruota in ['data', 'concorso', 'id', 'Data', 'ID', 'id_estrazione']:
                 continue
@@ -50,8 +65,12 @@ def esegui_elaborazione_motore():
     # 2. Estrazione dello stato di forma recente
     stato_forma = analizza_stato_forma(dati_estrazioni, profondita=15)
 
-    # 3. Identificazione dell'ultimo concorso reale inserito (in fondo alla lista)
+    # 3. Identificazione dell'ultimo concorso reale inserito
     ultima_estrazione = dati_estrazioni[-1]
+    if not isinstance(ultima_estrazione, dict):
+        print("Errore: la struttura dell'ultima estrazione non è valida.")
+        return
+        
     ruote_effettive = [r for r in ultima_estrazione.keys() if r not in ['data', 'concorso', 'id', 'Data', 'ID', 'id_estrazione']]
     
     # 4. Definizione della Mappa del Calore
@@ -87,7 +106,6 @@ def esegui_elaborazione_motore():
                     if num1 == num2:
                         num2 = (num1 + 45) % 90 or 90
                     
-                    # Calcolo dello score geometrico di base (Corretto errore di battitura qui)
                     score_geometrico = 172
                     if (num1 + num2) % 90 == 0 or abs(num1 - num2) == 45:
                         score_geometrico = 180
@@ -116,7 +134,7 @@ def esegui_elaborazione_motore():
                     else:
                         tabellone_colpo3.append(card_previsione)
 
-    # 6. Riempimento di sicurezza dei tabelloni per evitare file json incompleti
+    # 6. Riempimento di sicurezza dei tabelloni
     if not tabellone_nuovi and tabellone_colpo2:
         tabellone_nuovi = tabellone_colpo2[:2]
     if not tabellone_colpo3:
