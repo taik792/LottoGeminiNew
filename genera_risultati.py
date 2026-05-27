@@ -6,100 +6,76 @@ ESTRAZIONI_FILE = 'estrazioni.json'
 RISULTATI_FILE = 'risultati_v4.json'
 
 def carica_dati_estrazioni():
-    """Carica l'archivio storico dal file JSON adattandosi a liste o dizionari."""
+    """Carica l'archivio storico dal file JSON strutturato per ruote."""
     if not os.path.exists(ESTRAZIONI_FILE):
         print(f"Errore: Il file {ESTRAZIONI_FILE} non esiste.")
-        return []
+        return {}
     with open(ESTRAZIONI_FILE, 'r', encoding='utf-8') as f:
-        dati = json.load(f)
-        # Se l'archivio è un dizionario, estraiamo i valori per renderlo una lista ordinata
-        if isinstance(dati, dict):
-            # Ordina le chiavi numericamente o cronologicamente se possibile
-            try:
-                chiavi_ordinate = sorted(dati.keys(), key=lambda x: int(x) if x.isdigit() else x)
-                return [dati[k] for k in chiavi_ordinate]
-            except Exception:
-                return list(dati.values())
-        return dati
-
-def analizza_stato_forma(archivio, profondita=15):
-    """
-    Analizza le ultime estrazioni inserite (in fondo all'archivio)
-    per determinare quanti estratti attivi ha ogni numero su ciascuna ruota.
-    """
-    stato_forma = {}
-    if not archivio:
-        return stato_forma
-        
-    # Essendo una lista ora lo slice funziona perfettamente
-    estrazioni_recenti = archivio[-min(profondita, len(archivio)):]
-    
-    for estrazione in estrazioni_recenti:
-        if not isinstance(estrazione, dict):
-            continue
-        for ruota, numeri in estrazione.items():
-            if ruota in ['data', 'concorso', 'id', 'Data', 'ID', 'id_estrazione']:
-                continue
-            if ruota not in stato_forma:
-                stato_forma[ruota] = {n: 0 for n in range(1, 91)}
-            
-            if isinstance(numeri, list):
-                for n in numeri:
-                    if isinstance(n, int) and 1 <= n <= 90:
-                        stato_forma[ruota][n] += 1
-    return stato_forma
+        return json.load(f)
 
 def esegui_elaborazione_motore():
     print("====================================================")
     print(" INIZIO ELABORAZIONE MOTORE GEOMETRICO ELITE PRO v5")
     print("====================================================")
     
-    # 1. Caricamento database cronologico
-    dati_estrazioni = carica_dati_estrazioni()
-    if not dati_estrazioni:
+    # 1. Caricamento database strutturato per ruote (dal vecchio in alto al giovane in basso)
+    archivio = carica_dati_estrazioni()
+    if not archivio:
         print("Impossibile procedere: archivio estrazioni vuoto o mancante.")
         return
         
-    print(f"Archivio caricato con successo. Rilevati {len(dati_estrazioni)} concorsi storici.")
+    print("Archivio caricato con successo. Analisi struttura verticale delle ruote.")
 
-    # 2. Estrazione dello stato di forma recente
-    stato_forma = analizza_stato_forma(dati_estrazioni, profondita=15)
-
-    # 3. Identificazione dell'ultimo concorso reale inserito
-    ultima_estrazione = dati_estrazioni[-1]
-    if not isinstance(ultima_estrazione, dict):
-        print("Errore: la struttura dell'ultima estrazione non è valida.")
-        return
-        
-    ruote_effettive = [r for r in ultima_estrazione.keys() if r not in ['data', 'concorso', 'id', 'Data', 'ID', 'id_estrazione']]
+    # Lista delle ruote presenti nel tuo file
+    ruote_effettive = [r for r in archivio.keys() if r not in ['data', 'concorso', 'id', 'Data', 'ID', 'id_estrazione']]
     
-    # 4. Definizione della Mappa del Calore
+    # 2. Calcolo dello Stato di Forma (Filtro Frequenti)
+    # Estraiamo gli ultimi 15 concorsi (gli ultimi elementi in fondo alle liste di ciascuna ruota)
+    stato_forma = {}
+    profondita = 15
+    
+    for ruota in ruote_effettive:
+        lista_estrazioni_ruota = archivio[ruota]
+        if isinstance(lista_estrazioni_ruota, list):
+            # Prendiamo le ultime 15 estrazioni in fondo alla lista (le più giovani)
+            recenti = lista_estrazioni_ruota[-profondita:]
+            stato_forma[ruota] = {n: 0 for n in range(1, 91)}
+            for estrazione in recenti:
+                if isinstance(estrazione, list):
+                    for n in estrazione:
+                        if isinstance(n, int) and 1 <= n <= 90:
+                            stato_forma[ruota][n] += 1
+
+    # 3. Definizione della Mappa del Calore (Direttive colori originali)
     ruote_tensione_rossa = ["Firenze", "Roma", "Torino", "Napoli"]
     mappa_calore = {}
-    
     for ruota in ruote_effettive:
         if ruota in ruote_tensione_rossa:
             mappa_calore[ruota] = "rossa"
         else:
-            mappa_calore[ruota] = "gialla"
+            mappa_calore[ruota] = "gialla"  # Milano e le altre sono gialle
 
     tabellone_nuovi = []
     tabellone_colpo2 = []
     tabellone_colpo3 = []
 
-    # 5. Doppi cicli FOR per il calcolo delle distanze geometriche
+    # 4. Doppi cicli FOR per il calcolo delle distanze geometriche sulle ultime estrazioni reali
     for i in range(len(ruote_effettive)):
         for j in range(i + 1, len(ruote_effettive)):
             ruota1 = ruote_effettive[i]
             ruota2 = ruote_effettive[j]
             
-            estratti_r1 = ultima_estrazione[ruota1]
-            estratti_r2 = ultima_estrazione[ruota2]
+            # L'ultima estrazione inserita è l'ultimo elemento [-1] della lista di quella ruota
+            if len(archivio[ruota1]) == 0 or len(archivio[ruota2]) == 0:
+                continue
+                
+            estratti_r1 = archivio[ruota1][-1]
+            estratti_r2 = archivio[ruota2][-1]
             
             if isinstance(estratti_r1, list) and isinstance(estratti_r2, list):
                 if len(estratti_r1) >= 2 and len(estratti_r2) >= 2:
                     
-                    # Logica nativa delle distanze geometriche
+                    # Logica nativa ciclo-geometrica applicata agli estratti reali
                     num1 = (estratti_r1[0] + 45) % 90 or 90
                     num2 = (estratti_r2[1] + 15) % 90 or 90
                     
@@ -110,10 +86,12 @@ def esegui_elaborazione_motore():
                     if (num1 + num2) % 90 == 0 or abs(num1 - num2) == 45:
                         score_geometrico = 180
                     
-                    # FILTRO FREQUENTI
+                    # FILTRO FREQUENTI ANTISFALDAMENTO
                     presenza_n1 = stato_forma.get(ruota1, {}).get(num1, 0)
                     presenza_n2 = stato_forma.get(ruota2, {}).get(num2, 0)
                     
+                    # Se entrambi i numeri dell'ambo geometrico sono assenti da 15 estrazioni,
+                    # abbassiamo lo score di 8 punti per proteggerci dai laterali (+1 / -1)
                     if presenza_n1 == 0 and presenza_n2 == 0:
                         score_finale = score_geometrico - 8
                     else:
@@ -134,7 +112,7 @@ def esegui_elaborazione_motore():
                     else:
                         tabellone_colpo3.append(card_previsione)
 
-    # 6. Riempimento di sicurezza dei tabelloni
+    # 5. Riempimento di sicurezza dei tabelloni della dashboard
     if not tabellone_nuovi and tabellone_colpo2:
         tabellone_nuovi = tabellone_colpo2[:2]
     if not tabellone_colpo3:
@@ -146,7 +124,7 @@ def esegui_elaborazione_motore():
             "colore_r2": mappa_calore.get("Palermo", "gialla")
         })
 
-    # Struttura finale dell'oggetto JSON
+    # Struttura finale dell'oggetto JSON pronta per il frontend index.html
     risultati_finali = {
         "mappa_calore": mappa_calore,
         "tabelloni": {
@@ -156,12 +134,12 @@ def esegui_elaborazione_motore():
         }
     }
 
-    # Scrittura definitiva del file risultati_v4.json
+    # Scrittura definitiva e popolamento del file risultati_v4.json
     with open(RISULTATI_FILE, 'w', encoding='utf-8') as f:
         json.dump(risultati_finali, f, indent=4, ensure_ascii=False)
         
     print("====================================================")
-    print(f" ELABORAZIONE COMPLETATA! File {RISULTATI_FILE} generato.")
+    print(f" ELABORAZIONE COMPLETATA! File {RISULTATI_FILE} correttamente popolato.")
     print("====================================================")
 
 if __name__ == "__main__":
