@@ -8,6 +8,7 @@ RISULTATI_FILE = 'risultati_v4.json'
 def carica_dati_estrazioni():
     """Carica l'archivio storico dal file JSON strutturato per ruote."""
     if not os.path.exists(ESTRAZIONI_FILE):
+        print(f"Errore: Il file {ESTRAZIONI_FILE} non esiste.")
         return {}
     with open(ESTRAZIONI_FILE, 'r', encoding='utf-8') as f:
         return json.load(f)
@@ -22,13 +23,13 @@ def esegui_elaborazione_motore():
         print("Impossibile procedere: archivio estrazioni vuoto o mancante.")
         return
 
-    # Elenco standard delle 11 ruote
+    # Elenco standard delle 11 ruote per il Lotto Italiano
     ruote_standard = [
         "Bari", "Cagliari", "Firenze", "Genova", "Milano", 
         "Napoli", "Palermo", "Roma", "Torino", "Venezia", "Nazionale"
     ]
     
-    # Associazione delle chiavi reali dentro il file JSON
+    # Associazione delle chiavi reali dentro il file JSON (case-insensitive)
     ruote_effettive = []
     chiave_mappata_ruota = {}
     
@@ -43,7 +44,7 @@ def esegui_elaborazione_motore():
         ruote_effettive = [r for r in archivio.keys() if r not in ['data', 'concorso', 'id', 'Data', 'ID', 'id_estrazione']]
         chiave_mappata_ruota = {r: r for r in ruote_effettive}
 
-    # 1. Calcolo dello Stato di Forma (ultimi 15 concorsi)
+    # 1. Calcolo dello Stato di Forma (Filtro Frequenti sugli ultimi 15 concorsi)
     stato_forma = {}
     profondita = 15
     for r_std in ruote_effettive:
@@ -58,7 +59,8 @@ def esegui_elaborazione_motore():
                         if isinstance(n, int) and 1 <= n <= 90:
                             stato_forma[r_std][n] += 1
 
-    # 2. Configurazione Colori Mappa del Calore (Richieste Specifiche)
+    # 2. Configurazione Colori Mappa del Calore (Specifiche Utente Corrette)
+    # Palermo, Roma, Torino = Rosse | Milano = Grigia | Restanti = Gialle
     ruote_rosse = ["Palermo", "Roma", "Torino"]
     ruote_grigie = ["Milano"]
     
@@ -71,17 +73,19 @@ def esegui_elaborazione_motore():
         else:
             mappa_calore_base[r_std] = "gialla"
 
-    # STRATEGIA SALVA-FRONTEND: Generiamo sia le chiavi normali che quelle in MAIUSCOLO
-    mappa_calore_duplicata = {}
+    # STRATEGIA DI PROTEZIONE TOTALE PER OBJECT.ENTRIES:
+    # Generiamo tutte le combinazioni possibili di maiuscole/minuscole richieste dal JS
+    mappa_calore_protetta = {}
     for k, v in mappa_calore_base.items():
-        mappa_calore_duplicata[k] = v          # "Bari": "gialla"
-        mappa_calore_duplicata[k.upper()] = v  # "BARI": "gialla"
+        mappa_calore_protetta[k] = v              # Es: "Bari"
+        mappa_calore_protetta[k.lower()] = v      # Es: "bari"
+        mappa_calore_protetta[k.upper()] = v      # Es: "BARI"
 
     tabellone_nuovi = []
     tabellone_colpo2 = []
     tabellone_colpo3 = []
 
-    # 3. Sviluppo distanze geometriche e analisi estratti
+    # 3. Sviluppo distanze geometriche e analisi estratti verticali
     for i in range(len(ruote_effettive)):
         for j in range(i + 1, len(ruote_effettive)):
             ruota1 = ruote_effettive[i]
@@ -99,6 +103,7 @@ def esegui_elaborazione_motore():
             if isinstance(estratti_r1, list) and isinstance(estratti_r2, list):
                 if len(estratti_r1) >= 2 and len(estratti_r2) >= 2:
                     
+                    # Logica ciclo-geometrica del motore
                     num1 = (estratti_r1[0] + 45) % 90 or 90
                     num2 = (estratti_r2[1] + 15) % 90 or 90
                     
@@ -109,6 +114,7 @@ def esegui_elaborazione_motore():
                     if (num1 + num2) % 90 == 0 or abs(num1 - num2) == 45:
                         score_geometrico = 180
                     
+                    # FILTRO FREQUENTI ANTISFALDAMENTO
                     presenza_n1 = stato_forma.get(ruota1, {}).get(num1, 0)
                     presenza_n2 = stato_forma.get(ruota2, {}).get(num2, 0)
                     
@@ -118,7 +124,7 @@ def esegui_elaborazione_motore():
                         score_finale = score_geometrico
 
                     card_previsione = {
-                        "ruote": f"{ruota1} - {ruota2}",
+                        "ruote": f"{ruota1.upper()} - {ruota2.upper()}",
                         "numeri": [num1, num2],
                         "score": f"{score_finale}%",
                         "colore_r1": mappa_calore_base.get(ruota1, "gialla"),
@@ -132,34 +138,36 @@ def esegui_elaborazione_motore():
                     else:
                         tabellone_colpo3.append(card_previsione)
 
-    # Assicuriamo che i tabelloni non siano mai vuoti
+    # Popolamento di garanzia dei tabelloni per evitare array nulli nel JS
     if not tabellone_nuovi and tabellone_colpo2:
         tabellone_nuovi = tabellone_colpo2[:2]
     if not tabellone_colpo2 and tabellone_nuovi:
         tabellone_colpo2 = tabellone_nuovi[:2]
     if not tabellone_colpo3:
         tabellone_colpo3.append({
-            "ruote": "Bari - Palermo",
+            "ruote": "BARI - PALERMO",
             "numeri": [12, 82],
             "score": "172%",
             "colore_r1": mappa_calore_base.get("Bari", "gialla"),
             "colore_r2": mappa_calore_base.get("Palermo", "gialla")
         })
 
+    # Output finale strutturato con la corretta minuscola richiesta: "mappa_calore"
     risultati_finali = {
-        "mappa_calore": mappa_calore_duplicata,
+        "mappa_calore": mappa_calore_protetta,
         "tabelloni": {
-            "nuovi": tabellone_nuovi,
-            "colpo2": tabellone_colpo2,
-            "colpo3": tabellone_colpo3
+            "nuovi": tabellone_nuovi[:4],
+            "colpo2": tabellone_colpo2[:4],
+            "colpo3": tabellone_colpo3[:4]
         }
     }
 
+    # Scrittura strutturata nel file risultati_v4.json
     with open(RISULTATI_FILE, 'w', encoding='utf-8') as f:
         json.dump(risultati_finali, f, indent=4, ensure_ascii=False)
         
-    print(f"====================================================")
-    print(f" COMPLETATO! {RISULTATI_FILE} pronto con doppio mapping chiavi.")
+    print("====================================================")
+    print(f" ELABORAZIONE COMPLETATA! File {RISULTATI_FILE} generato ed allineato al JS.")
     print("====================================================")
 
 if __name__ == "__main__":
