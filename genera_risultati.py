@@ -19,14 +19,54 @@ def determina_esagono(numero):
     resto = numero % 15
     return 15 if resto == 0 else resto
 
+def aggrega_previsioni(lista_previsioni, score_base):
+    """Fonde le previsioni con gli stessi numeri unendo le ruote ed eliminando i duplicati."""
+    aggregato = {}
+    for prev in lista_previsioni:
+        # Ordina la coppia per identificare i duplicati speculari (es. 38-83 e 83-38)
+        coppia_chiave = tuple(sorted(prev["numeri"]))
+        ruote_correnti = [r.strip() for r in prev["ruote"].split("-")]
+        
+        if coppia_chiave not in aggregato:
+            aggregato[coppia_chiave] = {
+                "ruote_set": set(ruote_correnti),
+                "numeri": list(coppia_chiave),
+                "presenze": 1
+            }
+        else:
+            aggregato[coppia_chiave]["ruote_set"].update(ruote_correnti)
+            aggregato[coppia_chiave]["presenze"] += 1
+
+    # Trasforma il dizionario aggregato nel formato finale per il JSON
+    risultato_fuso = []
+    for info in aggregato.values():
+        lista_ruote_ordinate = sorted(list(info["ruote_set"]))
+        stringa_ruote = " - ".join(lista_ruote_ordinate)
+        
+        # Calcolo del Peso Strutturale Dinamico in base alle convergenze reali
+        valore_base = int(score_base.replace("%", ""))
+        bonus_convergenza = (info["presenze"] - 1) * 2
+        score_dinamico = f"{min(valore_base + bonus_convergenza, 185)}%"
+
+        risultato_fuso.append({
+            "ruote": stringa_ruote,
+            "numeri": info["numeri"],
+            "score": score_dinamico,
+            "colore_r1": "rossa" if any(x in ["Palermo", "Roma", "Torino"] for x in lista_ruote_ordinate) else "gialla",
+            "colore_r2": "grigia" if "Milano" in lista_ruote_ordinate else "gialla"
+        })
+        
+    # Ordina per numero di presenze/convergenze (le più frequenti in alto)
+    return sorted(risultato_fuso, key=lambda x: int(x["score"].replace("%", "")), reverse=True)
+
 def esegui_elaborazione_motore():
-    print("=== ASSIOMA ESAGONALE: QUADRATURA FINALE v5.5 ===")
+    print("=== ASSIOMA ESAGONALE: COMPATTAZIONE CONVERGENZE v6.0 ===")
     archivio = carica_dati_estrazioni()
     if not archivio:
         print("Errore: file estrazioni vuoto o non trovato.")
         return
 
-    # 1. Normalizzazione ruote (Maiuscole/Minuscole azzerate)
+    # 1. Normalizzazione ruote
     ruote_pulite = {}
     for chiave, estrazioni_ruota in archivio.items():
         if chiave.lower() in ['data', 'concorso', 'id', 'id_estrazione', 'frequenze', 'ritardi']:
@@ -54,11 +94,10 @@ def esegui_elaborazione_motore():
         else:
             mappa_calore[r] = "gialla"
 
-    tabellone_nuovi = []
-    tabellone_colpo2 = []
-    tabellone_colpo3 = []
+    grezzo_nuovi = []
+    grezzo_colpo2 = []
 
-    # 3. Calcolo Ciclometrico Strutturale ad Alta Fedeltà
+    # 3. Calcolo Ciclometrico Strutturale
     for i in range(len(elenco_ruote)):
         for j in range(i + 1, len(elenco_ruote)):
             r1 = elenco_ruote[i]
@@ -71,64 +110,50 @@ def esegui_elaborazione_motore():
                 n1 = estratti_r1[p]
                 n2 = estratti_r2[p]
 
-                # Rileviamo la coesione armonica nell'esagono
                 if determina_esagono(n1) == determina_esagono(n2) and n1 != n2:
                     dist = calcola_distanza_ciclometrica(n1, n2)
                     
                     if dist == 15:
-                        # Chiusura lineare consecutiva
                         ambata = (max(n1, n2) + 15) % 90 or 90
                         abbinamento = (min(n1, n2) - 15) % 90 or 90
                         if abbinamento <= 0: abbinamento += 90
-                        score = "180%"
                         
                     elif dist == 30:
-                        # VERA CHIUSURA AD ESAGONO: Calcolo del Punto Medio Ciclometrico
                         p_min = min(n1, n2)
                         p_max = max(n1, n2)
                         
-                        # Se la distanza diretta è 30, il punto medio è a +15 dal minore
                         if (p_max - p_min) == 30:
                             ambata = (p_min + 15) % 90 or 90
-                        else: # Se la distanza sul cerchio gira intorno al 90
+                        else:
                             ambata = (p_max + 15) % 90 or 90
                         
-                        # Abbinamento speculare: il Diametrale del punto medio
                         abbinamento = (ambata + 45) % 90 or 90
-                        score = "172%"
-                        
-                    else: # Distanza 45
-                        # Chiusura ortogonale simmetrica
-                        ambata = (n1 + 15) % 90 or 90
-                        abbinamento = (n2 + 15) % 90 or 90
-                        score = "164%"
+                    else:
+                        continue # Salta distanza 45 (Ex Colpo 3)
 
-                    # BARRIERA MATEMATICA ANTI-DOPPIONE E ANTI-COLLASSO
+                    # BARRIERA MATEMATICA ANTI-DOPPIONE
                     if ambata == abbinamento or ambata in [n1, n2] or abbinamento in [n1, n2]:
-                        # Calcolo dinamico di emergenza con la Somma Condivisa Fuori 90
                         ambata = (n1 + n2) % 90 or 90
                         abbinamento = (ambata + 45) % 90 or 90
                     
-                    # Se per assurdo matematico collassa ancora, stacchiamo di un passo fisso (+1)
                     if ambata == abbinamento:
                         abbinamento = (ambata + 1) % 90 or 90
 
                     previsione = {
                         "ruote": f"{r1} - {r2}",
-                        "numeri": [ambata, abbinamento],
-                        "score": score,
-                        "colore_r1": mappa_calore[r1],
-                        "colore_r2": mappa_calore[r2]
+                        "numeri": [ambata, abbinamento]
                     }
 
                     if dist == 15:
-                        tabellone_nuovi.append(previsione)
+                        grezzo_nuovi.append(previsione)
                     elif dist == 30:
-                        tabellone_colpo2.append(previsione)
-                    elif dist == 45:
-                        tabellone_colpo3.append(previsione)
+                        grezzo_colpo2.append(previsione)
 
-    # 4. Paracadute Autonomi e Separati (Zero travasi o copie incollate)
+    # 4. Fase di Aggregazione e Pulizia Duplicati
+    tabellone_nuovi = aggrega_previsioni(grezzo_nuovi, "180%")
+    tabellone_colpo2 = aggrega_previsioni(grezzo_colpo2, "172%")
+
+    # 5. Paracadute di Emergenza (solo in caso di tabelloni vuoti)
     if not tabellone_nuovi:
         for r_nome in ["Bari", "Cagliari", "Firenze"]:
             if r_nome in ruote_pulite:
@@ -153,31 +178,19 @@ def esegui_elaborazione_motore():
                     "colore_r2": "gialla"
                 })
 
-    if not tabellone_colpo3:
-        for r_nome in ["Roma", "Torino", "Venezia"]:
-            if r_nome in ruote_pulite:
-                e3 = ruote_pulite[r_nome][2]
-                tabellone_colpo3.append({
-                    "ruote": f"{r_nome} - Tutte",
-                    "numeri": [(e3 + 45) % 90 or 90, (e3 + 60) % 90 or 90],
-                    "score": "164%",
-                    "colore_r1": mappa_calore[r_nome],
-                    "colore_r2": "gialla"
-                })
-
-    # Output finale pulito senza sbavature
+    # Output finale pulito per risultati_v4.json (Colpo 3 eliminato dal dizionario)
     risultati_finali = {
         "mappa_calore": mappa_calore,
         "tabelloni": {
             "nuovi": tabellone_nuovi[:6],
             "colpo2": tabellone_colpo2[:6],
-            "colpo3": tabellone_colpo3[:6]
+            "colpo3": []
         }
     }
 
     with open(RISULTATI_FILE, 'w', encoding='utf-8') as f:
         json.dump(risultati_finali, f, indent=4, ensure_ascii=False)
-    print("=== FINALE: MOTORE COMPLETATO CON SUCCESSO! ===")
+    print("=== FINALE: MOTORE FILTRATO E COMPATTATO! ===")
 
 if __name__ == "__main__":
     esegui_elaborazione_motore()
