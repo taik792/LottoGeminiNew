@@ -115,7 +115,7 @@
         .badge-rossa { background-color: var(--pool-red); color: #fff; }
         .badge-grigia { background-color: #e0e0e0; color: #000; }
 
-        /* Navigazione Tabelloni */
+        /* Navigazione Tabelloni (Colpo 3 Rimosso) */
         .tabs-container {
             display: flex;
             justify-content: center;
@@ -176,11 +176,13 @@
         }
 
         .card-ruote {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 700;
             margin-bottom: 18px;
-            margin-top: 5px;
+            margin-top: 15px;
             color: var(--text-main);
+            line-height: 1.4;
+            word-wrap: break-word;
         }
 
         .numbers-row {
@@ -261,6 +263,7 @@
             body { padding: 10px; }
             .main-title { font-size: 24px; }
             .heatmap-grid { grid-template-columns: repeat(3, 1fr); }
+            .card-ruote { font-size: 15px; }
         }
     </style>
 </head>
@@ -275,18 +278,15 @@
 
     <div class="heatmap-section">
         <div class="section-title"><i class="fa-solid fa-fire"></i> Mappa del Calore Ruote (Tensione Cicli)</div>
-        <div class="heatmap-grid" id="heatmapGrid">
-            </div>
+        <div class="heatmap-grid" id="heatmapGrid"></div>
     </div>
 
     <div class="tabs-container">
-        <button class="tab-btn active" onclick="switchTab('nuovi')">Nuove</button>
-        <button class="tab-btn" onclick="switchTab('colpo2')">Colpo 2</button>
-        <button class="tab-btn" onclick="switchTab('colpo3')">Colpo 3</button>
+        <button class="tab-btn active" onclick="switchTab(event, 'nuovi')">Nuove</button>
+        <button class="tab-btn" onclick="switchTab(event, 'colpo2')">Colpo 2</button>
     </div>
 
-    <div class="cards-grid" id="cardsGrid">
-        </div>
+    <div class="cards-grid" id="cardsGrid"></div>
 
     <script>
         let globaleDati = null;
@@ -295,7 +295,6 @@
         async function caricaDati() {
             const cardsGrid = document.getElementById('cardsGrid');
             try {
-                // Timbro del tempo (Date.now()) per costringere il browser a scaricare i dati reali
                 const risposta = await fetch('risultati_v4.json?v=' + Date.now());
                 if (!risposta.ok) {
                     throw new Error("Impossibile leggere il file dei risultati.");
@@ -314,13 +313,11 @@
             const heatmapGrid = document.getElementById('heatmapGrid');
             heatmapGrid.innerHTML = '';
 
-            // Blocco di protezione contro i dati non ancora pronti
             if (!data || !data.mappa_calore) {
                 console.warn("Mappa calore non trovata o non disponibile.");
                 return;
             }
 
-            // Set di controllo per non duplicare le ruote a schermo
             const ruoteInserite = new Set();
 
             Object.entries(data.mappa_calore).forEach(([ruota, stato]) => {
@@ -349,7 +346,7 @@
             const elencoPrevisioni = globaleDati.tabelloni[tabKey];
 
             if (elencoPrevisioni.length === 0) {
-                cardsGrid.innerHTML = `<div class="error-message">Nessuna previsione disponibile.</div>`;
+                cardsGrid.innerHTML = `<div class="error-message">Nessuna previsione disponibile per il tabellone corrente.</div>`;
                 return;
             }
 
@@ -365,7 +362,7 @@
                 }
 
                 card.innerHTML = `
-                    <div class="card-tag">${tabKey === 'nuovi' ? 'Nuova' : tabKey.toUpperCase()}</div>
+                    <div class="card-tag">${tabKey === 'nuovi' ? 'Nuova' : 'COLPO 2'}</div>
                     <div class="card-ruote">${info.ruote}</div>
                     <div class="numbers-row">${pallineHtml}</div>
                     <div class="info-row">
@@ -383,14 +380,13 @@
             });
         }
 
-        function switchTab(tabKey) {
+        function switchTab(event, tabKey) {
             tabAttivo = tabKey;
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             event.target.classList.add('active');
             renderTabellone(tabKey);
         }
 
-        // Inizializzazione della pagina
         window.onload = caricaDati;
     </script>
 </body>
