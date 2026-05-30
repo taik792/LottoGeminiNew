@@ -257,7 +257,7 @@
             const cardsGrid = document.getElementById('cardsGrid');
             try {
                 // Allineato al nome file generato dal backend Python
-                const risposta = await fetch('risultati_dashboard.json?v=' + Date.now());
+                const risposta = await fetch('risultati_v4.json?v=' + Date.now());
                 if (!risposta.ok) {
                     throw new Error("Impossibile leggere il file dei risultati.");
                 }
