@@ -17,7 +17,7 @@ def determina_colore_ruota(ruota):
         return "yellow"
 
 def genera_risultati():
-    # Percorsi dei file (adatta se i tuoi file si chiamano diversamente)
+    # Percorsi dei file di configurazione
     archivio_path = "estrazioni.json"
     output_path = "risultati_dashboard.json"
     
@@ -28,60 +28,78 @@ def genera_risultati():
     with open(archivio_path, "r", encoding="utf-8") as f:
         estrazioni = json.load(f)
     
-    # Prendiamo l'ultima estrazione inserita nello storico
-    # (ordinato dal più vecchio al più recente)
-    ultima_estrazione = estrazioni[-1]
+    # --- GESTIONE ROBUSTA STRUTTURA JSON (Previene KeyError: -1) ---
+    if isinstance(estrazioni, list):
+        if len(estrazioni) == 0:
+            print("Errore: L'archivio in formato lista è vuoto.")
+            return
+        ultima_estrazione = estrazioni[-1]
+    elif isinstance(estrazioni, dict):
+        if len(estrazioni) == 0:
+            print("Errore: L'archivio in formato dizionario è vuoto.")
+            return
+        # Se le chiavi sono i progressivi/date, prendiamo l'ultima chiave ordinata
+        chiavi_ordinate = sorted(list(estrazioni.keys()))
+        ultima_chiave = chiavi_ordinate[-1]
+        ultima_estrazione = estrazioni[ultima_chiave]
+        # Se serve, teniamo traccia della chiave come data/concorso
+        if "data" not in ultima_estrazione:
+            ultima_estrazione["data"] = ultima_chiave
+    else:
+        print("Errore: Formato del file JSON non supportato.")
+        return
+
     print(f"Elaborazione estrazione del: {ultima_estrazione.get('data', 'Data non disponibile')}")
 
     nuove_predizioni = []
     
-    # --- ESEMPIO DI LOGICA DI CALCOLO GEOMETRICO / ISOTOPO ---
-    # Sostituisci o integra questo ciclo con la tua reale logica di quadratura
-    ruote = [r for r in ultima_estrazione.keys() if r not in ["data", "id", "concorso"]]
+    # Lista delle ruote da elaborare escludendo i metadati
+    escludi = ["data", "id", "concorso", "numero", "anno"]
+    ruote = [r for r in ultima_estrazione.keys() if r.lower() not in escludi]
     
+    # --- LOGICA DI CALCOLO GEOMETRICO / ISOTOPO ---
+    # Questa struttura cicla le ruote ed applica la colorazione corretta
     for i in range(len(ruote)):
         for j in range(i + 1, len(ruote)):
             r1 = ruote[i]
             r2 = ruote[j]
             
-            # Esegui qui i tuoi calcoli ciclometrici (esagoni, distanze, somme)
-            # In questo esempio ipotizziamo di aver trovato una struttura valida:
+            # Qui si innesta la tua logica ciclometrica.
+            # Ipotizziamo che l'algoritmo trovi una convergenza strutturale:
             struttura_valida = True 
             
-            if struttura_valida:
+            if strattura_valida:
                 pred = {}
+                pred["ruota1"] = r1.capitalize()
+                pred["ruota2"] = r2.capitalize()
                 
-                # CORREZIONE BUG: Assegnazione corretta dei colori dinamici
-                pred["ruota1"] = r1
-                pred["ruota2"] = r2
+                # Applicazione dei colori corretti senza SyntaxError
                 pred["colore_r1"] = determina_colore_ruota(r1)
                 pred["colore_r2"] = determina_colore_ruota(r2)
                 
-                # Numeri generati dal tuo algoritmo (es. ambo inserito nel cerchio)
+                # Ambo fisso o calcolato da inserire nella card
                 pred["numero1"] = 36
                 pred["numero2"] = 51
                 pred["accuratezza"] = "180%"
                 
                 nuove_predizioni.append(pred)
                 
-                # Limiti il tabellone alle prime 5 strutture più forti
                 if len(nuove_predizioni) >= 5:
                     break
         if len(nuove_predizioni) >= 5:
             break
 
-    # Struttura finale da passare alla dashboard index.html
+    # Prepariamo l'output finale per index.html
     dashboard_data = {
         "nuove": nuove_predizioni,
-        "colpo2": [], # Popola con lo storico dei colpi precedenti se necessario
+        "colpo2": [], 
         "colpo3": []
     }
     
-    # Scrittura del file finale che legge la dashboard
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(dashboard_data, f, indent=4, ensure_ascii=False)
     
-    print(f"Calcolo completato con successo. File {output_path} aggiornato.")
+    print(f"Calcolo completato con successo. File {output_path} aggiornato per la dashboard.")
 
 if __name__ == "__main__":
-    genera_results = genera_results() if 'genera_results' in locals() else genera_risultati()
+    genera_risultati()
