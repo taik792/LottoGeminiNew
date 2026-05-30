@@ -92,7 +92,7 @@ def calcola_peso_statistico(n, ruota, stats):
     return punteggio
 
 def esegui_elaborazione_motore():
-    print("=== AVVIO MOTORE GEOMETRICO-STATISTICO v7.1 ===")
+    print("=== AVVIO MOTORE GEOMETRICO-STATISTICO v7.2 ===")
     archivio = carica_dati_estrazioni()
     if not archivio:
         print("Errore: file estrazioni vuoto o non trovato.")
@@ -149,7 +149,7 @@ def esegui_elaborazione_motore():
                     numeri_gioco = sorted([ambata, abbinamento])
                     chiave_ambo = f"{numeri_gioco[0]}-{numeri_gioco[1]}"
 
-                    # --- CORREZIONE INDICI PESO STATISTICO ---
+                    # --- FIX COMPLETO DEGLI INDICI: ANALISI DEL PRIMO E SECONDO NUMERO ---
                     peso_r1 = calcola_peso_statistico(numeri_gioco[0], r1, statistiche_ruote) + calcola_peso_statistico(numeri_gioco[1], r1, statistiche_ruote)
                     peso_r2 = calcola_peso_statistico(numeri_gioco[0], r2, statistiche_ruote) + calcola_peso_statistico(numeri_gioco[1], r2, statistiche_ruote)
                     media_peso = (peso_r1 + peso_r2) / 4
