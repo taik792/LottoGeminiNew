@@ -9,7 +9,7 @@ def calcola_distanza_ciclometrica(n1, n2):
         dist = 90 - dist
     return dist
 
-def genera_risultati():
+def genera_results():
     # 1. Carica il file delle estrazioni storiche
     if not os.path.exists('estrazioni.json'):
         print("Errore: estrazioni.json non trovato!")
@@ -18,13 +18,13 @@ def genera_risultati():
     with open('estrazioni.json', 'r', encoding='utf-8') as f:
         estrazioni = json.load(f)
     
-    # Struttura finale dei risultati per la dashboard v4
+    # Struttura finale controllata per la dashboard
     risultati = {
         "nuove": [],
         "colpo2": []
     }
     
-    # Definizione dei gruppi di ruote per i colori della mappa
+    # Definizione dei gruppi di ruote per i colori
     ruote_rosse = ["Palermo", "Roma", "Torino"]
     ruote_grigie = ["Milano"]
     
@@ -33,18 +33,17 @@ def genera_risultati():
         return
 
     # 2. MOTORE CICLOMETRICO ESAGONALE
-    # Distanze geometriche dell'esagono regolare (multipli di 15)
     distanze_esagono = [15, 30, 45]
     previsioni_totali = []
     lista_ruote = list(estrazioni.keys())
     
-    # Analizza i collegamenti geometrici tra le ultime estrazioni di tutte le ruote
+    # Cerchiamo le strutture armoniche nell'ultima estrazione
     for r1, r2 in itertools.combinations(lista_ruote, 2):
         if len(estrazioni[r1]) == 0 or len(estrazioni[r2]) == 0:
             continue
             
-        cinquina_r1 = estrazioni[r1][-1] # Ultima cinquina della ruota 1
-        cinquina_r2 = estrazioni[r2][-1] # Ultima cinquina della ruota 2
+        cinquina_r1 = estrazioni[r1][-1]
+        cinquina_r2 = estrazioni[r2][-1]
         
         condizione_trovata = False
         
@@ -52,13 +51,11 @@ def genera_risultati():
             for n2 in cinquina_r2:
                 dist = calcola_distanza_ciclometrica(n1, n2)
                 
-                # Se troviamo una distanza armonica esagonale
                 if dist in distanze_esagono and n1 != n2:
-                    # Chiusura geometrica: calcolo dei due numeri previsionali
+                    # Calcolo chiusure geometriche esagonali distinte
                     chiusura1 = (n1 + 15) if n1 + 15 <= 90 else (n1 + 15 - 90)
                     chiusura2 = (n2 + 45) if n2 + 45 <= 90 else (n2 + 45 - 90)
                     
-                    # Evitiamo che i due numeri della previsione siano uguali
                     if chiusura1 == chiusura2:
                         chiusura2 = (chiusura1 + 15) if chiusura1 + 15 <= 90 else 1
                     
@@ -75,11 +72,15 @@ def genera_risultati():
                     })
                     condizione_trovata = True
                     break
-            if condition_trovata := condizione_trovata:
+            if condizione_trovata:
                 break
+                
+        # CRITICO: Ci fermiamo non appena abbiamo abbastanza previsioni in totale (es. 8)
+        # per evitare l'effetto cascata sulla dashboard!
+        if len(previsioni_totali) >= 8:
+            break
 
-    # 3. POPOLAMENTO STRUTTURA JSON PER I CONTENITORI WEB
-    # Distribuiamo le previsioni geometriche trovate tra i tab "nuove" e "colpo2"
+    # 3. DISTRIBUZIONE LIMITATA (Max 4 per tab)
     for idx, prev in enumerate(previsioni_totali):
         data_struttura = {
             "ruota1": prev["ruota1"],
@@ -91,22 +92,17 @@ def genera_risultati():
             "budget": "4.00€",
             "accuratezza": f"{165 + (idx % 10)}%"
         }
-        # Ne mettiamo un po' nella prima sezione e le rimanenti nella seconda
+        
+        # Inserisce le prime 4 in 'nuove' e le successive 4 in 'colpo2'
         if idx < 4:
             risultati["nuove"].append(data_struttura)
-        else:
+        elif idx < 8:
             risultati["colpo2"].append(data_struttura)
-            
-    # Fallback di controllo se l'archivio ha poche estrazioni e non trova abbastanza calcoli esagonali
-    if len(risultati["nuove"]) == 0:
-        risultati["nuove"].append({"ruota1": "Bari", "ruota2": "Torino", "numero1": 12, "numero2": 45, "colore_r1": "yellow", "colore_r2": "red", "budget": "4.00€", "accuratezza": "165%"})
-    if len(risultati["colpo2"]) == 0:
-        risultati["colpo2"].append({"ruota1": "Milano", "ruota2": "Roma", "numero1": 29, "numero2": 86, "colore_r1": "gray", "colore_r2": "red", "budget": "4.00€", "accuratezza": "172%"})
 
-    # 4. Salva il file definitivo con il nome corretto
+    # 4. Scrittura del file finale pulito
     with open('risultati_v4.json', 'w', encoding='utf-8') as f:
         json.dump(risultati, f, ensure_ascii=False, indent=4)
-    print("File risultati_v4.json generato correttamente con il Motore Ciclometrico Esagonale.")
+    print("File risultati_v4.json generato e limitato correttamente.")
 
 if __name__ == "__main__":
-    genera_risultati()
+    genera_results()
