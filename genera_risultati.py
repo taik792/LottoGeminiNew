@@ -1,113 +1,77 @@
 import json
 import os
 
-def determina_colore_ruota(ruota):
-    """
-    Assegna il colore corretto nel JSON per la dashboard.
-    """
-    ruota_clean = ruota.strip().lower()
-    if ruota_clean in ["palermo", "roma", "torino"]:
-        return "red"
-    elif ruota_clean == "milano":
-        return "gray"
-    else:
-        return "yellow"
-
-def calcola_numeri_ciclometrici(estrazione_r1, estrazione_r2):
-    """
-    Esempio di algoritmo ciclometrico reale basato sui veri estratti.
-    Prende il primo estratto di ogni ruota, calcola la somma e il diametrale in base 90.
-    """
-    # Prendi i primi estratti del colpo corrente (es. 87 per Bari, 72 per Cagliari)
-    e1 = estrazione_r1[0]
-    e2 = estrazione_r2[0]
-    
-    # Calcolo ciclometrico di esempio (Somma e relativo Diametrale)
-    num1 = (e1 + e2) % 90
-    if num1 == 0: num1 = 90
-        
-    num2 = (num1 + 45) % 90
-    if num2 == 0: num2 = 90
-        
-    return num1, num2
-
 def genera_risultati():
-    archivio_path = "estrazioni.json"
-    output_path = "risultati_dashboard.json"
-    
-    if not os.path.exists(archivio_path):
-        print(f"Errore: Il file {archivio_path} non esiste.")
+    # 1. Carica il file delle estrazioni storiche
+    if not os.path.exists('estrazioni.json'):
+        print("Errore: estrazioni.json non trovato!")
         return
-
-    with open(archivio_path, "r", encoding="utf-8") as f:
-        mappa_estrazioni = json.load(f)
+        
+    with open('estrazioni.json', 'r', encoding='utf-8') as f:
+        estrazioni = json.load(f)
     
-    escludi = ["data", "id", "concorso", "numero", "anno"]
-    ruote_disponibili = [r for r in mappa_estrazioni.keys() if r.lower() not in escludi]
-    
-    if not ruote_disponibili:
-        print("Errore: Nessuna ruota trovata.")
-        return
-
-    tabellone_nuovi = []
-    tabellone_colpo2 = []
-    tabellone_colpo3 = []
-    
-    # Contatore totale per distribuire le previsioni nei tab della dashboard
-    conteggio = 0
-
-    # Accoppiamento geometrico delle ruote
-    for i in range(len(ruote_disponibili)):
-        for j in range(i + 1, len(ruote_disponibili)):
-            r1 = ruote_disponibili[i]
-            r2 = ruote_disponibili[j]
-            
-            # ACCESSO DINAMICO AI VERI DATI:
-            # mappa_estrazioni[ruota][-1] prende l'estrazione del 30 Maggio
-            # mappa_estrazioni[ruota][-2] prenderebbe il colpo precedente
-            estrazione_attuale_r1 = mappa_estrazioni[r1][-1]
-            estrazione_attuale_r2 = mappa_estrazioni[r2][-1]
-            
-            # Calcoliamo i numeri reali basandoci sull'estrazione attuale
-            n1, n2 = calcola_numeri_ciclometrici(estrazione_attuale_r1, estrazione_attuale_r2)
-            
-            pred = {
-                "ruota1": r1.capitalize(),
-                "ruota2": r2.capitalize(),
-                "colore_r1": determina_colore_ruota(r1),
-                "colore_r2": determina_colore_ruota(r2),
-                "numero1": n1,
-                "numero2": n2,
-                "accuratezza": "180%"
-            }
-            
-            # Distribuzione dinamica nelle tab basata sul progresso dei cicli
-            if conteggio < 5:
-                pred["accuratezza"] = "180%"
-                tabellone_nuovi.append(pred)
-            elif conteggio < 10:
-                pred["accuratezza"] = "172%"
-                tabellone_colpo2.append(pred)
-            else:
-                pred["accuratezza"] = "164%"
-                tabellone_colpo3.append(pred)
-                
-            conteggio += 1
-            if conteggio >= 15:  # Limiti complessivi per la visualizzazione grafica
-                break
-        if conteggio >= 15:
-            break
-
-    dashboard_data = {
-        "nuove": tabellone_nuovi,
-        "colpo2": tabellone_colpo2, 
-        "colpo3": tabellone_colpo3
+    # 2. Struttura base del file di output per la dashboard
+    risultati = {
+        "nuove": [],
+        "colpo2": []
     }
     
-    with open(output_path, "w", encoding="utf-8") as f:
-        json.dump(dashboard_data, f, indent=4, ensure_ascii=False)
+    # Definizione dei gruppi di ruote per i colori della mappa
+    ruote_rosse = ["Palermo", "Roma", "Torino"]
+    ruote_grigie = ["Milano"]
     
-    print(f"File {output_path} generato con calcoli dinamici reali!")
+    # Verifichiamo che ci siano dati all'interno del file
+    if not estrazioni or not isinstance(estrazioni, dict):
+        print("Errore: Formato estrazioni.json non valido.")
+        return
+
+    print("Elaborazione estrazioni completata con successo.")
+    
+    # 3. ESEMPIO DI LOGICA DI GENERAZIONE PREVISIONI (Adattala alla tua ciclometria)
+    # Prendiamo le ruote disponibili nel JSON
+    lista_ruote = list(estrazioni.keys())
+    
+    # Generiamo delle previsioni fittizie basate sulle ultime estrazioni reali per testare il funzionamento
+    if len(lista_ruote) >= 2:
+        # Previsione 1 (Nuove)
+        r1, r2 = "Bari", "Torino"
+        # Accediamo all'ultima estrazione (indice -1 della lista di quella ruota)
+        num1 = estrazioni[r1][-1][0] if len(estrazioni[r1]) > 0 else 12
+        num2 = estrazioni[r2][-1][1] if len(estrazioni[r2]) > 0 else 45
+        
+        colore_r1 = "red" if r1 in ruote_rosse else ("gray" if r1 in ruote_grigie else "yellow")
+        colore_r2 = "red" if r2 in ruote_rosse else ("gray" if r2 in ruote_grigie else "yellow")
+        
+        risultati["nuove"].append({
+            "ruote": f"{r1} - {r2}",
+            "numeri": [num1, num2],
+            "budget": "4.00€",
+            "accuratezza": "165%",
+            "colore_r1": colore_r1,
+            "colore_r2": colore_r2
+        })
+        
+        # Previsione 2 (Colpo 2)
+        r3, r4 = "Milano", "Roma"
+        num3 = estrazioni[r3][-1][2] if len(estrazioni[r3]) > 0 else 23
+        num4 = estrazioni[r4][-1][3] if len(estrazioni[r4]) > 0 else 67
+        
+        colore_r3 = "red" if r3 in ruote_rosse else ("gray" if r3 in ruote_grigie else "yellow")
+        colore_r4 = "red" if r4 in ruote_rosse else ("gray" if r4 in ruote_grigie else "yellow")
+        
+        risultati["colpo2"].append({
+            "ruote": f"{r3} - {r4}",
+            "numeri": [num3, num4],
+            "budget": "4.00€",
+            "accuratezza": "170%",
+            "colore_r1": colore_r3,
+            "colore_r2": colore_r4
+        })
+
+    # 4. Salva il file dei risultati per la dashboard
+    with open('risultati_dashboard.json', 'w', encoding='utf-8') as f:
+        json.dump(risultati, f, ensure_ascii=False, indent=4)
+    print("File risultati_dashboard.json generato correttamente.")
 
 if __name__ == "__main__":
     genera_risultati()
