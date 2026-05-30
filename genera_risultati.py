@@ -21,7 +21,6 @@ def determina_esagono(numero):
 def analizza_statistiche_ruote(archivio):
     """
     Analizza la cronologia per calcolare ritardi e frequenze recenti (ultimi 18 colpi).
-    Migliora la precisione filtrando i numeri con le migliori probabilità di sortita.
     """
     stats = {}
     for chiave, estrazioni_ruota in archivio.items():
@@ -63,7 +62,6 @@ def analizza_statistiche_ruote(archivio):
 def calcola_peso_statistico(n, ruota, stats):
     """
     Assegna un punteggio di precisione al numero basato su ritardo ideale e ciclicità.
-    Fascia d'oro del ritardo per l'ambata: tra 10 e 36 estrazioni.
     """
     if ruota not in stats:
         return 50  
@@ -92,7 +90,7 @@ def calcola_peso_statistico(n, ruota, stats):
     return punteggio
 
 def esegui_elaborazione_motore():
-    print("=== AVVIO MOTORE GEOMETRICO-STATISTICO v7.2 ===")
+    print("=== AVVIO MOTORE GEOMETRICO-STATISTICO v7.3 ===")
     archivio = carica_dati_estrazioni()
     if not archivio:
         print("Errore: file estrazioni vuoto o non trovato.")
@@ -130,14 +128,18 @@ def esegui_elaborazione_motore():
                 if determina_esagono(n1) == determina_esagono(n2) and n1 != n2:
                     dist = calcola_distanza_ciclometrica(n1, n2)
                     somma_isotopa = (n1 + n2) % 90 or 90
+                    
+                    # L'ambata principale rimane il punto di equilibrio geometrico
                     ambata = (somma_isotopa + 45) % 90 or 90
                     
-                    if dist == 15:
-                        abbinamento = (max(n1, n2) + 15) % 90 or 90
-                    elif dist == 30:
-                        abbinamento = (min(n1, n2) + 15) % 90 or 90
-                    else:
-                        abbinamento = (ambata + 15) % 90 or 90
+                    # --- NUOVA LOGICA: CHIUSURA DIAGONALE DINAMICA ---
+                    # Invece del passo fisso +15 che bloccava i numeri, calcoliamo il passo
+                    # basandoci sul simmetrico dinamico rispetto al numero statistico più caldo
+                    peso_n1 = calcola_peso_statistico(n1, r1, statistiche_ruote)
+                    peso_n2 = calcola_peso_statistico(n2, r2, statistiche_ruote)
+                    
+                    passo_dinamico = 30 if peso_n1 >= peso_n2 else 60
+                    abbinamento = (ambata + passo_dinamico) % 90 or 90
 
                     if ambata == abbinamento or ambata in [n1, n2] or abbinamento in [n1, n2]:
                         ambata = (n1 + 45) % 90 or 90
@@ -149,7 +151,6 @@ def esegui_elaborazione_motore():
                     numeri_gioco = sorted([ambata, abbinamento])
                     chiave_ambo = f"{numeri_gioco[0]}-{numeri_gioco[1]}"
 
-                    # --- FIX COMPLETO DEGLI INDICI: ANALISI DEL PRIMO E SECONDO NUMERO ---
                     peso_r1 = calcola_peso_statistico(numeri_gioco[0], r1, statistiche_ruote) + calcola_peso_statistico(numeri_gioco[1], r1, statistiche_ruote)
                     peso_r2 = calcola_peso_statistico(numeri_gioco[0], r2, statistiche_ruote) + calcola_peso_statistico(numeri_gioco[1], r2, statistiche_ruote)
                     media_peso = (peso_r1 + peso_r2) / 4
