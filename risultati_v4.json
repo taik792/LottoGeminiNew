@@ -1,1 +1,24 @@
-
+{
+    "nuove": [
+        {
+            "ruota1": "Bari",
+            "ruota2": "Torino",
+            "numero1": 87,
+            "numero2": 87,
+            "colore_r1": "yellow",
+            "colore_r2": "red",
+            "accuratezza": "165%"
+        }
+    ],
+    "colpo2": [
+        {
+            "ruota1": "Milano",
+            "ruota2": "Roma",
+            "numero1": 29,
+            "numero2": 86,
+            "colore_r1": "gray",
+            "colore_r2": "red",
+            "accuratezza": "172%"
+        }
+    ]
+}
