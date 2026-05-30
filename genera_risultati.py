@@ -77,7 +77,7 @@ def calcola_peso_statistico(n, ruota, stats):
     
     punteggio = 50
     
-    # Sotto-frequenza e iper-frequenza ciclica (Frequenza ideale in 18 estrazioni = 1 o 2)
+    # Sotto-frequenza e iper-frequenza ciclica
     if freq == 1:
         punteggio += 15
     elif freq == 2:
@@ -87,12 +87,12 @@ def calcola_peso_statistico(n, ruota, stats):
     else:            # Troppo frequente, potrebbe saturare
         punteggio -= 10
         
-    # Finestra di sortita probabilistica del ritardo (Matrice di Leontief applicata al lotto)
+    # Finestra di sortita probabilistica del ritardo
     if 10 <= ritardo <= 36:
         punteggio += 25
     elif 1 <= ritardo <= 9: # Appena uscito, ritardo basso
         punteggio -= 15
-    elif ritardo > 54:      # Super ritardatario (Spesso un buco nero per i capitali)
+    elif ritardo > 54:      # Super ritardatario
         punteggio -= 10
         
     return punteggio
@@ -159,17 +159,14 @@ def esegui_elaborazione_motore():
                     numeri_gioco = sorted([ambata, abbinamento])
                     chiave_ambo = f"{numeri_gioco[0]}-{numeri_gioco[1]}"
 
-                    # --- NUOVO SISTEMA DI CALCOLO PRECISIONE (SCORE DINAMICO) ---
-                    # Calcoliamo la bontà dei numeri combinati sulle due ruote di gioco
+                    # --- CALCOLO PRECISIONE (SCORE DINAMICO) ---
                     peso_r1 = calcola_peso_statistico(numeri_gioco[0], r1, statistiche_ruote) + calcola_peso_statistico(numeri_gioco[1], r1, statistiche_ruote)
                     peso_r2 = calcola_peso_statistico(numeri_gioco[0], r2, statistiche_ruote) + calcola_peso_statistico(numeri_gioco[1], r2, statistiche_ruote)
                     media_peso = (peso_r1 + peso_r2) / 4
 
-                    # Calcolo bonus di base per distanza geometrica originaria
                     base_score = 140 if dist == 15 else 130 if dist == 30 else 120
                     score_finale_numerico = int(base_score + (media_peso * 0.4))
                     
-                    # Cap di sicurezza per lo score grafico
                     if score_finale_numerico > 195: score_finale_numerico = 195
                     str_score = f"{score_finale_numerico}%"
 
@@ -178,7 +175,6 @@ def esegui_elaborazione_motore():
                     if chiave_ambo in previsioni_generate:
                         if r1 not in previsioni_generate[chiave_ambo]["ruote"]:
                             previsioni_generate[chiave_ambo]["ruote"] += f", {r1}"
-                            # Se l'ambo converge su più ruote, aumentiamo la precisione (Score Bonus)
                             vecchio_score = int(previsioni_generate[chiave_ambo]["score"].replace("%", ""))
                             previsioni_generate[chiave_ambo]["score"] = f"{min(vecchio_score + 5, 198)}%"
                     else:
@@ -189,15 +185,14 @@ def esegui_elaborazione_motore():
                             "colore_r1": mappa_calore[r1],
                             "colore_r2": mappa_calore[r2],
                             "tipo": tipo_tabellone,
-                            "valore_ordinamento": score_finale_numerico # Usato per mostrare prima i più probabili
+                            "valore_ordinamento": score_finale_numerico
                         }
 
-    # 3. Smistamento nei rispettivi tabelloni ordinati per precisione reale descrescente
+    # 3. Smistamento e ordinamento per precisione decrescente
     tabellone_nuovi = []
     tabellone_colpo2 = []
     tabellone_colpo3 = []
 
-    # Ordiniamo le previsioni per il valore reale di probabilità calcolato
     previsioni_ordinate = sorted(previsioni_generate.values(), key=lambda x: x["valore_ordinamento"], reverse=True)
 
     for pred in previsioni_ordinate:
@@ -215,7 +210,7 @@ def esegui_elaborazione_motore():
         elif pred["tipo"] == "colpo3":
             tabellone_colpo3.append(struttura)
 
-    # 4. Fallback di emergenza protetti
+    # 4. Fallback di emergenza corretti senza errori di sintassi
     if not tabellone_nuovi:
         tabellone_nuovi = [{"ruote": "Nessuna Struttura", "numeri": [15, 60], "score": "140%", "colore_r1": "gialla", "colore_r2": "gialla"}]
     if not tabellone_colpo2:
@@ -228,3 +223,13 @@ def esegui_elaborazione_motore():
         "tabelloni": {
             "nuovi": tabellone_nuovi[:6],
             "colpo2": tabellone_colpo2[:6],
+            "colpo3": tabellone_colpo3[:6]
+        }
+    }
+
+    with open(RISULTATI_FILE, 'w', encoding='utf-8') as f:
+        json.dump(risultati_finali, f, indent=4, ensure_ascii=False)
+    print("=== MOTORE IBRIDO GEOMETRICO-STATISTICO AGGIORNATO CON SUCCESSO ===")
+
+if __name__ == "__main__":
+    esegui_elaborazione_motore()
