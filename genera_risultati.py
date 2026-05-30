@@ -32,21 +32,17 @@ def analizza_statistiche_ruote(archivio):
         if not isinstance(estrazioni_ruota, list) or len(estrazioni_ruota) == 0:
             continue
             
-        # Inizializzazione dizionari per i 90 numeri
         ritardi = {n: 0 for n in range(1, 91)}
         frequenza_recente = {n: 0 for n in range(1, 91)}
         
-        # Estraiamo le ultime 18 estrazioni per la frequenza ciclica
         ultime_18 = estrazioni_ruota[-18:] if len(estrazioni_ruota) >= 18 else estrazioni_ruota
         
-        # Calcolo frequenze recenti
         for estrazione in ultime_18:
             if isinstance(estrazione, list):
                 for num in estrazione[:5]:
                     if 1 <= int(num) <= 90:
                         frequenza_recente[int(num)] += 1
                         
-        # Calcolo ritardo attuale scorrendo l'archivio al contrario
         for n in range(1, 91):
             ritardo = 0
             trovato = False
@@ -55,8 +51,8 @@ def analizza_statistiche_ruote(archivio):
                     trovato = True
                     break
                 ritardo += 1
-            ritards_val = ritardo if trovato else len(estrazioni_ruota)
-            ritardi[n] = ritards_val
+            stats_val = ritardo if trovato else len(estrazioni_ruota)
+            ritardi[n] = stats_val
             
         stats[nome_standard] = {
             "ritardi": ritardi,
@@ -67,47 +63,43 @@ def analizza_statistiche_ruote(archivio):
 def calcola_peso_statistico(n, ruota, stats):
     """
     Assegna un punteggio di precisione al numero basato su ritardo ideale e ciclicità.
-    Fascia d'oro del ritardo per l'ambata: tra 10 e 40 estrazioni.
+    Fascia d'oro del ritardo per l'ambata: tra 10 e 36 estrazioni.
     """
     if ruota not in stats:
-        return 50  # Valore neutro se manca la ruota
+        return 50  
         
     ritardo = stats[ruota]["ritardi"].get(n, 0)
     freq = stats[ruota]["frequenze_18"].get(n, 0)
     
     punteggio = 50
     
-    # Sotto-frequenza e iper-frequenza ciclica
     if freq == 1:
         punteggio += 15
     elif freq == 2:
         punteggio += 20
-    elif freq == 0:  # Numero freddo
+    elif freq == 0:  
         punteggio += 5
-    else:            # Troppo frequente, potrebbe saturare
+    else:            
         punteggio -= 10
         
-    # Finestra di sortita probabilistica del ritardo
     if 10 <= ritardo <= 36:
         punteggio += 25
-    elif 1 <= ritardo <= 9: # Appena uscito, ritardo basso
+    elif 1 <= ritardo <= 9: 
         punteggio -= 15
-    elif ritardo > 54:      # Super ritardatario
+    elif ritardo > 54:      
         punteggio -= 10
         
     return punteggio
 
 def esegui_elaborazione_motore():
-    print("=== AVVIO MOTORE GEOMETRICO-STATISTICO v7.0 ===")
+    print("=== AVVIO MOTORE GEOMETRICO-STATISTICO v7.1 ===")
     archivio = carica_dati_estrazioni()
     if not archivio:
         print("Errore: file estrazioni vuoto o non trovato.")
         return
 
-    # Elaborazione delle statistiche storiche per convergenza convergente
     statistiche_ruote = analizza_statistiche_ruote(archivio)
 
-    # 1. Normalizzazione e lettura estratti reali
     ruote_pulite = {}
     for chiave, estrazioni_ruota in archivio.items():
         if chiave.lower() in ['data', 'concorso', 'id', 'id_estrazione', 'frequenze', 'ritardi']:
@@ -119,7 +111,6 @@ def esegui_elaborazione_motore():
             if isinstance(ultima, list) and len(ultima) >= 5:
                 ruote_pulite[nome_standard] = [int(x) for x in ultima[:5]]
 
-    # Mappa calore fissa richiesta
     ruote_rosse = ["Palermo", "Roma", "Torino"]
     ruote_grigie = ["Milano"]
     mappa_calore = {r: "rossa" if r in ruote_rosse else "grigia" if r in ruote_grigie else "gialla" for r in ruote_pulite}
@@ -127,7 +118,6 @@ def esegui_elaborazione_motore():
     elenco_ruote = sorted(list(ruote_pulite.keys()))
     previsioni_generate = {}
 
-    # 2. Calcolo a Quadratura Ciclometrica Perfetta con Filtro Storico
     for i in range(len(elenco_ruote)):
         for j in range(i + 1, len(elenco_ruote)):
             r1 = elenco_ruote[i]
@@ -159,7 +149,7 @@ def esegui_elaborazione_motore():
                     numeri_gioco = sorted([ambata, abbinamento])
                     chiave_ambo = f"{numeri_gioco[0]}-{numeri_gioco[1]}"
 
-                    # --- CALCOLO PRECISIONE (SCORE DINAMICO) ---
+                    # --- CORREZIONE INDICI PESO STATISTICO ---
                     peso_r1 = calcola_peso_statistico(numeri_gioco[0], r1, statistiche_ruote) + calcola_peso_statistico(numeri_gioco[1], r1, statistiche_ruote)
                     peso_r2 = calcola_peso_statistico(numeri_gioco[0], r2, statistiche_ruote) + calcola_peso_statistico(numeri_gioco[1], r2, statistiche_ruote)
                     media_peso = (peso_r1 + peso_r2) / 4
@@ -188,7 +178,6 @@ def esegui_elaborazione_motore():
                             "valore_ordinamento": score_finale_numerico
                         }
 
-    # 3. Smistamento e ordinamento per precisione decrescente
     tabellone_nuovi = []
     tabellone_colpo2 = []
     tabellone_colpo3 = []
@@ -210,7 +199,6 @@ def esegui_elaborazione_motore():
         elif pred["tipo"] == "colpo3":
             tabellone_colpo3.append(struttura)
 
-    # 4. Fallback di emergenza corretti senza errori di sintassi
     if not tabellone_nuovi:
         tabellone_nuovi = [{"ruote": "Nessuna Struttura", "numeri": [15, 60], "score": "140%", "colore_r1": "gialla", "colore_r2": "gialla"}]
     if not tabellone_colpo2:
