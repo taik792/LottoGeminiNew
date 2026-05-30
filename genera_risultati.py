@@ -97,4 +97,4 @@ def genera_risultati():
 
 # PULIZIA TOTALE DI MAIN DEL CRASH
 if __name__ == "__main__":
-    genera_risultati()
+    genera_risultati_v4()
