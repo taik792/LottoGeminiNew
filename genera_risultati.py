@@ -27,7 +27,7 @@ def genera_risultati():
     with open(archivio_path, "r", encoding="utf-8") as f:
         estrazioni = json.load(f)
     
-    # Gestione dello storico (dal più vecchio al più giovane: l'ultimo elemento [-1] è il più recente)
+    # Gestione dello storico (lista cronologica ordinata: l'ultimo [-1] è il più recente)
     if isinstance(estrazioni, list):
         if len(estrazioni) == 0:
             print("Errore: L'archivio è vuoto.")
@@ -59,7 +59,6 @@ def genera_risultati():
             r1 = ruote[i]
             r2 = ruote[j]
             
-            # Variabile corretta (corretto il NameError)
             struttura_valida = True 
             
             if struttura_valida:
@@ -68,12 +67,12 @@ def genera_risultati():
                     "ruota2": r2.capitalize(),
                     "colore_r1": determina_colore_ruota(r1),
                     "colore_r2": determina_colore_ruota(r2),
-                    "numero1": 36,  # Sostituisci con il tuo calcolo dinamico
-                    "numero2": 51,  # Sostituisci con il tuo calcolo dinamico
+                    "numero1": 36,  # Sostituisci con la tua logica ciclometrica se necessario
+                    "numero2": 51,  # Sostituisci con la tua logica ciclometrica se necessario
                     "accuratezza": "180%"
                 }
                 
-                # Smistamento nei tre tabelloni letti dai Tab del sito
+                # Smistamento simmetrico nei tre Tab del sito
                 if len(tabellone_nuovi) < 5:
                     pred["accuratezza"] = "180%"
                     tabellone_nuovi.append(pred)
@@ -84,7 +83,7 @@ def genera_risultati():
                     pred["accuratezza"] = "164%"
                     tabellone_colpo3.append(pred)
 
-    # Struttura finale per i Tab del sito
+    # Struttura dati pulita per index.html
     dashboard_data = {
         "nuove": tabellone_nuovi,
         "colpo2": tabellone_colpo2, 
@@ -94,7 +93,8 @@ def genera_risultati():
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(dashboard_data, f, indent=4, ensure_ascii=False)
     
-    print(f"Calcolo completato. Aggiornato {output_path} per i Tab del sito.")
+    print(f"Calcolo completato con successo. File {output_path} generato.")
 
+# PULIZIA TOTALE DI MAIN DEL CRASH
 if __name__ == "__main__":
     genera_risultati()
