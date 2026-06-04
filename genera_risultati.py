@@ -81,7 +81,7 @@ def genera_risultati():
                     })
                     condizione_trovata = True
                     break
-            if condizione_trovata:
+            if condizione_trovata: # <--- Verificato: combacia perfettamente con la riga sopra
                 break
                 
         # Blocco di sicurezza per non ingolfare il layout (max 8 previsioni totali)
@@ -107,18 +107,17 @@ def genera_risultati():
         elif idx < 8:
             risultati["colpo2"].append(data_struttura)
             
-    # Fallback di emergenza se le estrazioni non generano combinazioni esagonali
+    # Fallback di emergenza
     if len(risultati["nuove"]) == 0:
         risultati["nuove"].append({"ruota1": "Bari", "ruota2": "Roma", "numero1": 12, "numero2": 87, "colore_r1": "yellow", "colore_r2": "red", "budget": "4.00€", "accuratezza": "165%"})
     if len(risultati["colpo2"]) == 0:
         risultati["colpo2"].append({"ruota1": "Bari", "ruota2": "Torino", "numero1": 40, "numero2": 55, "colore_r1": "yellow", "colore_r2": "red", "budget": "4.00€", "accuratezza": "169%"})
 
-  # 4. Salva il file definitivo per il caricamento JavaScript
+    # 4. Salva il file definitivo per il caricamento JavaScript
     with open('risultati_v4.json', 'w', encoding='utf-8') as f:
         json.dump(risultati, f, ensure_ascii=False, indent=4)
         
     print("File risultati_v4.json generato correttamente.")
 
-# Questo è il modo corretto e diretto per far partire lo script
 if __name__ == "__main__":
     genera_risultati()
