@@ -113,11 +113,12 @@ def genera_risultati():
     if len(risultati["colpo2"]) == 0:
         risultati["colpo2"].append({"ruota1": "Bari", "ruota2": "Torino", "numero1": 40, "numero2": 55, "colore_r1": "yellow", "colore_r2": "red", "budget": "4.00€", "accuratezza": "169%"})
 
-    # 4. Salva il file definitivo per il caricamento JavaScript
+  # 4. Salva il file definitivo per il caricamento JavaScript
     with open('risultati_v4.json', 'w', encoding='utf-8') as f:
         json.dump(risultati, f, ensure_ascii=False, indent=4)
         
     print("File risultati_v4.json generato correttamente.")
 
+# Questo è il modo corretto e diretto per far partire lo script
 if __name__ == "__main__":
-    genera_results = genera_risultati()
+    genera_risultati()
