@@ -81,7 +81,7 @@ def genera_risultati():
                     })
                     condizione_trovata = True
                     break
-            if condizione_trovata:  # <--- CORRETTO IN ITALIANO (Prima era condition_trovata)
+            if condizione_trovata:
                 break
                 
         # Blocco di sicurezza per non ingolfare il layout (max 8 previsioni totali)
@@ -107,7 +107,7 @@ def genera_risultati():
         elif idx < 8:
             risultati["colpo2"].append(data_struttura)
             
-    # Fallback di emergenza se l'archivio dovesse essere vuoto
+    # Fallback di emergenza se le estrazioni non generano combinazioni esagonali
     if len(risultati["nuove"]) == 0:
         risultati["nuove"].append({"ruota1": "Bari", "ruota2": "Roma", "numero1": 12, "numero2": 87, "colore_r1": "yellow", "colore_r2": "red", "budget": "4.00€", "accuratezza": "165%"})
     if len(risultati["colpo2"]) == 0:
@@ -117,7 +117,7 @@ def genera_risultati():
     with open('risultati_v4.json', 'w', encoding='utf-8') as f:
         json.dump(risultati, f, ensure_ascii=False, indent=4)
         
-    print("File risultati_v4.json generato con successo!")
+    print("File risultati_v4.json generato correttamente.")
 
 if __name__ == "__main__":
-    genera_risultati()
+    genera_results = genera_risultati()
