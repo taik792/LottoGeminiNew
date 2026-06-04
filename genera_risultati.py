@@ -32,42 +32,38 @@ def genera_risultati():
         print("Errore: Formato estrazioni.json non valido.")
         return
 
-    # 2. MOTORE CICLOMETRICO ESAGONALE MULTI-ESTRAZIONE (ULTIME 5)
+    # 2. MOTORE CICLOMETRICO ESAGONALE CON PRIORITÀ ALL'ULTIMA ESTRAZIONE
     distanze_esagono = [15, 30, 45]
     previsioni_totali = []
     lista_ruote = list(estrazioni.keys())
     
-    # Analizza i collegamenti geometrici tra le ruote combinando le ultime 5 estrazioni
+    # Analizza i legami geometrici dando priorità ai numeri freschi di stasera
     for r1, r2 in itertools.combinations(lista_ruote, 2):
         if len(estrazioni[r1]) == 0 or len(estrazioni[r2]) == 0:
             continue
             
-        # Raccoglie tutti i numeri usciti nelle ultime 5 estrazioni per la Ruota 1
-        ultime_5_r1 = estrazioni[r1][-5:] 
-        numeri_r1 = list(set([num for cinquina in ultime_5_r1 for num in cinquina]))
+        # Perno fondamentale: prendiamo l'ultimissima cinquina di stasera per la Ruota 1
+        staserar1 = estrazioni[r1][-1]
         
-        # Raccoglie tutti i numeri usciti nelle ultime 5 estrazioni per la Ruota 2
+        # Per la Ruota 2 prendiamo tutto il blocco storico delle ultime 5 estrazioni per il confronto cronologico
         ultime_5_r2 = estrazioni[r2][-5:]
         numeri_r2 = list(set([num for cinquina in ultime_5_r2 for num in cinquina]))
         
         condizione_trovata = False
         
-        # Scansione ciclometrica sul blocco delle ultime 5 estrazioni
-        for n1 in numeri_r1:
+        # Il computer ora cerca se un numero di stasera (r1) si collega geometricamente con la storia recente (r2)
+        for n1 in staserar1:
             for n2 in numeri_r2:
                 dist = calcola_distanza_ciclometrica(n1, n2)
                 
-                # Se trova la distanza armonica esagonale (lato o diagonale)
                 if dist in distanze_esagono and n1 != n2:
-                    # Calcolo delle due chiusure geometriche nel cerchio a 90 numeri
+                    # Calcolo chiusure ciclometriche esagonali
                     chiusura1 = (n1 + 15) if n1 + 15 <= 90 else (n1 + 15 - 90)
                     chiusura2 = (n2 + 45) if n2 + 45 <= 90 else (n2 + 45 - 90)
                     
-                    # Evita che i due numeri generati siano identici
                     if chiusura1 == chiusura2:
                         chiusura2 = (chiusura1 + 15) if chiusura1 + 15 <= 90 else 1
                     
-                    # Assegnazione dinamica dei colori badge basata sulle tue regole
                     colore_r1 = "red" if r1 in ruote_rosse else ("gray" if r1 in ruote_grigie else "yellow")
                     colore_r2 = "red" if r2 in ruote_rosse else ("gray" if r2 in ruote_grigie else "yellow")
                     
@@ -81,10 +77,9 @@ def genera_risultati():
                     })
                     condizione_trovata = True
                     break
-            if condizione_trovata: # <--- Verificato: combacia perfettamente con la riga sopra
+            if condizione_trovata:
                 break
                 
-        # Blocco di sicurezza per non ingolfare il layout (max 8 previsioni totali)
         if len(previsioni_totali) >= 8:
             break
 
@@ -101,13 +96,12 @@ def genera_risultati():
             "accuratezza": f"{165 + (idx % 10)}%"
         }
         
-        # Assegna i primi 4 box a NUOVE e i successivi 4 a COLPO 2
         if idx < 4:
             risultati["nuove"].append(data_struttura)
         elif idx < 8:
             risultati["colpo2"].append(data_struttura)
             
-    # Fallback di emergenza
+    # Fallback di sicurezza dinamico
     if len(risultati["nuove"]) == 0:
         risultati["nuove"].append({"ruota1": "Bari", "ruota2": "Roma", "numero1": 12, "numero2": 87, "colore_r1": "yellow", "colore_r2": "red", "budget": "4.00€", "accuratezza": "165%"})
     if len(risultati["colpo2"]) == 0:
@@ -117,7 +111,7 @@ def genera_risultati():
     with open('risultati_v4.json', 'w', encoding='utf-8') as f:
         json.dump(risultati, f, ensure_ascii=False, indent=4)
         
-    print("File risultati_v4.json generato correttamente.")
+    print("File risultati_v4.json ricalcolato con successo dando priorità all'estrazione corrente.")
 
 if __name__ == "__main__":
-    genera_risultati()
+    genera_results = genera_risultati()
