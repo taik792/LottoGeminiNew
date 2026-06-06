@@ -86,7 +86,7 @@ def genera_risultati():
                     conteggio_ruote[r2] += 1
                     condizione_trovata = True
                     break
-            if condition_trovata:  # Errore corretto qui sotto!
+            if condizione_trovata:  # <-- Sistemato qui! Niente più errori.
                 break
 
     # 3. DISTRIBUZIONE SUI PANNELLI (Max 4 box per tab)
@@ -117,7 +117,7 @@ def genera_risultati():
     with open('risultati_v4.json', 'w', encoding='utf-8') as f:
         json.dump(risultati, f, ensure_ascii=False, indent=4)
         
-    print("File risultati_v4.json generato in modalità dinamica e bilanciata.")
+    print("File risultati_v4.json generato correttamente con il nuovo motore dinamico.")
 
 if __name__ == "__main__":
-    genera_risultati()
+    genera_results = genera_risultati()
