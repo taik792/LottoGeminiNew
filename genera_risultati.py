@@ -79,7 +79,7 @@ def genera_risultati():
                     conteggio_ruote[r2] += 1
                     condizione_trovata = True
                     break
-            if condition_trovata:
+            if condizione_trovata:  # <-- Errore corretto qui! Ora è in italiano corretto.
                 break
 
     # 3. DISTRIBUZIONE SUI PANNELLI
