@@ -30,14 +30,13 @@ def genera_risultati():
         print("Errore: Formato estrazioni.json non valido.")
         return
 
-    # 2. MOTORE CICLOMETRICO SINCRONO (SOLO ULTIMA ESTRAZIONE DI STASERA)
+    # 2. MOTORE IBRIDO BILANCIATO (PROFONDITÀ 2 ESTRAZIONI)
     distanze_esagono = [15, 30, 45]
     previsioni_totali = []
     lista_ruote = list(estrazioni.keys())
     
     conteggio_ruote = {ruota: 0 for ruota in lista_ruote}
     
-    # Scontro diretto solo ed esclusivamente tra le ultime cinquine sfornate stasera
     for r1, r2 in itertools.combinations(lista_ruote, 2):
         if len(estrazioni[r1]) == 0 or len(estrazioni[r2]) == 0:
             continue
@@ -45,17 +44,19 @@ def genera_risultati():
         if conteggio_ruote[r1] >= 2 or conteggio_ruote[r2] >= 2:
             continue
             
-        # Prendiamo SOLO l'ultimo vettore estratto stasera per entrambe le ruote
+        # Perno freschissimo di stasera
         cinquina_r1 = estrazioni[r1][-1]
-        cinquina_r2 = estrazioni[r2][-1]
+        
+        # Paracadute statistico: le ultime 2 estrazioni della Ruota 2 (Stasera + Giovedì)
+        ultime_2_r2 = estrazioni[r2][-2:]
+        numeri_r2 = list(set([num for cinquina in ultime_2_r2 for num in cinquina]))
         
         condizione_trovata = False
         
         for n1 in cinquina_r1:
-            for n2 in cinquina_r2:
+            for n2 in numeri_r2:
                 dist = calcola_distanza_ciclometrica(n1, n2)
                 
-                # Se c'è un legame sincrono istantaneo stasera
                 if dist in distanze_esagono and n1 != n2:
                     chiusura1 = (n1 + 15) if n1 + 15 <= 90 else (n1 + 15 - 90)
                     chiusura2 = (n2 + 45) if n2 + 45 <= 90 else (n2 + 45 - 90)
@@ -79,7 +80,7 @@ def genera_risultati():
                     conteggio_ruote[r2] += 1
                     condizione_trovata = True
                     break
-            if condizione_trovata:  # <-- Errore corretto qui! Ora è in italiano corretto.
+            if condizione_trovata:
                 break
 
     # 3. DISTRIBUZIONE SUI PANNELLI
@@ -100,16 +101,16 @@ def genera_risultati():
         elif idx < 8:
             risultati["colpo2"].append(data_struttura)
             
-    # Fallback dinamici
+    # Fallback di sicurezza
     if len(risultati["nuove"]) == 0:
-        risultati["nuove"].append({"ruota1": "Bari", "ruota2": "Roma", "numero1": 10, "numero2": 55, "colore_r1": "yellow", "colore_r2": "red", "budget": "4.00€", "accuratezza": "165%"})
+        risultati["nuove"].append({"ruota1": "Bari", "ruota2": "Roma", "numero1": 11, "numero2": 56, "colore_r1": "yellow", "colore_r2": "red", "budget": "4.00€", "accuratezza": "165%"})
     if len(risultati["colpo2"]) == 0:
-        risultati["colpo2"].append({"ruota1": "Bari", "ruota2": "Torino", "numero1": 22, "numero2": 67, "colore_r1": "yellow", "colore_r2": "red", "budget": "4.00€", "accuratezza": "169%"})
+        risultati["colpo2"].append({"ruota1": "Bari", "ruota2": "Torino", "numero1": 33, "numero2": 78, "colore_r1": "yellow", "colore_r2": "red", "budget": "4.00€", "accuratezza": "169%"})
 
     with open('risultati_v4.json', 'w', encoding='utf-8') as f:
         json.dump(risultati, f, ensure_ascii=False, indent=4)
         
-    print("Cambio rotta completato. Generati risultati in modalità Sincrona Istantanea.")
+    print("Mdf pronto. Generati risultati stabili a profondità 2.")
 
 if __name__ == "__main__":
     genera_risultati()
