@@ -1,1 +1,86 @@
-[]
+{
+    "nuove": [
+        {
+            "ruota1": "Bari",
+            "ruota2": "Firenze",
+            "numero1": 46,
+            "numero2": 56,
+            "colore_r1": "yellow",
+            "colore_r2": "yellow",
+            "budget": "4.00€",
+            "accuratezza": "170%"
+        },
+        {
+            "ruota1": "Bari",
+            "ruota2": "Milano",
+            "numero1": 46,
+            "numero2": 37,
+            "colore_r1": "yellow",
+            "colore_r2": "gray",
+            "budget": "4.00€",
+            "accuratezza": "171%"
+        },
+        {
+            "ruota1": "Firenze",
+            "ruota2": "Milano",
+            "numero1": 77,
+            "numero2": 37,
+            "colore_r1": "yellow",
+            "colore_r2": "gray",
+            "budget": "4.00€",
+            "accuratezza": "172%"
+        },
+        {
+            "ruota1": "Napoli",
+            "ruota2": "Palermo",
+            "numero1": 32,
+            "numero2": 66,
+            "colore_r1": "yellow",
+            "colore_r2": "red",
+            "budget": "4.00€",
+            "accuratezza": "173%"
+        }
+    ],
+    "colpo2": [
+        {
+            "ruota1": "Napoli",
+            "ruota2": "Roma",
+            "numero1": 32,
+            "numero2": 4,
+            "colore_r1": "yellow",
+            "colore_r2": "red",
+            "budget": "4.00€",
+            "accuratezza": "174%"
+        },
+        {
+            "ruota1": "Palermo",
+            "ruota2": "Roma",
+            "numero1": 17,
+            "numero2": 4,
+            "colore_r1": "red",
+            "colore_r2": "red",
+            "budget": "4.00€",
+            "accuratezza": "175%"
+        },
+        {
+            "ruota1": "Torino",
+            "ruota2": "Venezia",
+            "numero1": 81,
+            "numero2": 85,
+            "colore_r1": "red",
+            "colore_r2": "yellow",
+            "budget": "4.00€",
+            "accuratezza": "176%"
+        },
+        {
+            "ruota1": "Torino",
+            "ruota2": "Cagliari",
+            "numero1": 81,
+            "numero2": 5,
+            "colore_r1": "red",
+            "colore_r2": "yellow",
+            "budget": "4.00€",
+            "accuratezza": "177%"
+        }
+    ]
+}
