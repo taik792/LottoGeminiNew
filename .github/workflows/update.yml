@@ -1,34 +1,31 @@
-name: Lotto Elite Pro V5 - Elaborazione Automatica
+name: Lotto Bot V4
 
 on:
-  push:
-    paths:
-      - 'estrazioni.json'
-      - 'genera_risultati.py'
-  workflow_dispatch: # Ti permette di avviare l'algoritmo manualmente dalla scheda Actions
+  schedule:
+    - cron: "*/30 * * * *" # Ogni 30 minuti
+  workflow_dispatch: # Permette l'avvio manuale
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    permissions: # Permessi di scrittura necessari
+      contents: write
     steps:
-      - name: Checkout del codice
+      - name: Clona repository
         uses: actions/checkout@v3
-        with:
-          persist-credentials: true
 
-      - name: Configurazione di Python
+      - name: Installa Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10'
+          python-version: '3.11'
 
-      - name: Esegui algoritmo statistico-dinamico
+      - name: Esegui algoritmo
         run: python genera_risultati.py
 
-      - name: Configura Git e salva i risultati
+      - name: Commit risultati
         run: |
-          git config --global user.name "GitHub Action Bot"
-          git config --global user.email "action@github.com"
+          git config --global user.name "github-actions"
+          git config --global user.email "actions@github.com"
           git add risultati_v4.json
-          # Esegue il commit solo se il file risultati_v4.json è effettivamente cambiato
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Aggiornamento automatico dashboard risultati_v4.json" && git push)
+          git commit -m "Update risultati V4" || echo "Nessuna modifica"
+          git push
