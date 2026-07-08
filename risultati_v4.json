@@ -2,9 +2,9 @@
     "nuove": [
         {
             "ruota1": "Bari",
-            "ruota2": "Firenze",
-            "numero1": 1,
-            "numero2": 56,
+            "ruota2": "Cagliari",
+            "numero1": 24,
+            "numero2": 27,
             "colore_r1": "yellow",
             "colore_r2": "yellow",
             "budget": "4.00€",
@@ -12,50 +12,60 @@
         },
         {
             "ruota1": "Bari",
-            "ruota2": "Milano",
-            "numero1": 1,
-            "numero2": 10,
+            "ruota2": "Firenze",
+            "numero1": 24,
+            "numero2": 34,
             "colore_r1": "yellow",
-            "colore_r2": "gray",
+            "colore_r2": "yellow",
             "budget": "4.00€",
             "accuratezza": "195%"
         },
         {
-            "ruota1": "Firenze",
-            "ruota2": "Milano",
-            "numero1": 56,
-            "numero2": 10,
+            "ruota1": "Cagliari",
+            "ruota2": "Firenze",
+            "numero1": 27,
+            "numero2": 34,
             "colore_r1": "yellow",
-            "colore_r2": "gray",
+            "colore_r2": "yellow",
             "budget": "4.00€",
             "accuratezza": "195%"
         },
         {
-            "ruota1": "Napoli",
-            "ruota2": "Palermo",
-            "numero1": 8,
-            "numero2": 23,
+            "ruota1": "Genova",
+            "ruota2": "Milano",
+            "numero1": 15,
+            "numero2": 10,
             "colore_r1": "yellow",
-            "colore_r2": "red",
+            "colore_r2": "gray",
             "budget": "4.00€",
             "accuratezza": "195%"
         }
     ],
     "colpo2": [
         {
-            "ruota1": "Napoli",
-            "ruota2": "Roma",
-            "numero1": 8,
-            "numero2": 33,
+            "ruota1": "Genova",
+            "ruota2": "Napoli",
+            "numero1": 15,
+            "numero2": 63,
             "colore_r1": "yellow",
-            "colore_r2": "red",
+            "colore_r2": "yellow",
+            "budget": "4.00€",
+            "accuratezza": "195%"
+        },
+        {
+            "ruota1": "Milano",
+            "ruota2": "Napoli",
+            "numero1": 10,
+            "numero2": 63,
+            "colore_r1": "gray",
+            "colore_r2": "yellow",
             "budget": "4.00€",
             "accuratezza": "195%"
         },
         {
             "ruota1": "Palermo",
             "ruota2": "Roma",
-            "numero1": 23,
+            "numero1": 86,
             "numero2": 33,
             "colore_r1": "red",
             "colore_r2": "red",
@@ -63,22 +73,12 @@
             "accuratezza": "195%"
         },
         {
-            "ruota1": "Torino",
-            "ruota2": "Venezia",
-            "numero1": 87,
-            "numero2": 85,
+            "ruota1": "Palermo",
+            "ruota2": "Torino",
+            "numero1": 86,
+            "numero2": 45,
             "colore_r1": "red",
-            "colore_r2": "yellow",
-            "budget": "4.00€",
-            "accuratezza": "195%"
-        },
-        {
-            "ruota1": "Torino",
-            "ruota2": "Cagliari",
-            "numero1": 87,
-            "numero2": 84,
-            "colore_r1": "red",
-            "colore_r2": "yellow",
+            "colore_r2": "red",
             "budget": "4.00€",
             "accuratezza": "195%"
         }
