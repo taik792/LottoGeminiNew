@@ -1,86 +1,130 @@
 {
-    "nuove": [
-        {
-            "ruota1": "Bari",
-            "ruota2": "Cagliari",
-            "numero1": 1,
-            "numero2": 72,
-            "colore_r1": "yellow",
-            "colore_r2": "yellow",
-            "budget": "4.00€",
-            "accuratezza": "195%"
+    "info_concorso": {
+        "numero": "Lotto Intelligence V8",
+        "data": "18/07/2026"
+    },
+    "previsioni": {
+        "BARI": {
+            "numeri_estrazione": [
+                37,
+                63,
+                29,
+                38,
+                39
+            ],
+            "tipo_calcolo": "Sommativo da 1° Bari (37) +25",
+            "ambata": 62,
+            "ambo": [
+                62,
+                17
+            ],
+            "ambetti": [
+                [
+                    62,
+                    18
+                ],
+                [
+                    62,
+                    16
+                ]
+            ]
         },
-        {
-            "ruota1": "Bari",
-            "ruota2": "Firenze",
-            "numero1": 1,
-            "numero2": 12,
-            "colore_r1": "yellow",
-            "colore_r2": "yellow",
-            "budget": "4.00€",
-            "accuratezza": "195%"
-        },
-        {
-            "ruota1": "Cagliari",
-            "ruota2": "Firenze",
-            "numero1": 72,
-            "numero2": 12,
-            "colore_r1": "yellow",
-            "colore_r2": "yellow",
-            "budget": "4.00€",
-            "accuratezza": "195%"
-        },
-        {
-            "ruota1": "Genova",
-            "ruota2": "Milano",
-            "numero1": 75,
-            "numero2": 53,
-            "colore_r1": "yellow",
-            "colore_r2": "gray",
-            "budget": "4.00€",
-            "accuratezza": "195%"
+        "MILANO": {
+            "numeri_estrazione": [
+                52,
+                51,
+                25,
+                88,
+                63
+            ],
+            "tipo_calcolo": "Sommativo da 1° Bari (37) +25",
+            "ambata": 62,
+            "ambo": [
+                62,
+                17
+            ],
+            "ambetti": [
+                [
+                    62,
+                    18
+                ],
+                [
+                    62,
+                    16
+                ]
+            ]
         }
-    ],
-    "colpo2": [
+    },
+    "storico_verificato": [
         {
-            "ruota1": "Genova",
-            "ruota2": "Napoli",
-            "numero1": 75,
-            "numero2": 8,
-            "colore_r1": "yellow",
-            "colore_r2": "yellow",
-            "budget": "4.00€",
-            "accuratezza": "195%"
+            "data": "Concorso Arretrat. -1",
+            "ambata": 27,
+            "ambo": "27 - 72",
+            "colpi": "1° Colpo",
+            "stato": "In gioco"
         },
         {
-            "ruota1": "Milano",
-            "ruota2": "Napoli",
-            "numero1": 53,
-            "numero2": 8,
-            "colore_r1": "gray",
-            "colore_r2": "yellow",
-            "budget": "4.00€",
-            "accuratezza": "195%"
+            "data": "Concorso Arretrat. -2",
+            "ambata": 73,
+            "ambo": "73 - 28",
+            "colpi": "2° Colpo",
+            "stato": "In gioco"
         },
         {
-            "ruota1": "Palermo",
-            "ruota2": "Roma",
-            "numero1": 39,
-            "numero2": 85,
-            "colore_r1": "red",
-            "colore_r2": "red",
-            "budget": "4.00€",
-            "accuratezza": "195%"
+            "data": "Concorso Arretrat. -3",
+            "ambata": 67,
+            "ambo": "67 - 22",
+            "colpi": "3° Colpo",
+            "stato": "In gioco"
         },
         {
-            "ruota1": "Palermo",
-            "ruota2": "Torino",
-            "numero1": 39,
-            "numero2": 35,
-            "colore_r1": "red",
-            "colore_r2": "red",
-            "budget": "4.00€",
-            "accuratezza": "195%"
+            "data": "Concorso Arretrat. -4",
+            "ambata": 23,
+            "ambo": "23 - 68",
+            "colpi": "4° Colpo",
+            "stato": "In gioco"
+        },
+        {
+            "data": "Concorso Arretrat. -5",
+            "ambata": 86,
+            "ambo": "86 - 41",
+            "colpi": "Esito al 4° colpo",
+            "stato": "Ambata Vincente"
+        },
+        {
+            "data": "Concorso Arretrat. -6",
+            "ambata": 56,
+            "ambo": "56 - 11",
+            "colpi": "Esito al 1° colpo",
+            "stato": "Ambata Vincente"
+        },
+        {
+            "data": "Concorso Arretrat. -7",
+            "ambata": 16,
+            "ambo": "16 - 61",
+            "colpi": "7° Colpo",
+            "stato": "In gioco"
+        },
+        {
+            "data": "Concorso Arretrat. -8",
+            "ambata": 65,
+            "ambo": "65 - 20",
+            "colpi": "8° Colpo",
+            "stato": "In gioco"
+        },
+        {
+            "data": "Concorso Arretrat. -9",
+            "ambata": 87,
+            "ambo": "87 - 42",
+            "colpi": "9° Colpo",
+            "stato": "In gioco"
+        },
+        {
+            "data": "Concorso Arretrat. -10",
+            "ambata": 49,
+            "ambo": "49 - 4",
+            "colpi": "Esito al 4° colpo",
+            "stato": "Ambata Vincente"
         }
     ]
 }
