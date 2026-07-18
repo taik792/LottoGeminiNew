@@ -16,16 +16,16 @@
             "ambata": 62,
             "ambo": [
                 62,
-                17
+                29
             ],
             "ambetti": [
                 [
                     62,
-                    18
+                    26
                 ],
                 [
-                    62,
-                    16
+                    29,
+                    26
                 ]
             ]
         },
@@ -41,16 +41,16 @@
             "ambata": 62,
             "ambo": [
                 62,
-                17
+                29
             ],
             "ambetti": [
                 [
                     62,
-                    18
+                    26
                 ],
                 [
-                    62,
-                    16
+                    29,
+                    26
                 ]
             ]
         }
@@ -59,70 +59,70 @@
         {
             "data": "Concorso Arretrat. -1",
             "ambata": 27,
-            "ambo": "27 - 72",
+            "ambo": "27 - 64 | Vert: 72",
             "colpi": "1° Colpo",
             "stato": "In gioco"
         },
         {
             "data": "Concorso Arretrat. -2",
             "ambata": 73,
-            "ambo": "73 - 28",
+            "ambo": "73 - 18 | Vert: 37",
             "colpi": "2° Colpo",
             "stato": "In gioco"
         },
         {
             "data": "Concorso Arretrat. -3",
             "ambata": 67,
-            "ambo": "67 - 22",
+            "ambo": "67 - 24 | Vert: 76",
             "colpi": "3° Colpo",
             "stato": "In gioco"
         },
         {
             "data": "Concorso Arretrat. -4",
             "ambata": 23,
-            "ambo": "23 - 68",
+            "ambo": "23 - 68 | Vert: 32",
             "colpi": "4° Colpo",
             "stato": "In gioco"
         },
         {
             "data": "Concorso Arretrat. -5",
             "ambata": 86,
-            "ambo": "86 - 41",
+            "ambo": "86 - 5 | Vert: 68",
             "colpi": "Esito al 4° colpo",
             "stato": "Ambata Vincente"
         },
         {
             "data": "Concorso Arretrat. -6",
             "ambata": 56,
-            "ambo": "56 - 11",
-            "colpi": "Esito al 1° colpo",
-            "stato": "Ambata Vincente"
+            "ambo": "56 - 35 | Vert: 65",
+            "colpi": "Esito al 2° colpo",
+            "stato": "AMBO SECCO VINCENTE! (Base 91)"
         },
         {
             "data": "Concorso Arretrat. -7",
             "ambata": 16,
-            "ambo": "16 - 61",
+            "ambo": "16 - 75 | Vert: 61",
             "colpi": "7° Colpo",
             "stato": "In gioco"
         },
         {
             "data": "Concorso Arretrat. -8",
             "ambata": 65,
-            "ambo": "65 - 20",
-            "colpi": "8° Colpo",
-            "stato": "In gioco"
+            "ambo": "65 - 26 | Vert: 56",
+            "colpi": "Esito al 3° colpo",
+            "stato": "AMBO VINCENTE! (Simmetrico/Vert)"
         },
         {
             "data": "Concorso Arretrat. -9",
             "ambata": 87,
-            "ambo": "87 - 42",
+            "ambo": "87 - 4 | Vert: 78",
             "colpi": "9° Colpo",
             "stato": "In gioco"
         },
         {
             "data": "Concorso Arretrat. -10",
             "ambata": 49,
-            "ambo": "49 - 4",
+            "ambo": "49 - 42 | Vert: 94",
             "colpi": "Esito al 4° colpo",
             "stato": "Ambata Vincente"
         }
