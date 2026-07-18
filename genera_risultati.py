@@ -7,9 +7,18 @@ def fuori_90(numero):
     while numero <= 0: numero += 90
     return numero
 
-def calcola_diametrale(numero):
-    if numero <= 45: return numero + 45
-    return numero - 45
+def calcola_abbinamento_91(numero):
+    # Opzione B: Complemento a 91 (Simmetrico)
+    return fuori_90(91 - numero)
+
+def calcola_vertibile(numero):
+    # Calcolo matematico del vertibile (es. 62 -> 26, 30 -> 3)
+    if numero % 10 == 0: 
+        return numero // 10
+    str_num = str(numero).zfill(2)
+    if str_num[0] == str_num[1]: 
+        return fuori_90(numero + 9)  # Gestione dei gemelli (es. 11 -> 20)
+    return int(str_num[1] + str_num[0])
 
 def elabora_motore_sommativo():
     if not os.path.exists('estrazioni.json'): 
@@ -20,7 +29,6 @@ def elabora_motore_sommativo():
     with open('estrazioni.json', 'r', encoding='utf-8') as f:
         archivio = json.load(f)
 
-    # Standardizzazione chiavi e pulizia
     archivio_pulito = {k.upper(): v for k, v in archivio.items() if isinstance(v, list)}
 
     if "BARI" not in archivio_pulito or len(archivio_pulito["BARI"]) == 0: 
@@ -30,7 +38,6 @@ def elabora_motore_sommativo():
     lista_milano = archivio_pulito.get("MILANO", [])
     tot_estrazioni = len(lista_bari)
 
-    # Identifica la data del concorso
     data_reale = datetime.now().strftime("%d/%m/%Y")
     if "info_concorso" in archivio and "data" in archivio["info_concorso"]:
         data_reale = archivio["info_concorso"]["data"]
@@ -49,11 +56,17 @@ def elabora_motore_sommativo():
         try:
             primo_bari = int(ultima_estrazione_bari[0])
             ambata = fuori_90(primo_bari + FISSO_OTTIMIZZATO)
-            abbinamento = calcola_diametrale(ambata)
-            ambo_secco = [ambata, abbinamento]
-            ambetti = [
-                [ambata, fuori_90(abbinamento + 1)],
-                [ambata, fuori_90(abbinamento - 1)]
+            
+            # Nuova strategia di accoppiamento per l'ambo
+            abb_91 = calcola_abbinamento_91(ambata)
+            vert_ambata = calcola_vertibile(ambata)
+            
+            ambo_secco_principale = [ambata, abb_91]
+            
+            # Sostituiamo gli ambetti con due ambi secondari forti
+            ambi_secondari = [
+                [ambata, vert_ambata],
+                [abb_91, vert_ambata]
             ]
             
             for ruota_chiave in ["BARI", "MILANO"]:
@@ -62,13 +75,13 @@ def elabora_motore_sommativo():
                         "numeri_estrazione": [int(n) for n in archivio_pulito[ruota_chiave][-1][:5]],
                         "tipo_calcolo": f"Sommativo da 1° Bari ({primo_bari}) +{FISSO_OTTIMIZZATO}",
                         "ambata": ambata,
-                        "ambo": ambo_secco,
-                        "ambetti": ambetti
+                        "ambo": ambo_secco_principale,
+                        "ambetti": ambi_secondari  # Lasciato sotto la chiave 'ambetti' per non rompere index.html
                     }
         except (ValueError, IndexError):
             pass
 
-    # 2. RICOSTRUZIONE AUTOMATICA DELLO STORICO
+    # 2. RICOSTRUZIONE AUTOMATICA DELLO STORICO (Con la nuova logica per il controllo retroattivo)
     limite_storico = max(0, tot_estrazioni - 11)
     
     for i in range(tot_estrazioni - 2, limite_storico - 1, -1):
@@ -81,7 +94,8 @@ def elabora_motore_sommativo():
         try:
             p_bari = int(estrazione_b[0])
             ambata_p = fuori_90(p_bari + FISSO_OTTIMIZZATO)
-            abbinamento_p = calcola_diametrale(ambata_p)
+            abb_91_p = calcola_abbinamento_91(ambata_p)
+            vert_p = calcola_vertibile(ambata_p)
             
             colpi_passati = (tot_estrazioni - 1) - i
             esito = "In gioco"
@@ -95,8 +109,17 @@ def elabora_motore_sommativo():
                 ba_nums = [int(n) for n in lista_bari[curr_idx][:5]]
                 mi_nums = [int(n) for n in lista_milano[curr_idx][:5]] if curr_idx < len(lista_milano) else []
                 
-                if (ambata_p in ba_nums and abbinamento_p in ba_nums) or (ambata_p in mi_nums and abbinamento_p in mi_nums):
-                    esito = "AMBO SECCO VINCENTE!"
+                # Verifica vincita ambo principale o ambi secondari
+                if (ambata_p in ba_nums and abb_91_p in ba_nums) or (ambata_p in mi_nums and abb_91_p in mi_nums):
+                    esito = "AMBO SECCO VINCENTE! (Base 91)"
+                    colpo_vincita = c
+                    break
+                elif (ambata_p in ba_nums and vert_p in ba_nums) or (ambata_p in mi_nums and vert_p in mi_nums):
+                    esito = "AMBO VINCENTE! (Vertibile)"
+                    colpo_vincita = c
+                    break
+                elif (abb_91_p in ba_nums and vert_p in ba_nums) or (abb_91_p in mi_nums and vert_p in mi_nums):
+                    esito = "AMBO VINCENTE! (Simmetrico/Vert)"
                     colpo_vincita = c
                     break
                 elif (ambata_p in ba_nums) or (ambata_p in mi_nums):
@@ -112,7 +135,7 @@ def elabora_motore_sommativo():
             risultati_finali["storico_verificato"].append({
                 "data": data_label,
                 "ambata": ambata_p,
-                "ambo": f"{ambata_p} - {abbinamento_p}",
+                "ambo": f"{ambata_p} - {abb_91_p} | Vert: {vert_p}",
                 "colpi": f"{colpi_passati}° Colpo" if esito == "In gioco" else f"Esito al {colpo_vincita}° colpo" if colpo_vincita else "Chiuso",
                 "stato": esito
             })
