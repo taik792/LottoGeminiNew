@@ -82,6 +82,10 @@
             
             document.getElementById('info-data').innerText = `Estrazione del: ${data.info_concorso.data || "N.D."}`;
             
+            // Ricava dinamicamente i nomi delle ruote attive (es: BARI - NAPOLI)
+            const ruoteAttive = Object.keys(data.previsioni).join(' - ');
+
+            // Render Previsione in Corso
             const container = document.getElementById('ruote-list');
             container.innerHTML = ''; 
             for (const [ruota, info] of Object.entries(data.previsioni)) {
@@ -101,11 +105,12 @@
                         <div class="prev-item ambata"><div class="prev-label">Ambata</div><div class="prev-value">${info.ambata}</div></div>
                         <div class="prev-item ambo"><div class="prev-label">Ambo Secco</div><div class="prev-value">${amboStr}</div></div>
                     </div>
-                    <div class="ambetti-box"><div class="ambetti-valori">Ambetti: ${ambettiString}</div></div>
+                    <div class="ambetti-box"><div class="ambetti-valori">Ambi Sec.: ${ambettiString}</div></div>
                 `;
                 container.appendChild(card);
             }
 
+            // Render Storico Verificato
             const storicoContainer = document.getElementById('storico-list');
             storicoContainer.innerHTML = '';
             
@@ -127,7 +132,7 @@
 
                 minicard.innerHTML = `
                     <div class="card-header">
-                        <span class="ruota-title" style="color:#475569;">BARI - MILANO (${item.data})</span>
+                        <span class="ruota-title" style="color:#475569;">${ruoteAttive || 'BARI - NAPOLI'} (${item.data})</span>
                         <span class="spia-badge" style="background:${badgeBg}; color:${badgeTxt}; font-weight:bold;">${item.colpi}</span>
                     </div>
                     <div class="previsione-box">
