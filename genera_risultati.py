@@ -12,12 +12,12 @@ def calcola_abbinamento_91(numero):
     return fuori_90(91 - numero)
 
 def calcola_vertibile(numero):
-    # Calcolo matematico del vertibile (es. 62 -> 26, 30 -> 3)
+    # Calcolo matematico del vertibile (es. 77 -> 79, 62 -> 26, 30 -> 3)
     if numero % 10 == 0: 
         return numero // 10
     str_num = str(numero).zfill(2)
     if str_num[0] == str_num[1]: 
-        return fuori_90(numero + 9)  # Gestione dei gemelli (es. 11 -> 20)
+        return fuori_90(numero + 9)  # Per i gemelli come 77 -> 86
     return int(str_num[1] + str_num[0])
 
 def elabora_motore_sommativo():
@@ -35,7 +35,7 @@ def elabora_motore_sommativo():
         return
     
     lista_bari = archivio_pulito["BARI"]
-    lista_milano = archivio_pulito.get("NAPOLI", [])
+    lista_napoli = archivio_pulito.get("NAPOLI", []) # Passati a NAPOLI
     tot_estrazioni = len(lista_bari)
 
     data_reale = datetime.now().strftime("%d/%m/%Y")
@@ -50,25 +50,23 @@ def elabora_motore_sommativo():
         "storico_verificato": []
     }
 
-    # 1. PREVISIONE CORRENTE (Ultima estrazione)
+    # 1. PREVISIONE CORRENTE (BARI - NAPOLI)
     ultima_estrazione_bari = lista_bari[-1]
     if isinstance(ultima_estrazione_bari, list) and len(ultima_estrazione_bari) >= 1:
         try:
             primo_bari = int(ultima_estrazione_bari[0])
             ambata = fuori_90(primo_bari + FISSO_OTTIMIZZATO)
             
-            # Nuova strategia di accoppiamento per l'ambo
             abb_91 = calcola_abbinamento_91(ambata)
             vert_ambata = calcola_vertibile(ambata)
             
             ambo_secco_principale = [ambata, abb_91]
-            
-            # Sostituiamo gli ambetti con due ambi secondari forti
             ambi_secondari = [
                 [ambata, vert_ambata],
                 [abb_91, vert_ambata]
             ]
             
+            # Generazione previsione sia per BARI che per NAPOLI
             for ruota_chiave in ["BARI", "NAPOLI"]:
                 if ruota_chiave in archivio_pulito and len(archivio_pulito[ruota_chiave]) > 0:
                     risultati_finali["previsioni"][ruota_chiave] = {
@@ -76,12 +74,12 @@ def elabora_motore_sommativo():
                         "tipo_calcolo": f"Sommativo da 1° Bari ({primo_bari}) +{FISSO_OTTIMIZZATO}",
                         "ambata": ambata,
                         "ambo": ambo_secco_principale,
-                        "ambetti": ambi_secondari  # Lasciato sotto la chiave 'ambetti' per non rompere index.html
+                        "ambetti": ambi_secondari
                     }
         except (ValueError, IndexError):
             pass
 
-    # 2. RICOSTRUZIONE AUTOMATICA DELLO STORICO (Con la nuova logica per il controllo retroattivo)
+    # 2. RICOSTRUZIONE STORICO (VERIFICA SU BARI E NAPOLI)
     limite_storico = max(0, tot_estrazioni - 11)
     
     for i in range(tot_estrazioni - 2, limite_storico - 1, -1):
@@ -107,22 +105,23 @@ def elabora_motore_sommativo():
                     break
                 
                 ba_nums = [int(n) for n in lista_bari[curr_idx][:5]]
-                mi_nums = [int(n) for n in lista_milano[curr_idx][:5]] if curr_idx < len(lista_milano) else []
+                # Controllo sulla ruota di NAPOLI
+                na_nums = [int(n) for n in lista_napoli[curr_idx][:5]] if curr_idx < len(lista_napoli) else []
                 
-                # Verifica vincita ambo principale o ambi secondari
-                if (ambata_p in ba_nums and abb_91_p in ba_nums) or (ambata_p in mi_nums and abb_91_p in mi_nums):
+                # Controllo vincite su BARI o NAPOLI
+                if (ambata_p in ba_nums and abb_91_p in ba_nums) or (ambata_p in na_nums and abb_91_p in na_nums):
                     esito = "AMBO SECCO VINCENTE! (Base 91)"
                     colpo_vincita = c
                     break
-                elif (ambata_p in ba_nums and vert_p in ba_nums) or (ambata_p in mi_nums and vert_p in mi_nums):
+                elif (ambata_p in ba_nums and vert_p in ba_nums) or (ambata_p in na_nums and vert_p in na_nums):
                     esito = "AMBO VINCENTE! (Vertibile)"
                     colpo_vincita = c
                     break
-                elif (abb_91_p in ba_nums and vert_p in ba_nums) or (abb_91_p in mi_nums and vert_p in mi_nums):
+                elif (abb_91_p in ba_nums and vert_p in ba_nums) or (abb_91_p in na_nums and vert_p in na_nums):
                     esito = "AMBO VINCENTE! (Simmetrico/Vert)"
                     colpo_vincita = c
                     break
-                elif (ambata_p in ba_nums) or (ambata_p in mi_nums):
+                elif (ambata_p in ba_nums) or (ambata_p in na_nums):
                     if esito == "In gioco":
                         esito = "Ambata Vincente"
                         colpo_vincita = c
@@ -132,6 +131,7 @@ def elabora_motore_sommativo():
             
             data_label = f"Concorso Arretrat. -{colpi_passati}"
             
+            # Etichetta corretta: BARI - NAPOLI
             risultati_finali["storico_verificato"].append({
                 "data": data_label,
                 "ambata": ambata_p,
