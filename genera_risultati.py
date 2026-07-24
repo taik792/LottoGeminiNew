@@ -12,13 +12,17 @@ def calcola_abbinamento_91(numero):
     return fuori_90(91 - numero)
 
 def calcola_vertibile(numero):
-    # Calcolo matematico del vertibile (es. 77 -> 79, 62 -> 26, 30 -> 3)
+    # Calcolo matematico del vertibile con fuori 90 automatico
     if numero % 10 == 0: 
-        return numero // 10
-    str_num = str(numero).zfill(2)
-    if str_num[0] == str_num[1]: 
-        return fuori_90(numero + 9)  # Per i gemelli come 77 -> 86
-    return int(str_num[1] + str_num[0])
+        res = numero // 10
+    else:
+        str_num = str(numero).zfill(2)
+        if str_num[0] == str_num[1]: 
+            res = numero + 9  # Gemelli (es. 77 -> 86)
+        else:
+            res = int(str_num[1] + str_num[0])
+            
+    return fuori_90(res) # Garantisce che il risultato sia SEMPRE tra 1 e 90
 
 def elabora_motore_sommativo():
     if not os.path.exists('estrazioni.json'): 
