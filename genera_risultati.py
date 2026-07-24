@@ -35,7 +35,7 @@ def elabora_motore_sommativo():
         return
     
     lista_bari = archivio_pulito["BARI"]
-    lista_milano = archivio_pulito.get("MILANO", [])
+    lista_milano = archivio_pulito.get("NAPOLI", [])
     tot_estrazioni = len(lista_bari)
 
     data_reale = datetime.now().strftime("%d/%m/%Y")
@@ -69,7 +69,7 @@ def elabora_motore_sommativo():
                 [abb_91, vert_ambata]
             ]
             
-            for ruota_chiave in ["BARI", "MILANO"]:
+            for ruota_chiave in ["BARI", "NAPOLI"]:
                 if ruota_chiave in archivio_pulito and len(archivio_pulito[ruota_chiave]) > 0:
                     risultati_finali["previsioni"][ruota_chiave] = {
                         "numeri_estrazione": [int(n) for n in archivio_pulito[ruota_chiave][-1][:5]],
