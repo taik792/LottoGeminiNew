@@ -29,13 +29,13 @@
                 ]
             ]
         },
-        "MILANO": {
+        "NAPOLI": {
             "numeri_estrazione": [
-                47,
-                77,
-                22,
-                36,
-                59
+                64,
+                68,
+                25,
+                45,
+                9
             ],
             "tipo_calcolo": "Sommativo da 1° Bari (52) +25",
             "ambata": 77,
@@ -88,8 +88,8 @@
             "data": "Concorso Arretrat. -5",
             "ambata": 49,
             "ambo": "49 - 42 | Vert: 94",
-            "colpi": "Esito al 1° colpo",
-            "stato": "Ambata Vincente"
+            "colpi": "5° Colpo",
+            "stato": "In gioco"
         },
         {
             "data": "Concorso Arretrat. -6",
