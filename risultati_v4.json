@@ -58,6 +58,7 @@
     "storico_verificato": [
         {
             "data": "Concorso Arretrat. -1",
+            "ruote": "CAGLIARI - GENOVA",
             "ambata": 6,
             "ambo": "6 - 51",
             "colpi": "1° Colpo",
@@ -65,6 +66,7 @@
         },
         {
             "data": "Concorso Arretrat. -2",
+            "ruote": "CAGLIARI - GENOVA",
             "ambata": 70,
             "ambo": "70 - 25",
             "colpi": "2° Colpo",
@@ -72,6 +74,7 @@
         },
         {
             "data": "Concorso Arretrat. -3",
+            "ruote": "CAGLIARI - GENOVA",
             "ambata": 28,
             "ambo": "28 - 73",
             "colpi": "3° Colpo",
@@ -79,6 +82,7 @@
         },
         {
             "data": "Concorso Arretrat. -4",
+            "ruote": "CAGLIARI - GENOVA",
             "ambata": 51,
             "ambo": "51 - 6",
             "colpi": "4° Colpo",
@@ -86,6 +90,7 @@
         },
         {
             "data": "Concorso Arretrat. -5",
+            "ruote": "CAGLIARI - GENOVA",
             "ambata": 77,
             "ambo": "77 - 32",
             "colpi": "5° Colpo",
@@ -93,6 +98,7 @@
         },
         {
             "data": "Concorso Arretrat. -6",
+            "ruote": "CAGLIARI - GENOVA",
             "ambata": 50,
             "ambo": "50 - 5",
             "colpi": "6° Colpo",
@@ -100,6 +106,7 @@
         },
         {
             "data": "Concorso Arretrat. -7",
+            "ruote": "CAGLIARI - GENOVA",
             "ambata": 2,
             "ambo": "2 - 47",
             "colpi": "7° Colpo",
@@ -107,6 +114,7 @@
         },
         {
             "data": "Concorso Arretrat. -8",
+            "ruote": "CAGLIARI - GENOVA",
             "ambata": 53,
             "ambo": "53 - 8",
             "colpi": "Esito al 6° colpo",
@@ -114,6 +122,7 @@
         },
         {
             "data": "Concorso Arretrat. -9",
+            "ruote": "CAGLIARI - GENOVA",
             "ambata": 51,
             "ambo": "51 - 6",
             "colpi": "9° Colpo",
@@ -121,6 +130,7 @@
         },
         {
             "data": "Concorso Arretrat. -10",
+            "ruote": "CAGLIARI - GENOVA",
             "ambata": 4,
             "ambo": "4 - 49",
             "colpi": "Chiuso",
