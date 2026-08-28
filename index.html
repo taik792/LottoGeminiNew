@@ -116,7 +116,7 @@
                 return;
             }
 
-            [...data.storico_verificato].reverse().forEach(item => {
+           [...data.storico_verificato].reverse().forEach(item => {
                 const minicard = document.createElement('div');
                 minicard.className = 'card-ruota';
                 
@@ -125,9 +125,10 @@
                 const badgeBg = isWin ? 'var(--win-bg)' : '#f1f5f9';
                 const badgeTxt = isWin ? 'var(--win-txt)' : '#475569';
 
+                // CORREZIONE QUI: item.ruote al posto di BARI - MILANO fisso
                 minicard.innerHTML = `
                     <div class="card-header">
-                        <span class="ruota-title" style="color:#475569;">BARI - MILANO (${item.data})</span>
+                        <span class="ruota-title" style="color:#475569;">${item.ruote || 'RUOTE'} (${item.data})</span>
                         <span class="spia-badge" style="background:${badgeBg}; color:${badgeTxt}; font-weight:bold;">${item.colpi}</span>
                     </div>
                     <div class="previsione-box">
