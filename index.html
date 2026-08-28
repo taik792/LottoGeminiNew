@@ -82,9 +82,6 @@
             
             document.getElementById('info-data').innerText = `Estrazione del: ${data.info_concorso.data || "N.D."}`;
             
-            // Ricava dinamicamente i nomi delle ruote attive (es: BARI - NAPOLI)
-            const ruoteAttive = Object.keys(data.previsioni).join(' - ');
-
             // Render Previsione in Corso
             const container = document.getElementById('ruote-list');
             container.innerHTML = ''; 
@@ -105,12 +102,12 @@
                         <div class="prev-item ambata"><div class="prev-label">Ambata</div><div class="prev-value">${info.ambata}</div></div>
                         <div class="prev-item ambo"><div class="prev-label">Ambo Secco</div><div class="prev-value">${amboStr}</div></div>
                     </div>
-                    <div class="ambetti-box"><div class="ambetti-valori">Ambi Sec.: ${ambettiString}</div></div>
+                    <div class="ambetti-box"><div class="ambetti-valori">Ambetti: ${ambettiString}</div></div>
                 `;
                 container.appendChild(card);
             }
 
-            // Render Storico Verificato
+            // Render Storico Verificato da Python
             const storicoContainer = document.getElementById('storico-list');
             storicoContainer.innerHTML = '';
             
@@ -123,16 +120,14 @@
                 const minicard = document.createElement('div');
                 minicard.className = 'card-ruota';
                 
-                const isWin = item.stato.toUpperCase().includes("VINCENTE");
-                minicard.style.backgroundColor = isWin ? 'var(--win-bg)' : 'var(--card-bg)';
-                minicard.style.borderLeft = isWin ? '5px solid var(--win-txt)' : '5px solid #64748b';
-                
-                const badgeBg = isWin ? 'var(--win-txt)' : '#f1f5f9';
-                const badgeTxt = isWin ? '#ffffff' : '#475569';
+                const isWin = item.stato !== "In gioco";
+                minicard.style.borderLeft = isWin ? '5px solid var(--win-bg)' : '5px solid #64748b';
+                const badgeBg = isWin ? 'var(--win-bg)' : '#f1f5f9';
+                const badgeTxt = isWin ? 'var(--win-txt)' : '#475569';
 
                 minicard.innerHTML = `
                     <div class="card-header">
-                        <span class="ruota-title" style="color:#475569;">${ruoteAttive || 'BARI - NAPOLI'} (${item.data})</span>
+                        <span class="ruota-title" style="color:#475569;">BARI - MILANO (${item.data})</span>
                         <span class="spia-badge" style="background:${badgeBg}; color:${badgeTxt}; font-weight:bold;">${item.colpi}</span>
                     </div>
                     <div class="previsione-box">
