@@ -128,13 +128,14 @@ def elabora_motore_sommativo():
                         
                         data_label = f"Concorso Arretrat. -{colpi_passati}"
                         
-                        risultati_finali["storico_verificato"].append({
-                            "data": data_label,
-                            "ambata": ambata_p,
-                            "ambo": f"{ambata_p} - {abbinamento_p}",
-                            "colpi": f"{colpi_passati}° Colpo" if esito == "In gioco" else f"Esito al {colpo_vincita}° colpo" if colpo_vincita else "Chiuso",
-                            "stato": esito
-                        })
+                         risultati_finali["storico_verificato"].append({
+                        "data": data_label,
+                        "ruote": f"{RUOTA_BASE} - {RUOTA_RECUPERO}", # <-- AGGIUNGI QUESTA RIGA
+                        "ambata": ambata_p,
+                        "ambo": f"{ambata_p} - {abbinamento_p}",
+                        "colpi": f"{colpi_passati}° Colpo" if esito == "In gioco" else f"Esito al {colpo_vincita}° colpo" if colpo_vincita else "Chiuso",
+                        "stato": esito
+                    })
                     except:
                         continue
 
