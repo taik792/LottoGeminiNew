@@ -1,2 +1,2 @@
-# LottoGeminiNew
-Lotto gemini
+# LottomodeCoppie
+lottomode coppie
