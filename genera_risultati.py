@@ -14,7 +14,7 @@ def calcola_diametrale(numero):
 def elabora_motore_sommativo():
     if not os.path.exists('estrazioni.json'): return
 
-    # 🎯 CONFIGURAZIONE NUOVO MOTORE OTTIMIZZATO
+    # 🎯 CONFIGURAZIONE MOTORE ATTUALE
     FISSO_OTTIMIZZATO = 6 
     RUOTA_BASE = "CAGLIARI"
     RUOTA_RECUPERO = "GENOVA"
@@ -22,7 +22,6 @@ def elabora_motore_sommativo():
     with open('estrazioni.json', 'r', encoding='utf-8') as f:
         archivio = json.load(f)
 
-    # GESTIONE DATA: Prende la data reale dal concorso per evitare sfasamenti giornalieri
     data_reale = None
     if "info_concorso" in archivio and "data" in archivio["info_concorso"]:
         data_reale = archivio["info_concorso"]["data"]
@@ -33,7 +32,6 @@ def elabora_motore_sommativo():
         data_reale = datetime.now().strftime("%d/%m/%Y")
 
     storico_previsioni = []
-    # Usiamo un file di storico specifico per Cagliari per non incrociare i dati con Bari
     file_storico = 'storico_cronologico_ca_ge.json'
     if os.path.exists(file_storico):
         with open(file_storico, 'r', encoding='utf-8') as sf:
@@ -64,7 +62,6 @@ def elabora_motore_sommativo():
                     [ambata, fuori_90(abbinamento - 1)]
                 ]
                 
-                # Registrazione retroattiva nello storico locale
                 if not any(x['data'] == data_reale for x in storico_previsioni):
                     storico_previsioni.append({
                         "data": data_reale,
@@ -77,7 +74,6 @@ def elabora_motore_sommativo():
                     with open(file_storico, 'w', encoding='utf-8') as sf:
                         json.dump(storico_previsioni, sf, indent=4, ensure_ascii=False)
 
-                # Costruzione output per il Front-End
                 for ruota_chiave in [RUOTA_BASE, RUOTA_RECUPERO]:
                     if ruota_chiave in archivio_pulito and len(archivio_pulito[ruota_chiave]) > 0:
                         risultati_finali["previsioni"][ruota_chiave] = {
@@ -88,7 +84,6 @@ def elabora_motore_sommativo():
                             "ambetti": ambetti
                         }
 
-                # Controllo ed elaborazione colpi a ritroso (Ultime 10 estrazioni)
                 tot_estrazioni = len(lista_base)
                 limite_storico = max(0, tot_estrazioni - 11)
                 
@@ -128,14 +123,14 @@ def elabora_motore_sommativo():
                         
                         data_label = f"Concorso Arretrat. -{colpi_passati}"
                         
-                         risultati_finali["storico_verificato"].append({
-                        "data": data_label,
-                        "ruote": f"{RUOTA_BASE} - {RUOTA_RECUPERO}", # <-- AGGIUNGI QUESTA RIGA
-                        "ambata": ambata_p,
-                        "ambo": f"{ambata_p} - {abbinamento_p}",
-                        "colpi": f"{colpi_passati}° Colpo" if esito == "In gioco" else f"Esito al {colpo_vincita}° colpo" if colpo_vincita else "Chiuso",
-                        "stato": esito
-                    })
+                        risultati_finali["storico_verificato"].append({
+                            "data": data_label,
+                            "ruote": f"{RUOTA_BASE} - {RUOTA_RECUPERO}",
+                            "ambata": ambata_p,
+                            "ambo": f"{ambata_p} - {abbinamento_p}",
+                            "colpi": f"{colpi_passati}° Colpo" if esito == "In gioco" else f"Esito al {colpo_vincita}° colpo" if colpo_vincita else "Chiuso",
+                            "stato": esito
+                        })
                     except:
                         continue
 
