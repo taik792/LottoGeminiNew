@@ -15,9 +15,9 @@ def elabora_motore_sommativo():
     if not os.path.exists('estrazioni.json'): return
 
     # 🎯 CONFIGURAZIONE MOTORE ATTUALE
-    FISSO_OTTIMIZZATO = 6 
-    RUOTA_BASE = "CAGLIARI"
-    RUOTA_RECUPERO = "GENOVA"
+    FISSO_OTTIMIZZATO = 35 
+    RUOTA_BASE = "MILANO"
+    RUOTA_RECUPERO = "VENEZIA"
 
     with open('estrazioni.json', 'r', encoding='utf-8') as f:
         archivio = json.load(f)
@@ -32,7 +32,7 @@ def elabora_motore_sommativo():
         data_reale = datetime.now().strftime("%d/%m/%Y")
 
     storico_previsioni = []
-    file_storico = 'storico_cronologico_ca_ge.json'
+    file_storico = 'storico_cronologico_mi_ve.json'
     if os.path.exists(file_storico):
         with open(file_storico, 'r', encoding='utf-8') as sf:
             try: storico_previsioni = json.load(sf)
