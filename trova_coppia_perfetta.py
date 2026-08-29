@@ -15,8 +15,8 @@ def analizza_tutte_le_coppie():
         print("Errore: estrazioni.json non trovato.")
         return
 
-    # Ruota di partenza impostata su ROMA
-    RUOTA_PARTENZA = "ROMA" 
+    # Ruota di partenza impostata su TORINO
+    RUOTA_PARTENZA = "TORINO" 
 
     with open('estrazioni.json', 'r', encoding='utf-8') as f:
         archivio = json.load(f)
