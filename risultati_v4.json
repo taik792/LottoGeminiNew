@@ -7,10 +7,10 @@
         "CAGLIARI": {
             "numeri_estrazione": [
                 72,
-                29,
-                2,
                 57,
-                87
+                10,
+                2,
+                43
             ],
             "tipo_calcolo": "Sommativo da 1° Cagliari (72) +6",
             "ambata": 78,
@@ -31,11 +31,11 @@
         },
         "GENOVA": {
             "numeri_estrazione": [
-                11,
-                24,
-                85,
-                79,
-                40
+                33,
+                86,
+                65,
+                40,
+                14
             ],
             "tipo_calcolo": "Sommativo da 1° Cagliari (72) +6",
             "ambata": 78,
@@ -59,82 +59,82 @@
         {
             "data": "Concorso Arretrat. -1",
             "ruote": "CAGLIARI - GENOVA",
-            "ambata": 52,
-            "ambo": "52 - 7",
+            "ambata": 28,
+            "ambo": "28 - 73",
             "colpi": "1° Colpo",
             "stato": "In gioco"
         },
         {
             "data": "Concorso Arretrat. -2",
             "ruote": "CAGLIARI - GENOVA",
-            "ambata": 6,
-            "ambo": "6 - 51",
+            "ambata": 7,
+            "ambo": "7 - 52",
             "colpi": "2° Colpo",
             "stato": "In gioco"
         },
         {
             "data": "Concorso Arretrat. -3",
             "ruote": "CAGLIARI - GENOVA",
-            "ambata": 70,
-            "ambo": "70 - 25",
+            "ambata": 13,
+            "ambo": "13 - 58",
             "colpi": "3° Colpo",
             "stato": "In gioco"
         },
         {
             "data": "Concorso Arretrat. -4",
             "ruote": "CAGLIARI - GENOVA",
-            "ambata": 28,
-            "ambo": "28 - 73",
+            "ambata": 75,
+            "ambo": "75 - 30",
             "colpi": "4° Colpo",
             "stato": "In gioco"
         },
         {
             "data": "Concorso Arretrat. -5",
             "ruote": "CAGLIARI - GENOVA",
-            "ambata": 51,
-            "ambo": "51 - 6",
+            "ambata": 11,
+            "ambo": "11 - 56",
             "colpi": "5° Colpo",
             "stato": "In gioco"
         },
         {
             "data": "Concorso Arretrat. -6",
             "ruote": "CAGLIARI - GENOVA",
-            "ambata": 77,
-            "ambo": "77 - 32",
+            "ambata": 71,
+            "ambo": "71 - 26",
             "colpi": "6° Colpo",
             "stato": "In gioco"
         },
         {
             "data": "Concorso Arretrat. -7",
             "ruote": "CAGLIARI - GENOVA",
-            "ambata": 50,
-            "ambo": "50 - 5",
+            "ambata": 44,
+            "ambo": "44 - 89",
             "colpi": "7° Colpo",
             "stato": "In gioco"
         },
         {
             "data": "Concorso Arretrat. -8",
             "ruote": "CAGLIARI - GENOVA",
-            "ambata": 2,
-            "ambo": "2 - 47",
-            "colpi": "Esito al 8° colpo",
+            "ambata": 9,
+            "ambo": "9 - 54",
+            "colpi": "Esito al 3° colpo",
             "stato": "Ambata Vincente"
         },
         {
             "data": "Concorso Arretrat. -9",
             "ruote": "CAGLIARI - GENOVA",
-            "ambata": 53,
-            "ambo": "53 - 8",
-            "colpi": "Esito al 6° colpo",
+            "ambata": 65,
+            "ambo": "65 - 20",
+            "colpi": "Esito al 3° colpo",
             "stato": "Ambata Vincente"
         },
         {
             "data": "Concorso Arretrat. -10",
             "ruote": "CAGLIARI - GENOVA",
-            "ambata": 51,
-            "ambo": "51 - 6",
-            "colpi": "Chiuso",
-            "stato": "Ciclo concluso (No esito)"
+            "ambata": 2,
+            "ambo": "2 - 47",
+            "colpi": "Esito al 10° colpo",
+            "stato": "Ambata Vincente"
         }
     ]
 }
