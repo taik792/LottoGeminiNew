@@ -31,7 +31,7 @@ def analizza_tutte_le_coppie():
     estrazioni_base = archivio_pulito[RUOTA_PARTENZA]
     tot_estrazioni = len(estrazioni_base)
     
-    miglior_coppia_assoluta = VENEZIA
+    miglior_coppia_assoluta = NONE
     max_ambi_vinti = -1
 
     print(f"🔬 Analisi in corso... Cerco la migliore ruota da accoppiare a {RUOTA_PARTENZA} su {tot_estrazioni} estrazioni.")
