@@ -16,7 +16,7 @@ def analizza_tutte_le_coppie():
         return
 
     # Ruota di partenza impostata su MILANO
-    RUOTA_PARTENZA = "TORINO 
+    RUOTA_PARTENZA = "TORINO"
 
     with open('estrazioni.json', 'r', encoding='utf-8') as f:
         archivio = json.load(f)
