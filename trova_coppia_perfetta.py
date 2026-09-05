@@ -16,7 +16,7 @@ def analizza_tutte_le_coppie():
         return
 
     # Ruota di partenza impostata su MILANO
-    RUOTA_PARTENZA = "MILANO" 
+    RUOTA_PARTENZA = "TORINO 
 
     with open('estrazioni.json', 'r', encoding='utf-8') as f:
         archivio = json.load(f)
@@ -31,7 +31,7 @@ def analizza_tutte_le_coppie():
     estrazioni_base = archivio_pulito[RUOTA_PARTENZA]
     tot_estrazioni = len(estrazioni_base)
     
-    miglior_coppia_assoluta = None
+    miglior_coppia_assoluta = VENEZIA
     max_ambi_vinti = -1
 
     print(f"🔬 Analisi in corso... Cerco la migliore ruota da accoppiare a {RUOTA_PARTENZA} su {tot_estrazioni} estrazioni.")
