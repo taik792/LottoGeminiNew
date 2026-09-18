@@ -6,51 +6,51 @@
     "previsioni": {
         "MILANO": {
             "numeri_estrazione": [
-                79,
-                9,
-                49,
-                80,
-                68
+                25,
+                2,
+                85,
+                90,
+                5
             ],
-            "tipo_calcolo": "Sommativo da 1° Milano (79) +35",
-            "ambata": 24,
+            "tipo_calcolo": "Sommativo da 1° Milano (25) +35",
+            "ambata": 60,
             "ambo": [
-                24,
-                69
+                60,
+                15
             ],
             "ambetti": [
                 [
-                    24,
-                    70
+                    60,
+                    16
                 ],
                 [
-                    24,
-                    68
+                    60,
+                    14
                 ]
             ]
         },
         "VENEZIA": {
             "numeri_estrazione": [
-                63,
-                51,
-                69,
-                9,
-                74
+                81,
+                31,
+                61,
+                33,
+                6
             ],
-            "tipo_calcolo": "Sommativo da 1° Milano (79) +35",
-            "ambata": 24,
+            "tipo_calcolo": "Sommativo da 1° Milano (25) +35",
+            "ambata": 60,
             "ambo": [
-                24,
-                69
+                60,
+                15
             ],
             "ambetti": [
                 [
-                    24,
-                    70
+                    60,
+                    16
                 ],
                 [
-                    24,
-                    68
+                    60,
+                    14
                 ]
             ]
         }
@@ -59,21 +59,29 @@
         {
             "data": "Concorso Arretrat. -1",
             "ruote": "MILANO - VENEZIA",
+            "ambata": 24,
+            "ambo": "24 - 69",
+            "colpi": "1° Colpo",
+            "stato": "In gioco"
+        },
+        {
+            "data": "Concorso Arretrat. -2",
+            "ruote": "MILANO - VENEZIA",
             "ambata": 79,
             "ambo": "79 - 34",
             "colpi": "Esito al 1° colpo",
             "stato": "Ambata Vincente"
         },
         {
-            "data": "Concorso Arretrat. -2",
+            "data": "Concorso Arretrat. -3",
             "ruote": "MILANO - VENEZIA",
             "ambata": 73,
             "ambo": "73 - 28",
-            "colpi": "2° Colpo",
+            "colpi": "3° Colpo",
             "stato": "In gioco"
         },
         {
-            "data": "Concorso Arretrat. -3",
+            "data": "Concorso Arretrat. -4",
             "ruote": "MILANO - VENEZIA",
             "ambata": 71,
             "ambo": "71 - 26",
@@ -81,15 +89,15 @@
             "stato": "AMBO SECCO VINCENTE!"
         },
         {
-            "data": "Concorso Arretrat. -4",
+            "data": "Concorso Arretrat. -5",
             "ruote": "MILANO - VENEZIA",
             "ambata": 50,
             "ambo": "50 - 5",
-            "colpi": "4° Colpo",
+            "colpi": "5° Colpo",
             "stato": "In gioco"
         },
         {
-            "data": "Concorso Arretrat. -5",
+            "data": "Concorso Arretrat. -6",
             "ruote": "MILANO - VENEZIA",
             "ambata": 71,
             "ambo": "71 - 26",
@@ -97,7 +105,7 @@
             "stato": "AMBO SECCO VINCENTE!"
         },
         {
-            "data": "Concorso Arretrat. -6",
+            "data": "Concorso Arretrat. -7",
             "ruote": "MILANO - VENEZIA",
             "ambata": 51,
             "ambo": "51 - 6",
@@ -105,15 +113,15 @@
             "stato": "Ambata Vincente"
         },
         {
-            "data": "Concorso Arretrat. -7",
+            "data": "Concorso Arretrat. -8",
             "ruote": "MILANO - VENEZIA",
             "ambata": 41,
             "ambo": "41 - 86",
-            "colpi": "7° Colpo",
+            "colpi": "8° Colpo",
             "stato": "In gioco"
         },
         {
-            "data": "Concorso Arretrat. -8",
+            "data": "Concorso Arretrat. -9",
             "ruote": "MILANO - VENEZIA",
             "ambata": 64,
             "ambo": "64 - 19",
@@ -121,18 +129,10 @@
             "stato": "Ambata Vincente"
         },
         {
-            "data": "Concorso Arretrat. -9",
+            "data": "Concorso Arretrat. -10",
             "ruote": "MILANO - VENEZIA",
             "ambata": 44,
             "ambo": "44 - 89",
-            "colpi": "Esito al 5° colpo",
-            "stato": "Ambata Vincente"
-        },
-        {
-            "data": "Concorso Arretrat. -10",
-            "ruote": "MILANO - VENEZIA",
-            "ambata": 19,
-            "ambo": "19 - 64",
             "colpi": "Esito al 5° colpo",
             "stato": "Ambata Vincente"
         }
