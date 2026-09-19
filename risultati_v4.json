@@ -4,6 +4,31 @@
         "data": "19/09/2026"
     },
     "previsioni": {
+        "GENOVA": {
+            "numeri_estrazione": [
+                63,
+                61,
+                34,
+                76,
+                6
+            ],
+            "tipo_calcolo": "Sommativo da 1° Genova (63) +37",
+            "ambata": 10,
+            "ambo": [
+                10,
+                55
+            ],
+            "ambetti": [
+                [
+                    10,
+                    56
+                ],
+                [
+                    10,
+                    54
+                ]
+            ]
+        },
         "MILANO": {
             "numeri_estrazione": [
                 80,
@@ -12,45 +37,20 @@
                 46,
                 79
             ],
-            "tipo_calcolo": "Sommativo da 1° Milano (80) +35",
-            "ambata": 25,
+            "tipo_calcolo": "Sommativo da 1° Genova (63) +37",
+            "ambata": 10,
             "ambo": [
-                25,
-                70
+                10,
+                55
             ],
             "ambetti": [
                 [
-                    25,
-                    71
+                    10,
+                    56
                 ],
                 [
-                    25,
-                    69
-                ]
-            ]
-        },
-        "VENEZIA": {
-            "numeri_estrazione": [
-                52,
-                28,
-                37,
-                30,
-                31
-            ],
-            "tipo_calcolo": "Sommativo da 1° Milano (80) +35",
-            "ambata": 25,
-            "ambo": [
-                25,
-                70
-            ],
-            "ambetti": [
-                [
-                    25,
-                    71
-                ],
-                [
-                    25,
-                    69
+                    10,
+                    54
                 ]
             ]
         }
@@ -58,82 +58,82 @@
     "storico_verificato": [
         {
             "data": "Concorso Arretrat. -1",
-            "ruote": "MILANO - VENEZIA",
-            "ambata": 60,
-            "ambo": "60 - 15",
+            "ruote": "GENOVA - MILANO",
+            "ambata": 86,
+            "ambo": "86 - 41",
             "colpi": "1° Colpo",
             "stato": "In gioco"
         },
         {
             "data": "Concorso Arretrat. -2",
-            "ruote": "MILANO - VENEZIA",
-            "ambata": 24,
-            "ambo": "24 - 69",
-            "colpi": "2° Colpo",
-            "stato": "In gioco"
-        },
-        {
-            "data": "Concorso Arretrat. -3",
-            "ruote": "MILANO - VENEZIA",
-            "ambata": 79,
-            "ambo": "79 - 34",
+            "ruote": "GENOVA - MILANO",
+            "ambata": 2,
+            "ambo": "2 - 47",
             "colpi": "Esito al 1° colpo",
             "stato": "Ambata Vincente"
         },
         {
-            "data": "Concorso Arretrat. -4",
-            "ruote": "MILANO - VENEZIA",
-            "ambata": 73,
-            "ambo": "73 - 28",
-            "colpi": "4° Colpo",
+            "data": "Concorso Arretrat. -3",
+            "ruote": "GENOVA - MILANO",
+            "ambata": 57,
+            "ambo": "57 - 12",
+            "colpi": "3° Colpo",
             "stato": "In gioco"
         },
         {
+            "data": "Concorso Arretrat. -4",
+            "ruote": "GENOVA - MILANO",
+            "ambata": 62,
+            "ambo": "62 - 17",
+            "colpi": "Esito al 2° colpo",
+            "stato": "Ambata Vincente"
+        },
+        {
             "data": "Concorso Arretrat. -5",
-            "ruote": "MILANO - VENEZIA",
-            "ambata": 71,
-            "ambo": "71 - 26",
-            "colpi": "Esito al 1° colpo",
-            "stato": "AMBO SECCO VINCENTE!"
+            "ruote": "GENOVA - MILANO",
+            "ambata": 5,
+            "ambo": "5 - 50",
+            "colpi": "Esito al 4° colpo",
+            "stato": "Ambata Vincente"
         },
         {
             "data": "Concorso Arretrat. -6",
-            "ruote": "MILANO - VENEZIA",
-            "ambata": 50,
-            "ambo": "50 - 5",
+            "ruote": "GENOVA - MILANO",
+            "ambata": 71,
+            "ambo": "71 - 26",
             "colpi": "6° Colpo",
             "stato": "In gioco"
         },
         {
             "data": "Concorso Arretrat. -7",
-            "ruote": "MILANO - VENEZIA",
-            "ambata": 71,
-            "ambo": "71 - 26",
-            "colpi": "Esito al 3° colpo",
-            "stato": "AMBO SECCO VINCENTE!"
+            "ruote": "GENOVA - MILANO",
+            "ambata": 33,
+            "ambo": "33 - 78",
+            "colpi": "7° Colpo",
+            "stato": "In gioco"
         },
         {
             "data": "Concorso Arretrat. -8",
-            "ruote": "MILANO - VENEZIA",
-            "ambata": 51,
-            "ambo": "51 - 6",
-            "colpi": "Esito al 1° colpo",
+            "ruote": "GENOVA - MILANO",
+            "ambata": 75,
+            "ambo": "75 - 30",
+            "colpi": "Esito al 5° colpo",
             "stato": "Ambata Vincente"
         },
         {
             "data": "Concorso Arretrat. -9",
-            "ruote": "MILANO - VENEZIA",
-            "ambata": 41,
-            "ambo": "41 - 86",
-            "colpi": "9° Colpo",
-            "stato": "In gioco"
+            "ruote": "GENOVA - MILANO",
+            "ambata": 9,
+            "ambo": "9 - 54",
+            "colpi": "Esito al 7° colpo",
+            "stato": "Ambata Vincente"
         },
         {
             "data": "Concorso Arretrat. -10",
-            "ruote": "MILANO - VENEZIA",
-            "ambata": 64,
-            "ambo": "64 - 19",
-            "colpi": "Esito al 7° colpo",
+            "ruote": "GENOVA - MILANO",
+            "ambata": 10,
+            "ambo": "10 - 55",
+            "colpi": "Esito al 2° colpo",
             "stato": "Ambata Vincente"
         }
     ]
