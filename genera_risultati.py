@@ -15,9 +15,9 @@ def elabora_motore_sommativo():
     if not os.path.exists('estrazioni.json'): return
 
     # 🎯 CONFIGURAZIONE MOTORE ATTUALE
-    FISSO_OTTIMIZZATO = 35 
-    RUOTA_BASE = "MILANO"
-    RUOTA_RECUPERO = "VENEZIA"
+    FISSO_OTTIMIZZATO = 37 
+    RUOTA_BASE = "GENOVA"
+    RUOTA_RECUPERO = "MILANO"
 
     with open('estrazioni.json', 'r', encoding='utf-8') as f:
         archivio = json.load(f)
