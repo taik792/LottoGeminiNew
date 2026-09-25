@@ -6,51 +6,51 @@
     "previsioni": {
         "GENOVA": {
             "numeri_estrazione": [
-                56,
-                32,
-                53,
-                10,
-                24
+                76,
+                2,
+                63,
+                14,
+                81
             ],
-            "tipo_calcolo": "Sommativo da 1° Genova (56) +37",
-            "ambata": 3,
+            "tipo_calcolo": "Sommativo da 1° Genova (76) +37",
+            "ambata": 23,
             "ambo": [
-                3,
-                48
+                23,
+                68
             ],
             "ambetti": [
                 [
-                    3,
-                    49
+                    23,
+                    69
                 ],
                 [
-                    3,
-                    47
+                    23,
+                    67
                 ]
             ]
         },
         "MILANO": {
             "numeri_estrazione": [
-                8,
-                90,
-                15,
-                35,
-                67
+                78,
+                29,
+                86,
+                53,
+                52
             ],
-            "tipo_calcolo": "Sommativo da 1° Genova (56) +37",
-            "ambata": 3,
+            "tipo_calcolo": "Sommativo da 1° Genova (76) +37",
+            "ambata": 23,
             "ambo": [
-                3,
-                48
+                23,
+                68
             ],
             "ambetti": [
                 [
-                    3,
-                    49
+                    23,
+                    69
                 ],
                 [
-                    3,
-                    47
+                    23,
+                    67
                 ]
             ]
         }
@@ -59,13 +59,21 @@
         {
             "data": "Concorso Arretrat. -1",
             "ruote": "GENOVA - MILANO",
-            "ambata": 45,
-            "ambo": "45 - 90",
+            "ambata": 3,
+            "ambo": "3 - 48",
             "colpi": "1° Colpo",
             "stato": "In gioco"
         },
         {
             "data": "Concorso Arretrat. -2",
+            "ruote": "GENOVA - MILANO",
+            "ambata": 45,
+            "ambo": "45 - 90",
+            "colpi": "2° Colpo",
+            "stato": "In gioco"
+        },
+        {
+            "data": "Concorso Arretrat. -3",
             "ruote": "GENOVA - MILANO",
             "ambata": 10,
             "ambo": "10 - 55",
@@ -73,7 +81,7 @@
             "stato": "Ambata Vincente"
         },
         {
-            "data": "Concorso Arretrat. -3",
+            "data": "Concorso Arretrat. -4",
             "ruote": "GENOVA - MILANO",
             "ambata": 86,
             "ambo": "86 - 41",
@@ -81,7 +89,7 @@
             "stato": "Ambata Vincente"
         },
         {
-            "data": "Concorso Arretrat. -4",
+            "data": "Concorso Arretrat. -5",
             "ruote": "GENOVA - MILANO",
             "ambata": 2,
             "ambo": "2 - 47",
@@ -89,15 +97,15 @@
             "stato": "Ambata Vincente"
         },
         {
-            "data": "Concorso Arretrat. -5",
+            "data": "Concorso Arretrat. -6",
             "ruote": "GENOVA - MILANO",
             "ambata": 57,
             "ambo": "57 - 12",
-            "colpi": "5° Colpo",
+            "colpi": "6° Colpo",
             "stato": "In gioco"
         },
         {
-            "data": "Concorso Arretrat. -6",
+            "data": "Concorso Arretrat. -7",
             "ruote": "GENOVA - MILANO",
             "ambata": 62,
             "ambo": "62 - 17",
@@ -105,7 +113,7 @@
             "stato": "Ambata Vincente"
         },
         {
-            "data": "Concorso Arretrat. -7",
+            "data": "Concorso Arretrat. -8",
             "ruote": "GENOVA - MILANO",
             "ambata": 5,
             "ambo": "5 - 50",
@@ -113,28 +121,20 @@
             "stato": "Ambata Vincente"
         },
         {
-            "data": "Concorso Arretrat. -8",
+            "data": "Concorso Arretrat. -9",
             "ruote": "GENOVA - MILANO",
             "ambata": 71,
             "ambo": "71 - 26",
-            "colpi": "8° Colpo",
-            "stato": "In gioco"
-        },
-        {
-            "data": "Concorso Arretrat. -9",
-            "ruote": "GENOVA - MILANO",
-            "ambata": 33,
-            "ambo": "33 - 78",
             "colpi": "9° Colpo",
             "stato": "In gioco"
         },
         {
             "data": "Concorso Arretrat. -10",
             "ruote": "GENOVA - MILANO",
-            "ambata": 75,
-            "ambo": "75 - 30",
-            "colpi": "Esito al 5° colpo",
-            "stato": "Ambata Vincente"
+            "ambata": 33,
+            "ambo": "33 - 78",
+            "colpi": "Chiuso",
+            "stato": "Ciclo concluso (No esito)"
         }
     ]
 }
