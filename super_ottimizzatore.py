@@ -25,78 +25,81 @@ def super_ottimizzazione_globale():
         print("Nessuna ruota valida trovata nell'archivio.")
         return
 
-    # Usiamo una ruota qualsiasi per contare le estrazioni totali
-    prima_ruota = list(archivio_pulito.keys())[0]
-    tot_estrazioni = len(archivio_pulito[prima_ruota])
+    # CORREZIONE BUG CHIAVE: prendiamo correttamente il primo nome stringa della lista
+    nome_prima_ruota = ruote_disponibili[0]
+    tot_estrazioni = len(archivio_pulito[nome_prima_ruota])
     classifica_combinazioni = []
 
-    print(f"🔬 SUPER OTTIMIZZAZIONE GLOBALE SU {tot_estrazioni} ESTRAZIONI...")
-    print("Analisi di 9.000 combinazioni in corso (Tutte le ruote x Tutti i 90 Fissi)...")
+    print(f"🔬 SUPER OTTIMIZZAZIONE GLOBALE VELOCE SU {tot_estrazioni} ESTRAZIONI...")
+    print("Analisi ottimizzata di tutte le coppie possibili in corso...")
 
-    # Ciclo incrociato su TUTTE le ruote possibili
+    # Pre-calcoliamo le estrazioni come liste di interi per velocizzare i cicli di 4 volte
+    database_numerico = {}
+    for r in ruote_disponibili:
+        database_numerico[r] = []
+        for estrazione in archivio_pulito[r]:
+            if isinstance(estrazione, list):
+                database_numerico[r].append([int(n) for n in estrazione[:5]])
+            else:
+                database_numerico[r].append([])
+
+    # Ciclo sulle coppie di ruote
     for r_base in ruote_disponibili:
-        estrazioni_base = archivio_pulito[r_base]
+        estrazioni_base = database_numerico[r_base]
         
         for r_recupero in ruote_disponibili:
             if r_base == r_recupero: continue
-            estrazioni_recupero = archivio_pulito[r_recupero]
+            estrazioni_recupero = database_numerico[r_recupero]
             
-            # Test di tutti i 90 fissi per questa specifica coppia
             for fisso in range(1, 91):
                 vincite_ambata = 0
                 vincite_ambo = 0
                 totale_previsioni = 0
 
+                # Ottimizzazione colpi
                 for i in range(tot_estrazioni - 9):
-                    if i >= len(estrazioni_recupero) or i >= len(estrazioni_base): break
-                    if not estrazioni_base[i] or len(estrazioni_base[i]) < 1: continue
+                    if i >= len(estrazioni_base) or i >= len(estrazioni_recupero): break
+                    if not estrazioni_base[i]: continue
                     
-                    try:
-                        primo_numero = int(estrazioni_base[i]) if isinstance(estrazioni_base[i], list) else int(estrazioni_base[i])
-                        ambata = fuori_90(primo_numero + fisso)
-                        abbinamento = calcola_diametrale(ambata)
+                    primo_numero = estrazioni_base[i][0]
+                    ambata = fuori_90(primo_numero + fisso)
+                    abbinamento = calcola_diametrale(ambata)
+                    
+                    totale_previsioni += 1
+                    vinta_ambata = False
+                    vinto_ambo = False
+
+                    for colpo in range(1, 10):
+                        idx = i + colpo
+                        if idx >= tot_estrazioni or idx >= len(estrazioni_base) or idx >= len(estrazioni_recupero): break
                         
-                        totale_previsioni += 1
-                        vinta_ambata = False
-                        vinto_ambo = False
+                        num_base_futuri = estrazioni_base[idx]
+                        num_recu_futuri = estrazioni_recupero[idx]
 
-                        for colpo in range(1, 10):
-                            idx = i + colpo
-                            if idx >= tot_estrazioni or idx >= len(estrazioni_recupero): break
-                            
-                            num_base_futuri = [int(n) for n in estrazioni_base[idx][:5]]
-                            num_recu_futuri = [int(n) for n in estrazioni_recupero[idx][:5]]
+                        if not num_base_futuri or not num_recu_futuri: continue
 
-                            if not vinta_ambata and ((ambata in num_base_futuri) or (ambata in num_recu_futuri)):
-                                vincite_ambata += 1
-                                vinta_ambata = True
+                        if not vinta_ambata and ((ambata in num_base_futuri) or (ambata in num_recu_futuri)):
+                            vincite_ambata += 1
+                            vinta_ambata = True
 
-                            if not vinto_ambo:
-                                if (ambata in num_base_futuri and abbinamento in num_base_futuri) or (ambata in num_recu_futuri and abbinamento in num_recu_futuri):
-                                    vincite_ambo += 1
-                                    vinto_ambo = True
-                    except:
-                        continue
+                        if not vinto_ambo:
+                            if (ambata in num_base_futuri and abbinamento in num_base_futuri) or (ambata in num_recu_futuri and abbinamento in num_recu_futuri):
+                                vincite_ambo += 1
+                                vinto_ambo = True
 
                 if totale_previsioni > 0 and vincite_ambo > 0:
-                    p_ambata = (vincite_ambata / totale_previsioni) * 100
-                    p_ambo = (vincite_ambo / totale_previsioni) * 100
-                    
                     classifica_combinazioni.append({
                         "ruota_1": r_base,
                         "ruota_2": r_recupero,
                         "fisso": fisso,
-                        "perc_ambata": p_ambata,
-                        "perc_ambo": p_ambo,
-                        "ambi_totali": vincite_ambo,
-                        "tot_prev": totale_previsioni
+                        "perc_ambata": (vincite_ambata / totale_previsioni) * 100,
+                        "perc_ambo": (vincite_ambo / totale_previsioni) * 100,
+                        "ambi_totali": vincite_ambo
                     })
 
-    # Ordina la classifica per la percentuale di Ambi Secchi vinti
     classifica_combinazioni.sort(key=lambda x: x["perc_ambo"], reverse=True)
     top_5 = classifica_combinazioni[:5]
 
-    # STAMPA A SCHERMO PER I LOG DI GITHUB
     print("=" * 70)
     print("🏆 CLASSIFICA ASSOLUTA TOP 5 - LOTTO INTELLIGENCE V8 🏆")
     print("=" * 70)
