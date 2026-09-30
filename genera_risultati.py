@@ -15,7 +15,7 @@ def elabora_motore_sommativo():
     if not os.path.exists('estrazioni.json'): return
 
     # 🎯 CONFIGURAZIONE MOTORE ATTUALE
-    FISSO_OTTIMIZZATO = 37 
+    FISSO_OTTIMIZZATO = 35 
     RUOTA_BASE = "GENOVA"
     RUOTA_RECUPERO = "MILANO"
 
