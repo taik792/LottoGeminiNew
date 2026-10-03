@@ -1,52 +1,49 @@
-import datetime
+import json
+import os
 
-def calcola_regina_concentrato(primo_estratto_bari):
+def aggiorna_risultati_json(primo_estratto_bari):
     """
-    Algoritmo Regina Concentrato V8 - Configurazione Laboratorio Locale
-    Ruota Unica: BARI | Configurazione: FISSO +31 | 3 Ambi Secchi Ottimizzati
+    Calcola la nuova logica Regina Concentrato (Solo BARI)
+    e sovrascrive correttamente il file risultati_v4.json sul PC.
     """
-    # 1. Calcolo dell'Ambata Principale (Fisso +31 con Fuori 90)
+    # 1. Calcolo Ambata con Fisso +31 (Fuori 90)
     ambata = primo_estratto_bari + 31
     if ambata > 90:
         ambata -= 90
         
-    # 2. Calcolo dei 3 Abbinamenti Storici Ottimizzati per Bari (+9, +20, +74)
-    passi_abbinamenti = [9, 20, 74]
-    ambi_secchi = []
-    
-    for passo in passi_abbinamenti:
-        abbinamento = ambata + passo
+    # 2. Sviluppo dei 3 Ambi Secchi con passi ottimizzati (+9, +20, +74)
+    passi = [9, 20, 74]
+    ambi = []
+    for p in passi:
+        abbinamento = ambata + p
         if abbinamento > 90:
             abbinamento -= 90
-        # Nel caso assurdo in cui l'abbinamento coincida con l'ambata, applica un correttivo (+1)
-        if abbinamento == ambata:
-            abbinamento = (abbinamento + 1) if abbinamento < 90 else 1
-        ambi_secchi.append((ambata, abbinamento))
+        ambi.append(f"{ambata}-{abbinamento}")
         
-    return ambata, ambi_secchi
+    # 3. Struttura dati per il JSON (Impostata solo sulla ruota di BARI)
+    nuovi_dati = {
+        "ruota_base": "BARI",
+        "ruota_recupero": "NESSUNA (Configurazione Concentrata)",
+        "configurazione": "FISSO +31",
+        "input_estrazione": primo_estratto_bari,
+        "previsione": {
+            "ambata": ambata,
+            "ambi_secchi": ambi
+        },
+        "protocollo": {
+            "colpo_attuale": 1,
+            "stato": "STUDIO - NON GIOCARE",
+            "prossima_estrazione": "06/10/2026"
+        }
+    }
+    
+    # 4. Scrittura fisica del file risultati_v4.json
+    nome_file = "risultati_v4.json"
+    with open(nome_file, "w", encoding="utf-8") as f:
+        json.dump(nuovi_dati, f, indent=4, ensure_ascii=False)
+        
+    print(f"✅ File {nome_file} generato e aggiornato con successo solo su BARI!")
 
+# Eseguiamo il calcolo con il 13 uscito stasera a Bari
 if __name__ == "__main__":
-    # Input dell'estrazione del 3 Ottobre 2026
-    # Bari: 13 - 60 - 19 - 29 - 56 (Il primo estratto è 13)
-    primo_estratto_bari_stasera = 13
-    
-    ambata_risultato, ambi_risultato = calcola_regina_concentrato(primo_estratto_bari_stasera)
-    
-    # Stampa del pannello di controllo del Laboratorio Locale
-    print("=" * 60)
-    print("         LOTTO INTELLIGENCE V8 - AMBIENTE LABORATORIO PC       ")
-    print("             LOGICA AGGIORNATA: REGINA CONCENTRATO             ")
-    print("=" * 60)
-    print(f"Data Elaborazione: {datetime.date.today().strftime('%d/%m/%Y')}")
-    print(f"Ruota Unica di Gioco: BARI")
-    print(f"Input (1° Estratto Bari): {primo_estratto_bari_stasera}")
-    print("-" * 60)
-    print(f"🔥 AMBATA PRINCIPALE: {ambata_risultato}")
-    print("-" * 60)
-    print("🎯 I 3 AMBI SECCHI IN CORSO (SU BARI):")
-    for i, ambo in enumerate(ambi_risultato, 1):
-        print(f"   Ambo Secco {i}: {ambo[0]} - {ambo[1]}")
-    print("-" * 60)
-    print("🛡️  PROTOCOLLO: 1° Colpo (Martedì 06/10) solo STUDIO. NON GIOCARE.")
-    print("   Ingresso Reale programmato al 2° Colpo (Giovedì 08/10).")
-    print("=" * 60)
+    aggiorna_risultati_json(13)
