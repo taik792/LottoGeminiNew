@@ -1,140 +1,19 @@
 {
-    "info_concorso": {
-        "numero": "Lotto Intelligence V8",
-        "data": "03/10/2026"
+    "ruota_base": "BARI",
+    "ruota_recupero": "NESSUNA (Configurazione Concentrata)",
+    "configurazione": "FISSO +31",
+    "input_estrazione": 13,
+    "previsione": {
+        "ambata": 44,
+        "ambi_secchi": [
+            "44-53",
+            "44-64",
+            "44-28"
+        ]
     },
-    "previsioni": {
-        "GENOVA": {
-            "numeri_estrazione": [
-                83,
-                87,
-                18,
-                12,
-                22
-            ],
-            "tipo_calcolo": "Sommativo da 1° Genova (83) +35",
-            "ambata": 28,
-            "ambo": [
-                28,
-                73
-            ],
-            "ambetti": [
-                [
-                    28,
-                    74
-                ],
-                [
-                    28,
-                    72
-                ]
-            ]
-        },
-        "MILANO": {
-            "numeri_estrazione": [
-                59,
-                31,
-                22,
-                41,
-                46
-            ],
-            "tipo_calcolo": "Sommativo da 1° Genova (83) +35",
-            "ambata": 28,
-            "ambo": [
-                28,
-                73
-            ],
-            "ambetti": [
-                [
-                    28,
-                    74
-                ],
-                [
-                    28,
-                    72
-                ]
-            ]
-        }
-    },
-    "storico_verificato": [
-        {
-            "data": "Concorso Arretrat. -1",
-            "ruote": "GENOVA - MILANO",
-            "ambata": 54,
-            "ambo": "54 - 9",
-            "colpi": "1° Colpo",
-            "stato": "In gioco"
-        },
-        {
-            "data": "Concorso Arretrat. -2",
-            "ruote": "GENOVA - MILANO",
-            "ambata": 2,
-            "ambo": "2 - 47",
-            "colpi": "2° Colpo",
-            "stato": "In gioco"
-        },
-        {
-            "data": "Concorso Arretrat. -3",
-            "ruote": "GENOVA - MILANO",
-            "ambata": 32,
-            "ambo": "32 - 77",
-            "colpi": "3° Colpo",
-            "stato": "In gioco"
-        },
-        {
-            "data": "Concorso Arretrat. -4",
-            "ruote": "GENOVA - MILANO",
-            "ambata": 43,
-            "ambo": "43 - 88",
-            "colpi": "4° Colpo",
-            "stato": "In gioco"
-        },
-        {
-            "data": "Concorso Arretrat. -5",
-            "ruote": "GENOVA - MILANO",
-            "ambata": 21,
-            "ambo": "21 - 66",
-            "colpi": "5° Colpo",
-            "stato": "In gioco"
-        },
-        {
-            "data": "Concorso Arretrat. -6",
-            "ruote": "GENOVA - MILANO",
-            "ambata": 1,
-            "ambo": "1 - 46",
-            "colpi": "6° Colpo",
-            "stato": "In gioco"
-        },
-        {
-            "data": "Concorso Arretrat. -7",
-            "ruote": "GENOVA - MILANO",
-            "ambata": 43,
-            "ambo": "43 - 88",
-            "colpi": "7° Colpo",
-            "stato": "In gioco"
-        },
-        {
-            "data": "Concorso Arretrat. -8",
-            "ruote": "GENOVA - MILANO",
-            "ambata": 8,
-            "ambo": "8 - 53",
-            "colpi": "Esito al 1° colpo",
-            "stato": "Ambata Vincente"
-        },
-        {
-            "data": "Concorso Arretrat. -9",
-            "ruote": "GENOVA - MILANO",
-            "ambata": 84,
-            "ambo": "84 - 39",
-            "colpi": "9° Colpo",
-            "stato": "In gioco"
-        },
-        {
-            "data": "Concorso Arretrat. -10",
-            "ruote": "GENOVA - MILANO",
-            "ambata": 90,
-            "ambo": "90 - 45",
-            "colpi": "Esito al 1° colpo",
-            "stato": "Ambata Vincente"
-        }
-    ]
+    "protocollo": {
+        "colpo_attuale": 1,
+        "stato": "STUDIO - NON GIOCARE",
+        "prossima_estrazione": "06/10/2026"
+    }
 }
