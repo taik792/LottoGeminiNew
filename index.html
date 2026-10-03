@@ -75,74 +75,43 @@
 </div>
 
 <script>
-    async function caricaRisultati() {
-        try {
-            const response = await fetch('risultati_v4.json?t=' + new Date().getTime());
-            const data = await response.json();
-            
-            document.getElementById('info-data').innerText = `Estrazione del: ${data.info_concorso.data || "N.D."}`;
-            
-            const container = document.getElementById('ruote-list');
-            container.innerHTML = ''; 
-            for (const [ruota, info] of Object.entries(data.previsioni)) {
-                const card = document.createElement('div');
-                card.className = 'card-ruota';
-                const pallineHTML = info.numeri_estrazione.map(num => `<div class="pallina">${num}</div>`).join('');
-                const amboStr = Array.isArray(info.ambo) ? info.ambo.join(' - ') : info.ambo;
-                const ambettiString = info.ambetti.map(a => a.join('-')).join(' | ');
+fetch('risultati_v4.json')
+  .then(response => response.json())
+  .then(data => {
+    // 1. Aggiorna le informazioni generali del motore
+    const infoSezione = document.createElement('div');
+    infoSezione.innerHTML = `
+      <p><strong>Configurazione:</strong> ${data.configurazione}</p>
+      <p><strong>Ruota in gioco:</strong> <span style="color: #0056b3; font-weight: bold;">${data.ruota_base}</span></p>
+      <p><strong>Input Estratto:</strong> ${data.input_estrazione}</p>
+    `;
+    
+    // inserisce i dati sotto il titolo "PREVISIONE IN CORSO"
+    const previsioneDiv = document.querySelector('.container') || document.body; 
+    
+    // 2. Genera il pannello dell'Ambata e dei 3 Ambi
+    let ambiHtml = '';
+    data.previsione.ambi_secchi.forEach((ambo, index) => {
+        ambiHtml += `<li><strong>Ambo Secco ${index + 1}:</strong> ${ambo}</li>`;
+    });
 
-                card.innerHTML = `
-                    <div class="card-header">
-                        <span class="ruota-title">${ruota}</span>
-                        <span class="spia-badge">${info.tipo_calcolo}</span>
-                    </div>
-                    <div class="palline-box">${pallineHTML}</div>
-                    <div class="previsione-box">
-                        <div class="prev-item ambata"><div class="prev-label">Ambata</div><div class="prev-value">${info.ambata}</div></div>
-                        <div class="prev-item ambo"><div class="prev-label">Ambo Secco</div><div class="prev-value">${amboStr}</div></div>
-                    </div>
-                    <div class="ambetti-box"><div class="ambetti-valori">Ambetti: ${ambettiString}</div></div>
-                `;
-                container.appendChild(card);
-            }
-
-            const storicoContainer = document.getElementById('storico-list');
-            storicoContainer.innerHTML = '';
-            
-            if (!data.storico_verificato || data.storico_verificato.length === 0) {
-                storicoContainer.innerHTML = '<p style="font-size:0.85rem; color:#64748b; text-align:center;">Nessuna previsione passata registrata su file.</p>';
-                return;
-            }
-
-            [...data.storico_verificato].reverse().forEach(item => {
-                const minicard = document.createElement('div');
-                minicard.className = 'card-ruota';
-                
-                const isWin = item.stato !== "In gioco";
-                minicard.style.borderLeft = isWin ? '5px solid var(--win-bg)' : '5px solid #64748b';
-                const badgeBg = isWin ? 'var(--win-bg)' : '#f1f5f9';
-                const badgeTxt = isWin ? 'var(--win-txt)' : '#475569';
-
-                minicard.innerHTML = `
-                    <div class="card-header">
-                        <span class="ruota-title" style="color:#475569;">${item.ruote || 'RUOTE'} (${item.data})</span>
-                        <span class="spia-badge" style="background:${badgeBg}; color:${badgeTxt}; font-weight:bold;">${item.colpi}</span>
-                    </div>
-                    <div class="previsione-box">
-                        <div class="prev-item ambata" style="background:#f8fafc; color:#475569;"><div class="prev-label">Ambata</div><div class="prev-value">${item.ambata}</div></div>
-                        <div class="prev-item ambo" style="background:#f1f5f9; color:#1e293b;"><div class="prev-label">Ambo</div><div class="prev-value">${item.ambo}</div></div>
-                    </div>
-                    <div style="text-align:center; font-size:0.75rem; font-weight:bold; color:${isWin ? 'var(--win-txt)' : '#64748b'}; margin-top:4px;">
-                        Esito: ${item.stato}
-                    </div>
-                `;
-                storicoContainer.appendChild(minicard);
-            });
-
-        } catch (e) { console.error(e); }
-    }
-
-    window.onload = caricaRisultati;
+    const tabellaPrevisione = `
+      <div style="background: #f8f9fa; border-left: 5px solid #0056b3; padding: 15px; margin: 15px 0; border-radius: 4px;">
+        <h3 style="color: #ffc107; margin-top: 0;">🔥 AMBATA PRINCIPALE: ${data.previsione.ambata}</h3>
+        <ul style="list-style: none; padding-left: 0; line-height: 1.8;">
+            ${ambiHtml}
+        </ul>
+        <div style="background: #dc3545; color: white; padding: 8px; text-align: center; font-weight: bold; border-radius: 4px; margin-top: 10px;">
+           🚨 STATO PROTOCOLLO: ${data.protocollo.stato} (Colpo attuale: ${data.protocollo.colpo_attuale})
+        </div>
+      </div>
+    `;
+    
+    // Sostituisce o appende i dati all'interno della dashboard
+    // Nota: questo script adatta dinamicamente i tuoi vecchi selettori
+    document.body.innerHTML = document.body.innerHTML.replace('PREVISIONE IN CORSO', 'PREVISIONE IN CORSO' + tabellaPrevisione);
+  })
+  .catch(error => console.error('Errore nel caricamento del file JSON:', error));
 </script>
 </body>
 </html>
