@@ -4,7 +4,7 @@ import datetime
 
 def esegui_aggiornamento_laboratorio():
     file_estrazioni = "estrazioni.json"
-    file_risultati = "resultados_v4.json" # se la tua index cerca risultati_v4.json rinominalo di conseguenza
+    file_risultati = "risultati_v4.json"
     
     # 1. Controllo presenza file estrazioni
     if not os.path.exists(file_estrazioni):
@@ -19,22 +19,21 @@ def esegui_aggiornamento_laboratorio():
         print(f"❌ ERRORE nella lettura di {file_estrazioni}: {e}")
         return
 
-    # 3. Estrazione dell'ultimo 1° estratto di BARI secondo la tua struttura
+    # 3. Estrazione dell'ultimo 1° estratto di BARI (Corretto!)
     try:
-        # Nella tua struttura le chiavi hanno la prima lettera maiuscola ("Bari")
         chiave_bari = "Bari" if "Bari" in archivio else "BARI"
         
         if chiave_bari in archivio and len(archivio[chiave_bari]) > 0:
             # Prende l'ultimo array della lista di Bari
             ultima_cinquina_bari = archivio[chiave_bari][-1]
-            # Prende il primo elemento dell'array (il 1° estratto)
+            # Prende ESATTAMENTE il primo numero della cinquina [0]
             primo_estratto_bari = int(ultima_cinquina_bari[0])
         else:
             raise KeyError("Ruota Bari non trovata nell'archivio JSON.")
             
     except Exception as e:
         print(f"❌ ERRORE nell'estrarre l'ultimo numero di Bari: {e}")
-        print("Uso l'input manuale d'emergenza (13) per non bloccare la dashboard.")
+        print("Uso l'input manuale d'emergenza (13) per non bloccarsi.")
         primo_estratto_bari = 13
 
     # 4. Applicazione Algoritmo Regina Concentrato (Fisso +31)
@@ -61,6 +60,10 @@ def esegui_aggiornamento_laboratorio():
         "input_estrazione": primo_estratto_bari,
         "previsione": {
             "ambata": ambata,
+            "ambi_secchi": [] # Svuotato per compatibilità vecchio layout se necessario
+        },
+        "previsione_concentrata": {  # Nuova sezione protetta per non rompere index vecchie
+            "ambata": ambata,
             "ambi_secchi": ambi
         },
         "protocollo": {
@@ -70,17 +73,18 @@ def esegui_aggiornamento_laboratorio():
         }
     }
     
+    # Per estrema sicurezza valorizziamo anche il vecchio campo ambi_secchi del JSON
+    # con i 3 ambi in modo che se la tua index legge il vecchio campo non rimanga vuota
+    nuovi_dati["previsione"]["ambi_secchi"] = ambi
+
     # 6. Scrittura fisica del file risultati_v4.json
-    # NOTA: se nel codice javascript della tua index.html hai scritto "risultati_v4.json", 
-    # assicurati che il nome qui sotto corrisponda perfettamente (controlla se c'è la 'v' o se è risultati_v4)
-    file_output = "risultati_v4.json" 
-    
     try:
-        with open(file_output, "w", encoding="utf-8") as f:
+        with open(file_risultati, "w", encoding="utf-8") as f:
             json.dump(nuovi_dati, f, indent=4, ensure_ascii=False)
-        print(f"✅ SUCCESSO: '{file_estrazioni}' letto correttamente.")
+        print(f"✅ Master Sbloccato con Successo!")
+        print(f"   Archivio '{file_estrazioni}' letto correttamente.")
         print(f"   Ultimo 1° Estratto Bari rilevato: {primo_estratto_bari}")
-        print(f"   File '{file_output}' rigenerato con la nuova logica Regina Concentrato!")
+        print(f"   File '{file_risultati}' rigenerato con la nuova logica Regina Concentrato!")
     except Exception as e:
         print(f"❌ ERRORE nella scrittura del file di output: {e}")
 
