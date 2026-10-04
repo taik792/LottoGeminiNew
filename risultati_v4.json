@@ -11,6 +11,14 @@
             "44-28"
         ]
     },
+    "previsione_concentrata": {
+        "ambata": 44,
+        "ambi_secchi": [
+            "44-53",
+            "44-64",
+            "44-28"
+        ]
+    },
     "protocollo": {
         "colpo_attuale": 1,
         "stato": "STUDIO - NON GIOCARE",
