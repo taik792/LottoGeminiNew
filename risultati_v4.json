@@ -2,21 +2,21 @@
     "ruota_base": "BARI",
     "ruota_recupero": "NESSUNA (Configurazione Concentrata)",
     "configurazione": "FISSO +31",
-    "input_estrazione": 13,
+    "input_estrazione": 50,
     "previsione": {
-        "ambata": 44,
+        "ambata": 81,
         "ambi_secchi": [
-            "44-53",
-            "44-64",
-            "44-28"
+            "81-90",
+            "81-11",
+            "81-65"
         ]
     },
     "previsione_concentrata": {
-        "ambata": 44,
+        "ambata": 81,
         "ambi_secchi": [
-            "44-53",
-            "44-64",
-            "44-28"
+            "81-90",
+            "81-11",
+            "81-65"
         ]
     },
     "protocollo": {
