@@ -1,27 +1,19 @@
 {
     "ruota_base": "BARI",
     "ruota_recupero": "NESSUNA (Configurazione Concentrata)",
-    "configurazione": "FISSO +31",
+    "configurazione": "FISSO +44 (Ottimizzato 28%)",
     "input_estrazione": 74,
     "previsione": {
-        "ambata": 15,
+        "ambata": 28,
         "ambi_secchi": [
-            "15-24",
-            "15-35",
-            "15-89"
-        ]
-    },
-    "previsione_concentrata": {
-        "ambata": 15,
-        "ambi_secchi": [
-            "15-24",
-            "15-35",
-            "15-89"
+            "28-37",
+            "28-48",
+            "28-12"
         ]
     },
     "protocollo": {
         "colpo_attuale": 1,
         "stato": "STUDIO - NON GIOCARE",
-        "prossima_estrazione": "06/10/2026"
+        "prossima_estrazione": "10/10/2026"
     }
 }
