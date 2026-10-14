@@ -16,7 +16,7 @@ def fuori_90(numero):
 
 def genera_previsione_laboratorio():
     nome_file_json = 'estrazioni.json'
-    nome_file_report = 'risultati_v4.txt'
+    nome_file_report_json = 'risultati_v4.json' # Ripristinato il formato JSON per l'index
 
     if not os.path.exists(nome_file_json):
         print(f"[ERRORE] File {nome_file_json} non trovato nella cartella corrente!")
@@ -25,68 +25,68 @@ def genera_previsione_laboratorio():
     with open(nome_file_json, 'r', encoding='utf-8') as f:
         dati = json.load(f)
     
-    # Nel tuo JSON Bari contiene direttamente la lista di tutte le cinquine estratte
     try:
         ruota_bari = dati['Bari']
-        cinquina_precedente = ruota_bari[-2] # Sabato 10 Ottobre
-        cinquina_attuale = ruota_bari[-1]    # Martedì 13 Ottobre
+        cinquina_precedente = ruota_bari[-2]
+        cinquina_attuale = ruota_bari[-1]
     except (KeyError, IndexError):
         print("[ERRORE] Struttura JSON non compatibile o dati insufficienti su Bari.")
         return
 
     # Recuperiamo il PRIMO ESTRATTO di ciascuna cinquina (Indice 0)
-    primo_precedente = int(cinquina_precedente[0]) # Primo di Sabato (16)
-    primo_attuale = int(cinquina_attuale[0])       # Primo di Martedì (56)
+    primo_precedente = int(cinquina_precedente[0])
+    primo_attuale = int(cinquina_attuale[0])
 
-    # Calcolo del FISSO DINAMICO (Passo Adattivo Ciclometrico)
+    # Calcolo del FISSO DINAMICO
     fisso_dinamico = calcola_distanza_ciclometrica(primo_attuale, primo_precedente)
-    
-    # Correttivo di sicurezza se la distanza è nulla
     if fisso_dinamico == 0 or fisso_dinamico == 90:
         fisso_dinamico = 40
 
-    # Calcolo Previsione: 1° Attuale di Bari + Fisso Dinamico
+    # Calcolo Previsione
     ambata = fuori_90(primo_attuale + fisso_dinamico)
 
-    # Calcolo Abbinamenti Matematici di Laboratorio per Ambo Secco
+    # Calcolo Abbinamenti
     ambo1 = fuori_90(ambata + 45)
     ambo2 = fuori_90(90 - ambata)
     ambo3 = fuori_90(91 - ambata)
 
-    # Controllo e Correttivo anti-duplicazione
     abbinamenti = [ambo1, ambo2, ambo3]
     for i in range(len(abbinamenti)):
         if abbinamenti[i] == ambata:
             abbinamenti[i] = fuori_90(abbinamenti[i] + 1)
 
-    # Costruzione del Blocco di Testo per Console e File
-    output = []
-    output.append("=" * 60)
-    output.append("        LOTTO INTELLIGENCE V8 - AMBIENTE LABORATORIO (PC)        ")
-    output.append("                 ALGORITMO REGINA DINAMICO                      ")
-    output.append("=" * 60)
-    output.append(f"Cinquina Precedente Bari : {cinquina_precedente}")
-    output.append(f"Cinquina Attuale Bari    : {cinquina_attuale}")
-    output.append(f"Formula: 1° Ba Prec ({primo_precedente}) vs 1° Ba Att ({primo_attuale})")
-    output.append(f"--> FISSO DINAMICO RILEVATO: +{fisso_dinamico}")
-    output.append("-" * 60)
-    output.append(" PREVISIONE IN CORSO (PROSSIMO COLPO - SOLO STUDIO):")
-    output.append(" Ruota Attiva      : BARI (Ruota Unica)")
-    output.append(f" Ambata Principale : {ambata}")
-    output.append(f" I 3 Ambi Secchi   : {ambata}-{abbinamenti[0]}, {ambata}-{abbinamenti[1]}, {ambata}-{abbinamenti[2]}")
-    output.append("=" * 60)
-    output.append("NOTA: Configurazione esclusiva del Laboratorio Locale.")
-    output.append("Il server di Produzione GitHub rimane CONGELATO sul FISSO +31.")
-    output.append("=" * 60)
+    # Creazione del dizionario dati strutturato per l'interfaccia INDEX
+    dati_output = {
+        "ambiente": "LABORATORIO (PC) - STRATEGIA DINAMICA",
+        "ruota_attiva": "BARI",
+        "ultimo_calcolo": {
+            "primo_precedente": primo_precedente,
+            "primo_attuale": primo_attuale,
+            "fisso_dinamico_applicato": fisso_dinamico
+        },
+        "previsione": {
+            "tipo_giocata": "SOLO STUDIO (Spesa 0€)",
+            "ambata_principale": ambata,
+            "ambi_secchi": [
+                f"{ambata}-{abbinamenti[0]}",
+                f"{ambata}-{abbinamenti[1]}",
+                f"{ambata}-{abbinamenti[2]}"
+            ]
+        },
+        "nota_architettura": "Server di Produzione GitHub congelato su FISSO +31"
+    }
 
-    # Stampa a video sul Terminale
-    testo_completo = "\n".join(output)
-    print(testo_completo)
+    # Stampa di controllo a video sul Terminale
+    print("=" * 60)
+    print("        LOTTO INTELLIGENCE V8 - GENERAZIONE JSON COMPLETATA      ")
+    print("=" * 60)
+    print(json.dumps(dati_output, indent=4, ensure_ascii=False))
+    print("=" * 60)
 
-    # Scrittura e Aggiornamento automatico del file risultati_v4.txt
-    with open(nome_file_report, 'w', encoding='utf-8') as f_report:
-        f_report.write(testo_completo)
-    print(f"\n[OK] File '{nome_file_report}' aggiornato con successo!")
+    # Scrittura del file risultati_v4.json pulito e strutturato per la web-app
+    with open(nome_file_report_json, 'w', encoding='utf-8') as f_json:
+        json.dump(dati_output, f_json, indent=4, ensure_ascii=False)
+    print(f"\n[OK] File '{nome_file_report_json}' aggiornato con successo per l'interfaccia index!")
 
 if __name__ == "__main__":
     genera_previsione_laboratorio()
