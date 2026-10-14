@@ -1,19 +1,19 @@
 {
-    "ruota_base": "BARI",
-    "ruota_recupero": "NESSUNA (Configurazione Concentrata)",
-    "configurazione": "FISSO +44 (Ottimizzato 28%)",
-    "input_estrazione": 16,
+    "ambiente": "LABORATORIO (PC) - STRATEGIA DINAMICA",
+    "ruota_attiva": "BARI",
+    "ultimo_calcolo": {
+        "primo_precedente": 16,
+        "primo_attuale": 56,
+        "fisso_dinamico_applicato": 40
+    },
     "previsione": {
-        "ambata": 60,
+        "tipo_giocata": "SOLO STUDIO (Spesa 0€)",
+        "ambata_principale": 6,
         "ambi_secchi": [
-            "60-69",
-            "60-80",
-            "60-44"
+            "6-51",
+            "6-84",
+            "6-85"
         ]
     },
-    "protocollo": {
-        "colpo_attuale": 1,
-        "stato": "STUDIO - NON GIOCARE",
-        "prossima_estrazione": "10/10/2026"
-    }
+    "nota_architettura": "Server di Produzione GitHub congelato su FISSO +31"
 }
