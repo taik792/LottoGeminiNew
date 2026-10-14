@@ -1,0 +1,17 @@
+============================================================
+        LOTTO INTELLIGENCE V8 - AMBIENTE LABORATORIO (PC)        
+                 ALGORITMO REGINA DINAMICO                      
+============================================================
+Cinquina Precedente Bari : [16, 38, 53, 21, 55]
+Cinquina Attuale Bari    : [56, 21, 79, 19, 67]
+Formula: 1° Ba Prec (16) vs 1° Ba Att (56)
+--> FISSO DINAMICO RILEVATO: +40
+------------------------------------------------------------
+ PREVISIONE IN CORSO (PROSSIMO COLPO - SOLO STUDIO):
+ Ruota Attiva      : BARI (Ruota Unica)
+ Ambata Principale : 6
+ I 3 Ambi Secchi   : 6-51, 6-84, 6-85
+============================================================
+NOTA: Configurazione esclusiva del Laboratorio Locale.
+Il server di Produzione GitHub rimane CONGELATO sul FISSO +31.
+============================================================
