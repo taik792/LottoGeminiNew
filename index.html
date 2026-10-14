@@ -3,217 +3,220 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lotto Mode Coppie - Laboratorio</title>
+    <title>Lotto Intelligence V8 - Laboratorio</title>
     <style>
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f4f6f9;
             margin: 0;
             padding: 20px;
-            color: #333;
             display: flex;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
+            min-height: 100vh;
         }
         .container {
             width: 100%;
             max-width: 600px;
-            background: white;
+            background: #ffffff;
             border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            padding: 0 0 20px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             overflow: hidden;
         }
         .header {
-            background-color: #0033aa;
+            background-color: #002f6c;
             color: white;
             text-align: center;
             padding: 20px;
         }
         .header h1 {
             margin: 0;
-            font-size: 22px;
-            font-weight: bold;
+            font-size: 24px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
         .header p {
             margin: 5px 0 0 0;
             font-size: 12px;
             opacity: 0.8;
-            text-transform: uppercase;
-            letter-spacing: 1px;
         }
-        .section-title {
+        .card {
+            padding: 25px;
+            border-bottom: 1px solid #edf2f7;
+        }
+        .card-title {
             font-size: 14px;
             font-weight: bold;
-            color: #555;
-            border-bottom: 1px solid #e0e0e0;
-            padding: 15px 20px 5px 20px;
             text-transform: uppercase;
+            color: #4a5568;
+            margin-bottom: 15px;
             letter-spacing: 0.5px;
-        }
-        .content-box {
-            padding: 15px 20px;
+            border-left: 4px solid #3182ce;
+            padding-left: 8px;
         }
         .info-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
             margin-bottom: 15px;
+            background: #f7fafc;
+            padding: 12px;
+            border-radius: 6px;
             font-size: 14px;
         }
-        .info-item {
-            background: #f8f9fa;
-            padding: 8px 12px;
-            border-radius: 4px;
-            border-left: 3px solid #ccc;
-        }
+        .info-label { color: #718096; }
+        .info-value { font-weight: 600; color: #2d3748; text-align: right; }
         .ambata-box {
-            background: #fff9e6;
-            border: 2px dashed #ffc107;
-            border-radius: 6px;
+            background: #ebf8ff;
+            border: 1px dashed #bee3f8;
             padding: 15px;
             text-align: center;
+            border-radius: 6px;
             margin-bottom: 15px;
         }
-        .ambata-box h2 {
-            margin: 0;
-            color: #b38600;
-            font-size: 16px;
-            text-transform: uppercase;
-        }
-        .ambata-box .numero {
+        .ambata-number {
             font-size: 36px;
-            font-weight: bold;
-            color: #d94100;
+            font-weight: 800;
+            color: #2b6cb0;
             margin-top: 5px;
         }
-        .ambo-list {
+        .ambi-list {
             list-style: none;
             padding: 0;
             margin: 0;
         }
         .ambo-item {
-            background: #f1f3f9;
-            margin-bottom: 8px;
+            background: #f0fff4;
+            border: 1px solid #c6f6d5;
+            color: #22543d;
             padding: 10px 15px;
-            border-radius: 4px;
-            display: flex;
-            justify-content: space-between;
-            font-size: 15px;
-            border-left: 4px solid #0033aa;
-        }
-        .ambo-item span {
-            font-weight: bold;
-            color: #0033aa;
-        }
-        .status-banner {
-            background-color: #dc3545;
-            color: white;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            font-weight: 700;
             text-align: center;
-            padding: 10px;
-            font-weight: bold;
-            font-size: 13px;
-            border-radius: 4px;
-            margin-top: 15px;
-            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 18px;
+        }
+        .footer-note {
+            font-size: 11px;
+            color: #a0aec0;
+            text-align: center;
+            padding: 15px;
+            background: #f7fafc;
+            line-height: 1.4;
         }
         .error-message {
-            color: #dc3545;
+            color: #e53e3e;
+            background: #fff5f5;
+            border: 1px solid #fed7d7;
+            padding: 15px;
+            border-radius: 6px;
             text-align: center;
-            padding: 20px;
             font-size: 14px;
-            font-weight: bold;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <!-- Intestazione Blu come da Foto -->
-        <div class="header">
-            <h1>Lotto Mode Coppie</h1>
-            <p>Algoritmo Sommativo Unificato</p>
-        </div>
-
-        <!-- Sezione Previsione -->
-        <div class="section-title">Previsione in Corso</div>
-        <div class="content-box" id="previsione-container">
-            <!-- I dati dinamici verranno inseriti qui dal Javascript -->
-            <p style="text-align: center; color: #888;">Caricamento dati...</p>
-        </div>
-
-        <!-- Sezione Archivio -->
-        <div class="section-title">Archivio Storico Blindato</div>
-        <div class="content-box">
-            <p style="font-size: 13px; color: #666; margin: 0; text-align: center;">
-                Motore statistico attivo. Nessun esito precedente rilevato per questo ciclo.
-            </p>
-        </div>
+<div class="container">
+    <div class="header">
+        <h1>Lotto Mode Regina</h1>
+        <p>LABORATORIO - ALGORITMO DINAMICO CONCENTRATO</p>
     </div>
 
-    <!-- Script Corretto per la Nuova Struttura JSON -->
-    <script>
-        // Carica il file risultati_v4.json locale nella stessa cartella
-        fetch('risultati_v4.json')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Impossibile trovare il file risultati_v4.json locale');
-                }
-                return response.json();
-            })
-            .then(data => {
-                const container = document.getElementById('previsione-container');
-                
-                // Costruisce la lista degli Ambi Secchi salvati nel JSON
-                let ambiHtml = '';
-                if (data.previsione.ambi_secchi && data.previsione.ambi_secchi.length > 0) {
-                    data.previsione.ambi_secchi.forEach((ambo, index) => {
-                        ambiHtml += `
-                            <li class="ambo-item">
-                                Milano/Genova Disattivati ➔ <strong>Ambo Secco ${index + 1}</strong>
-                                <span>${ambo}</span>
-                            </li>
-                        `;
-                    });
-                } else {
-                    ambiHtml = '<li style="text-align:center; color:#888;">Nessun ambo calcolato</li>';
-                }
+    <div id="loading" class="card" style="text-align: center; color: #718096;">
+        Caricamento dati di Laboratorio in corso...
+    </div>
 
-                // Genera la nuova interfaccia grafica dinamica senza blocchi
-                container.innerHTML = `
-                    <div class="info-grid">
-                        <div class="info-item"><strong>Ruota:</strong> ${data.ruota_base}</div>
-                        <div class="info-item"><strong>Setup:</strong> ${data.configurazione}</div>
-                        <div class="info-item"><strong>Input Spia:</strong> ${data.input_estrazione}</div>
-                        <div class="info-item"><strong>Data Estrazione:</strong> ${data.protocollo.prossima_estrazione || 'Prossima'}</div>
-                    </div>
+    <div id="content" style="display: none;">
+        <!-- Blocco Configurazione -->
+        <div class="card">
+            <div class="card-title">Stato dell'Architettura</div>
+            <div class="info-grid">
+                <span class="info-label">Ambiente:</span>
+                <span class="info-value" id="ambiente">--</span>
+                <span class="info-label">Ruota Attiva:</span>
+                <span class="info-value" id="ruota">--</span>
+                <span class="info-label">1° Ba Prec / Att:</span>
+                <span class="info-value" id="estratti">--</span>
+                <span class="info-label">Fisso Dinamico:</span>
+                <span class="info-value" style="color: #dd6b20;" id="fisso">--</span>
+            </div>
+        </div>
 
-                    <div class="ambata-box">
-                        <h2>🔥 Ambata Principale</h2>
-                        <div class="numero">${data.previsione.ambata}</div>
-                    </div>
+        <!-- Blocco Previsione -->
+        <div class="card">
+            <div class="card-title" id="tipo-giocata">Previsione in Corso</div>
+            <div class="ambata-box">
+                <div style="font-size: 12px; color: #4a5568; font-weight: bold;">AMBATA PRINCIPALE</div>
+                <div class="ambata-number" id="ambata">--</div>
+            </div>
+            <div style="font-size: 12px; color: #4a5568; font-weight: bold; margin-bottom: 8px; text-transform: uppercase;">I 3 Ambi Secchi</div>
+            <ul class="ambi-list" id="ambi-container">
+                <!-- Inseriti dinamicamente -->
+            </ul>
+        </div>
 
-                    <ul class="ambo-list">
-                        ${ambiHtml}
-                    </ul>
+        <!-- Nota di Sicurezza -->
+        <div class="footer-note" id="nota">
+            --
+        </div>
+    </div>
+</div>
 
-                    <div class="status-banner">
-                        🛡️ ${data.protocollo.stato} (Colpo: ${data.protocollo.colpo_attuale})
-                    </div>
-                `;
-            })
-            .catch(error => {
-                console.error(error);
-                document.getElementById('previsione-container').innerHTML = `
-                    <div class="error-message">
-                        ⚠️ Errore di caricamento dati<br>
-                        <span style="font-weight: normal; font-size: 12px; color: #555;">
-                            Verifica che il file <strong>risultati_v4.json</strong> sia presente nella stessa cartella di questo file index.html e che non sia vuoto.
-                        </span>
-                    </div>
-                `;
+<script>
+    async function caricaPrevisione() {
+        try {
+            // Aggiungiamo un timestamp per bypassare la cache del browser in tempo reale
+            const response = await fetch('risultati_v4.json?t=' + new Date().getTime());
+            if (!response.ok) {
+                throw new Error("Impossibile leggere il file dei risultati JSON.");
+            }
+            const data = await response.json();
+
+            // Nascondi loading e mostra contenuto
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('content').style.display = 'block';
+
+            // Mappatura dei dati strutturati dal nuovo script
+            document.getElementById('ambiente').innerText = data.ambiente;
+            document.getElementById('ruota').innerText = data.ruota_attiva;
+            document.getElementById('estratti').innerText = `${data.ultimo_calcolo.primo_precedente} / ${data.ultimo_calcolo.primo_attuale}`;
+            document.getElementById('fisso').innerText = `+${data.ultimo_calcolo.fisso_dinamico_applicato}`;
+            document.getElementById('tipo-giocata').innerText = `Previsione in corso (${data.previsione.tipo_giocata})`;
+            document.getElementById('ambata').innerText = data.previsione.ambata_principale;
+
+            // Generazione dinamica degli ambi secchi
+            const ambiContainer = document.getElementById('ambi-container');
+            ambiContainer.innerHTML = ''; // Pulisce la lista
+            data.previsione.ambi_secchi.forEach(ambo => {
+                const li = document.createElement('li');
+                li.className = 'ambo-item';
+                li.innerText = ambo;
+                ambiContainer.appendChild(li);
             });
-    </script>
+
+            document.getElementById('nota').innerText = data.nota_architecture || data.nota_architettura;
+
+        } catch (error) {
+            document.getElementById('loading').style.display = 'none';
+            const content = document.getElementById('content');
+            content.style.display = 'block';
+            content.innerHTML = `
+                <div class="card">
+                    <div class="error-message">
+                        <strong>⚠️ Errore di sincronizzazione interfaccia</strong><br><br>
+                        Il file <code>risultati_v4.json</code> non è stato ancora generato da GitHub Actions o la struttura è incompleta.<br>
+                        Verifica che il run sia andato a buon fine.
+                    </div>
+                </div>
+            `;
+        }
+    }
+
+    // Avvio al caricamento della pagina
+    window.onload = caricaPrevisione;
+</script>
 
 </body>
 </html>
