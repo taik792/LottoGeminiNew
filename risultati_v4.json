@@ -2,17 +2,17 @@
     "ambiente": "LABORATORIO (PC) - STRATEGIA DINAMICA",
     "ruota_attiva": "BARI",
     "ultimo_calcolo": {
-        "primo_precedente": 16,
-        "primo_attuale": 56,
-        "fisso_dinamico_applicato": 40
+        "primo_precedente": 56,
+        "primo_attuale": 87,
+        "fisso_dinamico_applicato": 31
     },
     "previsione": {
         "tipo_giocata": "SOLO STUDIO (Spesa 0€)",
-        "ambata_principale": 6,
+        "ambata_principale": 28,
         "ambi_secchi": [
-            "6-51",
-            "6-84",
-            "6-85"
+            "28-73",
+            "28-62",
+            "28-63"
         ]
     },
     "nota_architettura": "Server di Produzione GitHub congelato su FISSO +31"
