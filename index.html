@@ -3,220 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lotto Intelligence V8 - Laboratorio</title>
+    <title>Lotto Intelligence V8 - Console Storica</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f6f9;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-        .container {
-            width: 100%;
-            max-width: 600px;
-            background: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
-        .header {
-            background-color: #002f6c;
-            color: white;
-            text-align: center;
-            padding: 20px;
-        }
-        .header h1 {
-            margin: 0;
-            font-size: 24px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .header p {
-            margin: 5px 0 0 0;
-            font-size: 12px;
-            opacity: 0.8;
-        }
-        .card {
-            padding: 25px;
-            border-bottom: 1px solid #edf2f7;
-        }
-        .card-title {
-            font-size: 14px;
-            font-weight: bold;
-            text-transform: uppercase;
-            color: #4a5568;
-            margin-bottom: 15px;
-            letter-spacing: 0.5px;
-            border-left: 4px solid #3182ce;
-            padding-left: 8px;
-        }
-        .info-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 15px;
-            background: #f7fafc;
-            padding: 12px;
-            border-radius: 6px;
-            font-size: 14px;
-        }
-        .info-label { color: #718096; }
-        .info-value { font-weight: 600; color: #2d3748; text-align: right; }
-        .ambata-box {
-            background: #ebf8ff;
-            border: 1px dashed #bee3f8;
-            padding: 15px;
-            text-align: center;
-            border-radius: 6px;
-            margin-bottom: 15px;
-        }
-        .ambata-number {
-            font-size: 36px;
-            font-weight: 800;
-            color: #2b6cb0;
-            margin-top: 5px;
-        }
-        .ambi-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        .ambo-item {
-            background: #f0fff4;
-            border: 1px solid #c6f6d5;
-            color: #22543d;
-            padding: 10px 15px;
-            margin-bottom: 8px;
-            border-radius: 6px;
-            font-weight: 700;
-            text-align: center;
-            letter-spacing: 2px;
-            font-size: 18px;
-        }
-        .footer-note {
-            font-size: 11px;
-            color: #a0aec0;
-            text-align: center;
-            padding: 15px;
-            background: #f7fafc;
-            line-height: 1.4;
-        }
-        .error-message {
-            color: #e53e3e;
-            background: #fff5f5;
-            border: 1px solid #fed7d7;
-            padding: 15px;
-            border-radius: 6px;
-            text-align: center;
-            font-size: 14px;
-        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f6f9; margin: 0; padding: 20px; color: #2d3748; }
+        .wrapper { max-width: 800px; margin: 0 auto; }
+        .container { background: #ffffff; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); overflow: hidden; margin-bottom: 20px; }
+        .header { background-color: #002f6c; color: white; text-align: center; padding: 20px; }
+        .header h1 { margin: 0; font-size: 24px; text-transform: uppercase; }
+        .card { padding: 25px; border-bottom: 1px solid #edf2f7; }
+        .card-title { font-size: 14px; font-weight: bold; text-transform: uppercase; color: #4a5568; margin-bottom: 15px; border-left: 4px solid #3182ce; padding-left: 8px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 15px; }
+        .stat-box { background: #f7fafc; padding: 15px; border-radius: 6px; text-align: center; border: 1px solid #e2e8f0; }
+        .stat-val { font-size: 20px; font-weight: bold; color: #2b6cb0; }
+        .ambata-box { background: #ebf8ff; border: 1px dashed #bee3f8; padding: 15px; text-align: center; border-radius: 6px; margin-bottom: 15px; }
+        .ambata-number { font-size: 36px; font-weight: 800; color: #2b6cb0; }
+        .ambo-item { background: #f0fff4; border: 1px solid #c6f6d5; color: #22543d; padding: 10px; margin-bottom: 8px; border-radius: 6px; font-weight: 700; text-align: center; font-size: 18px; list-style: none; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; }
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #e2e8f0; }
+        th { background-color: #f7fafc; color: #4a5568; }
+        .badge-vincita { background-color: #c6f6d5; color: #22543d; padding: 3px 8px; border-radius: 4px; font-weight: bold; }
+        .badge-perdente { background-color: #fed7d7; color: #9b2c2c; padding: 3px 8px; border-radius: 4px; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="header">
-        <h1>Lotto Mode Regina</h1>
-        <p>LABORATORIO - ALGORITMO DINAMICO CONCENTRATO</p>
-    </div>
-
-    <div id="loading" class="card" style="text-align: center; color: #718096;">
-        Caricamento dati di Laboratorio in corso...
-    </div>
-
-    <div id="content" style="display: none;">
-        <!-- Blocco Configurazione -->
-        <div class="card">
-            <div class="card-title">Stato dell'Architettura</div>
-            <div class="info-grid">
-                <span class="info-label">Ambiente:</span>
-                <span class="info-value" id="ambiente">--</span>
-                <span class="info-label">Ruota Attiva:</span>
-                <span class="info-value" id="ruota">--</span>
-                <span class="info-label">1° Ba Prec / Att:</span>
-                <span class="info-value" id="estratti">--</span>
-                <span class="info-label">Fisso Dinamico:</span>
-                <span class="info-value" style="color: #dd6b20;" id="fisso">--</span>
-            </div>
+<div class="wrapper">
+    <div class="container">
+        <div class="header">
+            <h1>Lotto Mode Regina</h1>
+            <p>LABORATORIO - CONSOLE CON VERIFICA STORICA RENDIMENTO</p>
         </div>
 
-        <!-- Blocco Previsione -->
-        <div class="card">
-            <div class="card-title" id="tipo-giocata">Previsione in Corso</div>
+        <div id="content" class="card">
+            <div class="card-title">Performance Storica Algoritmo</div>
+            <div class="stats-grid">
+                <div class="stat-box"><div>Casi Testati</div><div class="stat-val" id="stat-casi">--</div></div>
+                <div class="stat-box"><div>Ambate Vinte</div><div class="stat-val" id="stat-ambate">--</div></div>
+                <div class="stat-box"><div>Efficacia %</div><div class="stat-val" style="color: #38a169;" id="stat-efficacia">--</div></div>
+            </div>
+
+            <div class="card-title">Previsione in Corso (Bari)</div>
             <div class="ambata-box">
-                <div style="font-size: 12px; color: #4a5568; font-weight: bold;">AMBATA PRINCIPALE</div>
+                <div style="font-size: 12px; font-weight: bold;">AMBATA PRINCIPALE</div>
                 <div class="ambata-number" id="ambata">--</div>
             </div>
-            <div style="font-size: 12px; color: #4a5568; font-weight: bold; margin-bottom: 8px; text-transform: uppercase;">I 3 Ambi Secchi</div>
-            <ul class="ambi-list" id="ambi-container">
-                <!-- Inseriti dinamicamente -->
-            </ul>
+            <div id="ambi-container"></div>
         </div>
+    </div>
 
-        <!-- Nota di Sicurezza -->
-        <div class="footer-note" id="nota">
-            --
+    <div class="container">
+        <div class="card">
+            <div class="card-title">Registro Ultimi Esiti Rilevati (Fino a 3 Colpi)</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Fisso Usato</th>
+                        <th>Ambata Calcolata</th>
+                        <th>Esito Risultato</th>
+                        <th>Tempo di Uscita</th>
+                    </tr>
+                </thead>
+                <tbody id="tabella-storico">
+                    <!-- Dinamico -->
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
 
 <script>
-    async function caricaPrevisione() {
+    async function caricaConsole() {
         try {
-            // Aggiungiamo un timestamp per bypassare la cache del browser in tempo reale
             const response = await fetch('risultati_v4.json?t=' + new Date().getTime());
-            if (!response.ok) {
-                throw new Error("Impossibile leggere il file dei risultati JSON.");
-            }
             const data = await response.json();
 
-            // Nascondi loading e mostra contenuto
-            document.getElementById('loading').style.display = 'none';
-            document.getElementById('content').style.display = 'block';
+            // Mappatura Statistiche
+            document.getElementById('stat-casi').innerText = data.statistiche.casi_esaminati;
+            document.getElementById('stat-ambate').innerText = data.statistiche.vincite_ambata;
+            document.getElementById('stat-efficacia').innerText = data.statistiche.efficacia_globale;
 
-            // Mappatura dei dati strutturati dal nuovo script
-            document.getElementById('ambiente').innerText = data.ambiente;
-            document.getElementById('ruota').innerText = data.ruota_attiva;
-            document.getElementById('estratti').innerText = `${data.ultimo_calcolo.primo_precedente} / ${data.ultimo_calcolo.primo_attuale}`;
-            document.getElementById('fisso').innerText = `+${data.ultimo_calcolo.fisso_dinamico_applicato}`;
-            document.getElementById('tipo-giocata').innerText = `Previsione in corso (${data.previsione.tipo_giocata})`;
+            // Mappatura Numeri
             document.getElementById('ambata').innerText = data.previsione.ambata_principale;
-
-            // Generazione dinamica degli ambi secchi
-            const ambiContainer = document.getElementById('ambi-container');
-            ambiContainer.innerHTML = ''; // Pulisce la lista
+            const container = document.getElementById('ambi-container');
+            container.innerHTML = '';
             data.previsione.ambi_secchi.forEach(ambo => {
-                const li = document.createElement('li');
-                li.className = 'ambo-item';
-                li.innerText = ambo;
-                ambiContainer.appendChild(li);
+                const div = document.createElement('div');
+                div.className = 'ambo-item';
+                div.innerText = ambo;
+                container.appendChild(div);
             });
 
-            document.getElementById('nota').innerText = data.nota_architecture || data.nota_architettura;
-
-        } catch (error) {
-            document.getElementById('loading').style.display = 'none';
-            const content = document.getElementById('content');
-            content.style.display = 'block';
-            content.innerHTML = `
-                <div class="card">
-                    <div class="error-message">
-                        <strong>⚠️ Errore di sincronizzazione interfaccia</strong><br><br>
-                        Il file <code>risultati_v4.json</code> non è stato ancora generato da GitHub Actions o la struttura è incompleta.<br>
-                        Verifica che il run sia andato a buon fine.
-                    </div>
-                </div>
-            `;
+            // Mappatura Tabella Registro Storico
+            const tabella = document.getElementById('tabella-storico');
+            tabella.innerHTML = '';
+            data.storico.forEach(caso => {
+                const tr = document.createElement('tr');
+                const isVincente = caso.esito.includes('VINCITA');
+                tr.innerHTML = `
+                    <td>+${caso.fisso}</td>
+                    <td><strong>${caso.ambata}</strong></td>
+                    <td><span class="${isVincente ? 'badge-vincita' : 'badge-perdente'}">${caso.esito}</span></td>
+                    <td>${caso.colpo}</td>
+                `;
+                tabella.appendChild(tr);
+            });
+        } catch (e) {
+            console.error("Errore caricamento JSON", e);
         }
     }
-
-    // Avvio al caricamento della pagina
-    window.onload = caricaPrevisione;
+    window.onload = caricaConsole;
 </script>
-
 </body>
 </html>
