@@ -1,13 +1,19 @@
 {
-    "ambiente": "LABORATORIO (PC) - STRATEGIA DINAMICA",
+    "ambiente": "LABORATORIO (PC) - BACKTESTING ATTIVO",
     "ruota_attiva": "BARI",
+    "statistiche": {
+        "casi_esaminati": 3959,
+        "vincite_ambata": 505,
+        "vincite_ambo": 83,
+        "efficacia_globale": "14.85%"
+    },
     "ultimo_calcolo": {
         "primo_precedente": 87,
         "primo_attuale": 13,
         "fisso_dinamico_applicato": 16
     },
     "previsione": {
-        "tipo_giocata": "SOLO STUDIO (Spesa 0€)",
+        "tipo_giocata": "STUDIO / REALE (Verifica Storico)",
         "ambata_principale": 29,
         "ambi_secchi": [
             "29-74",
@@ -15,5 +21,62 @@
             "29-62"
         ]
     },
-    "nota_architettura": "Server di Produzione GitHub congelato su FISSO +31"
+    "storico": [
+        {
+            "id": 3960,
+            "fisso": 44,
+            "ambata": 60,
+            "esito": "In Corso / Perdente",
+            "colpo": "-"
+        },
+        {
+            "id": 3959,
+            "fisso": 12,
+            "ambata": 74,
+            "esito": "In Corso / Perdente",
+            "colpo": "-"
+        },
+        {
+            "id": 3958,
+            "fisso": 24,
+            "ambata": 8,
+            "esito": "In Corso / Perdente",
+            "colpo": "-"
+        },
+        {
+            "id": 3957,
+            "fisso": 37,
+            "ambata": 87,
+            "esito": "In Corso / Perdente",
+            "colpo": "-"
+        },
+        {
+            "id": 3956,
+            "fisso": 42,
+            "ambata": 55,
+            "esito": "In Corso / Perdente",
+            "colpo": "-"
+        },
+        {
+            "id": 3955,
+            "fisso": 11,
+            "ambata": 72,
+            "esito": "In Corso / Perdente",
+            "colpo": "-"
+        },
+        {
+            "id": 3954,
+            "fisso": 35,
+            "ambata": 17,
+            "esito": "In Corso / Perdente",
+            "colpo": "-"
+        },
+        {
+            "id": 3953,
+            "fisso": 5,
+            "ambata": 22,
+            "esito": "In Corso / Perdente",
+            "colpo": "-"
+        }
+    ]
 }
