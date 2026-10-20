@@ -2,26 +2,33 @@
     "ambiente": "LABORATORIO (PC) - BACKTESTING ATTIVO",
     "ruota_attiva": "BARI",
     "statistiche": {
-        "casi_esaminati": 3960,
+        "casi_esaminati": 3961,
         "vincite_ambata": 505,
         "vincite_ambo": 83,
-        "efficacia_globale": "14.85%"
+        "efficacia_globale": "14.84%"
     },
     "ultimo_calcolo": {
-        "primo_precedente": 13,
-        "primo_attuale": 11,
-        "fisso_dinamico_applicato": 2
+        "primo_precedente": 11,
+        "primo_attuale": 54,
+        "fisso_dinamico_applicato": 43
     },
     "previsione": {
         "tipo_giocata": "STUDIO / REALE (Verifica Storico)",
-        "ambata_principale": 13,
+        "ambata_principale": 7,
         "ambi_secchi": [
-            "13-58",
-            "13-77",
-            "13-78"
+            "7-52",
+            "7-83",
+            "7-84"
         ]
     },
     "storico": [
+        {
+            "id": 3962,
+            "fisso": 31,
+            "ambata": 28,
+            "esito": "In Corso / Perdente",
+            "colpo": "-"
+        },
         {
             "id": 3961,
             "fisso": 40,
@@ -68,13 +75,6 @@
             "id": 3955,
             "fisso": 11,
             "ambata": 72,
-            "esito": "In Corso / Perdente",
-            "colpo": "-"
-        },
-        {
-            "id": 3954,
-            "fisso": 35,
-            "ambata": 17,
             "esito": "In Corso / Perdente",
             "colpo": "-"
         }
