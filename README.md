@@ -1,2 +1,2 @@
 # LottomodeCoppie
-lottomode coppie
+lottomode bari
