@@ -24,7 +24,6 @@ def genera_previsione_laboratorio():
         dati = json.load(f)
     
     try:
-        # Estraiamo la lista globale delle cinquine di Bari
         ruota_bari = dati['Bari']
     except KeyError:
         print("[ERRORE] Chiave 'Bari' non trovata nel JSON.")
@@ -41,19 +40,15 @@ def genera_previsione_laboratorio():
     vinte_ambo = 0
     tot_casi_testati = 0
 
-    # Analizziamo la storia fermandoci a 3 estrazioni dalla fine per dare il tempo di verifica dei colpi
-    # Il ciclo parte dal terzo elemento disponibile per poter calcolare la distanza ciclometrica
+    # Il ciclo analizza la storia calcolando il fisso sulla cinquina corrente
     for i in range(2, tot_estrazioni):
-        # 1. Recupero dati per il calcolo del fisso
-        cinquina_prec = ruota_bari[i-1]
         cinquina_att = ruota_bari[i]
         
-        primo_prec = int(cinquina_prec[0])
+        # NUOVA LOGICA OPZIONE 2: Somma Isocrona (1° + 5° Estratto) della cinquina attuale
         primo_att = int(cinquina_att[0])
+        quinto_att = int(cinquina_att[4])
         
-        # 2. Calcolo Fisso e Previsione del passato
-        fisso = calcola_distanza_ciclometrica(primo_att, primo_prec)
-        if fisso == 0 or fisso == 90: fisso = 40
+        fisso = fuori_90(primo_att + quinto_att)
         
         ambata_storica = fuori_90(primo_att + fisso)
         ambo1 = fuori_90(ambata_storica + 45)
@@ -64,17 +59,15 @@ def genera_previsione_laboratorio():
             if abbinamenti[idx] == ambata_storica:
                 abbinamenti[idx] = fuori_90(abbinamenti[idx] + 1)
         
-        # 3. Verifica esito nei 3 colpi successivi
         esito = "In Corso / Perdente"
         colpo_uscita = "-"
         
-        # Controlliamo i 3 concorsi successivi all'elaborazione (i+1, i+2, i+3)
+        # Verifica nei 3 colpi successivi (i+1, i+2, i+3)
         for colpo in range(1, 4):
             if (i + colpo) < tot_estrazioni:
                 cinquina_verifica = ruota_bari[i + colpo]
                 cinquina_int = [int(n) for n in cinquina_verifica]
                 
-                # Verifica Ambo Secco
                 ambo_centrato = False
                 for abb in abbinamenti:
                     if ambata_storica in cinquina_int and abb in cinquina_int:
@@ -86,14 +79,12 @@ def genera_previsione_laboratorio():
                     colpo_uscita = f"{colpo}° Colpo"
                     if colpo <= 3: vinte_ambo += 1
                     break
-                # Verifica Ambata
                 elif ambata_storica in cinquina_int:
                     esito = "VINCITA AMBATA"
                     colpo_uscita = f"{colpo}° Colpo"
                     if colpo <= 3: vinte_ambata += 1
                     break
         
-        # Registriamo il caso solo se ha completato i colpi o se ha vinto prima
         if (i + 3) < tot_estrazioni or esito != "In Corso / Perdente":
             tot_casi_testati += 1
             storico_esiti.append({
@@ -104,14 +95,13 @@ def genera_previsione_laboratorio():
                 "colpo": colpo_uscita
             })
 
-    # --- CALCOLO PREVISIONE FUTURA REALE ---
-    c_precedente = ruota_bari[-2]
+    # --- CALCOLO PREVISIONE FUTURA REALE (APPLICATO ALL'ULTIMA ESTRAZIONE) ---
     c_attuale = ruota_bari[-1]
-    p_precedente = int(c_precedente[0])
     p_attuale = int(c_attuale[0])
+    q_attuale = int(c_attuale[4])
 
-    fisso_dinamico = calcola_distanza_ciclometrica(p_attuale, p_precedente)
-    if fisso_dinamico == 0 or fisso_dinamico == 90: fisso_dinamico = 40
+    # Calcolo Fisso Dinamico basato su Somma Isocrona
+    fisso_dinamico = fuori_90(p_attuale + q_attuale)
 
     ambata = fuori_90(p_attuale + fisso_dinamico)
     a1 = fuori_90(ambata + 45)
@@ -125,9 +115,8 @@ def genera_previsione_laboratorio():
     if tot_casi_testati > 0:
         percentuale_successo = round(((vinte_ambata + vinte_ambo) / tot_casi_testati) * 100, 2)
 
-    # Output JSON Strutturato
     dati_output = {
-        "ambiente": "LABORATORIO (PC) - BACKTESTING ATTIVO",
+        "ambiente": "LABORATORIO (PC) - STRATEGIA SOMMA ISOCRONA V1",
         "ruota_attiva": "BARI",
         "statistiche": {
             "casi_esaminati": tot_casi_testati,
@@ -136,21 +125,21 @@ def genera_previsione_laboratorio():
             "efficacia_globale": f"{percentuale_successo}%"
         },
         "ultimo_calcolo": {
-            "primo_precedente": p_precedente,
-            "primo_attuale": p_attuale,
-            "fisso_dinamico_applicato": fisso_dinamico
+            "ultimo_primo_estratto": p_attuale,
+            "ultimo_quinto_estratto": q_attuale,
+            "fisso_dinamico_somma_isocrona": fisso_dinamico
         },
         "previsione": {
             "tipo_giocata": "STUDIO / REALE (Verifica Storico)",
             "ambata_principale": ambata,
             "ambi_secchi": [f"{ambata}-{abb_futuri[0]}", f"{ambata}-{abb_futuri[1]}", f"{ambata}-{abb_futuri[2]}"]
         },
-        "storico": list(reversed(storico_esiti))[:8] # Mostriamo gli ultimi 8 esiti passati
+        "storico": list(reversed(storico_esiti))[:8]
     }
 
     with open(nome_file_report_json, 'w', encoding='utf-8') as f_json:
         json.dump(dati_output, f_json, indent=4, ensure_ascii=False)
-    print(f"[OK] Backtesting completato. Efficacia: {percentuale_successo}%")
+    print(f"[OK] Backtesting completato con Somma Isocrona. Efficacia: {percentuale_successo}%")
 
 if __name__ == "__main__":
     genera_previsione_laboratorio()
