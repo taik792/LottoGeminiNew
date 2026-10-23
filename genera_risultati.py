@@ -40,14 +40,14 @@ def genera_previsione_laboratorio():
     vinte_ambo = 0
     tot_casi_testati = 0
 
-    # Il ciclo analizza la storia calcolando il fisso sulla cinquina corrente
     for i in range(2, tot_estrazioni):
         cinquina_att = ruota_bari[i]
         
-        # NUOVA LOGICA OPZIONE 2: Somma Isocrona (1° + 5° Estratto) della cinquina attuale
+        # Estrazione corretta del 1° e 5° elemento della cinquina
         primo_att = int(cinquina_att[0])
         quinto_att = int(cinquina_att[4])
         
+        # NUOVA LOGICA OPZIONE 2: Somma Isocrona
         fisso = fuori_90(primo_att + quinto_att)
         
         ambata_storica = fuori_90(primo_att + fisso)
@@ -62,7 +62,6 @@ def genera_previsione_laboratorio():
         esito = "In Corso / Perdente"
         colpo_uscita = "-"
         
-        # Verifica nei 3 colpi successivi (i+1, i+2, i+3)
         for colpo in range(1, 4):
             if (i + colpo) < tot_estrazioni:
                 cinquina_verifica = ruota_bari[i + colpo]
@@ -95,12 +94,11 @@ def genera_previsione_laboratorio():
                 "colpo": colpo_uscita
             })
 
-    # --- CALCOLO PREVISIONE FUTURA REALE (APPLICATO ALL'ULTIMA ESTRAZIONE) ---
+    # --- CALCOLO PREVISIONE FUTURA REALE ---
     c_attuale = ruota_bari[-1]
     p_attuale = int(c_attuale[0])
     q_attuale = int(c_attuale[4])
 
-    # Calcolo Fisso Dinamico basato su Somma Isocrona
     fisso_dinamico = fuori_90(p_attuale + q_attuale)
 
     ambata = fuori_90(p_attuale + fisso_dinamico)
@@ -109,12 +107,14 @@ def genera_previsione_laboratorio():
     a3 = fuori_90(91 - ambata)
     abb_futuri = [a1, a2, a3]
     for idx in range(3):
-        if abb_futuri[idx] == ambata: abb_futuri[idx] = fuori_90(abb_futuri[idx] + 1)
+        if abb_futuri[idx] == ambata: 
+            abb_futuri[idx] = fuori_90(abb_futuri[idx] + 1)
 
     percentuale_successo = 0
     if tot_casi_testati > 0:
         percentuale_successo = round(((vinte_ambata + vinte_ambo) / tot_casi_testati) * 100, 2)
 
+    # Output JSON Strutturato Corretto con indici degli abbinamenti completi
     dati_output = {
         "ambiente": "LABORATORIO (PC) - STRATEGIA SOMMA ISOCRONA V1",
         "ruota_attiva": "BARI",
@@ -132,7 +132,11 @@ def genera_previsione_laboratorio():
         "previsione": {
             "tipo_giocata": "STUDIO / REALE (Verifica Storico)",
             "ambata_principale": ambata,
-            "ambi_secchi": [f"{ambata}-{abb_futuri[0]}", f"{ambata}-{abb_futuri[1]}", f"{ambata}-{abb_futuri[2]}"]
+            "ambi_secchi": [
+                f"{ambata}-{abb_futuri[0]}",
+                f"{ambata}-{abb_futuri[1]}",
+                f"{ambata}-{abb_futuri[2]}"
+            ]
         },
         "storico": list(reversed(storico_esiti))[:8]
     }
