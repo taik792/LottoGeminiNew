@@ -2,79 +2,79 @@
     "ambiente": "LABORATORIO (PC) - STRATEGIA SOMMA ISOCRONA V1",
     "ruota_attiva": "BARI",
     "statistiche": {
-        "casi_esaminati": 3962,
-        "vincite_ambata": 539,
-        "vincite_ambo": 82,
-        "efficacia_globale": "15.67%"
+        "casi_esaminati": 7396,
+        "vincite_ambata": 993,
+        "vincite_ambo": 150,
+        "efficacia_globale": "15.45%"
     },
     "ultimo_calcolo": {
-        "ultimo_primo_estratto": 89,
-        "ultimo_quinto_estratto": 50,
-        "fisso_dinamico_somma_isocrona": 49
+        "ultimo_primo_estratto": 36,
+        "ultimo_quinto_estratto": 14,
+        "fisso_dinamico_somma_isocrona": 50
     },
     "previsione": {
         "tipo_giocata": "STUDIO / REALE (Verifica Storico)",
-        "ambata_principale": 48,
+        "ambata_principale": 86,
         "ambi_secchi": [
-            "48-3",
-            "48-42",
-            "48-43"
+            "86-41",
+            "86-4",
+            "86-5"
         ]
     },
     "storico": [
         {
-            "id": 3963,
+            "id": 7397,
+            "fisso": 47,
+            "ambata": 58,
+            "esito": "VINCITA AMBATA",
+            "colpo": "3° Colpo"
+        },
+        {
+            "id": 7396,
             "fisso": 39,
             "ambata": 52,
             "esito": "In Corso / Perdente",
             "colpo": "-"
         },
         {
-            "id": 3962,
+            "id": 7395,
             "fisso": 88,
             "ambata": 85,
             "esito": "In Corso / Perdente",
             "colpo": "-"
         },
         {
-            "id": 3961,
+            "id": 7394,
             "fisso": 33,
             "ambata": 89,
             "esito": "In Corso / Perdente",
             "colpo": "-"
         },
         {
-            "id": 3960,
+            "id": 7393,
             "fisso": 71,
             "ambata": 87,
             "esito": "VINCITA AMBATA",
             "colpo": "2° Colpo"
         },
         {
-            "id": 3959,
+            "id": 7392,
             "fisso": 5,
             "ambata": 67,
             "esito": "VINCITA AMBATA",
             "colpo": "2° Colpo"
         },
         {
-            "id": 3958,
+            "id": 7391,
             "fisso": 83,
             "ambata": 67,
             "esito": "VINCITA AMBATA",
             "colpo": "3° Colpo"
         },
         {
-            "id": 3957,
+            "id": 7390,
             "fisso": 54,
             "ambata": 14,
-            "esito": "In Corso / Perdente",
-            "colpo": "-"
-        },
-        {
-            "id": 3956,
-            "fisso": 69,
-            "ambata": 82,
             "esito": "In Corso / Perdente",
             "colpo": "-"
         }
