@@ -2,26 +2,33 @@
     "ambiente": "LABORATORIO (PC) - STRATEGIA SOMMA ISOCRONA V1",
     "ruota_attiva": "BARI",
     "statistiche": {
-        "casi_esaminati": 7396,
+        "casi_esaminati": 7397,
         "vincite_ambata": 993,
         "vincite_ambo": 150,
         "efficacia_globale": "15.45%"
     },
     "ultimo_calcolo": {
-        "ultimo_primo_estratto": 36,
-        "ultimo_quinto_estratto": 14,
-        "fisso_dinamico_somma_isocrona": 50
+        "ultimo_primo_estratto": 35,
+        "ultimo_quinto_estratto": 72,
+        "fisso_dinamico_somma_isocrona": 17
     },
     "previsione": {
         "tipo_giocata": "STUDIO / REALE (Verifica Storico)",
-        "ambata_principale": 86,
+        "ambata_principale": 52,
         "ambi_secchi": [
-            "86-41",
-            "86-4",
-            "86-5"
+            "52-7",
+            "52-38",
+            "52-39"
         ]
     },
     "storico": [
+        {
+            "id": 7398,
+            "fisso": 77,
+            "ambata": 41,
+            "esito": "In Corso / Perdente",
+            "colpo": "-"
+        },
         {
             "id": 7397,
             "fisso": 47,
@@ -70,13 +77,6 @@
             "ambata": 67,
             "esito": "VINCITA AMBATA",
             "colpo": "3° Colpo"
-        },
-        {
-            "id": 7390,
-            "fisso": 54,
-            "ambata": 14,
-            "esito": "In Corso / Perdente",
-            "colpo": "-"
         }
     ]
 }
