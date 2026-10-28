@@ -1,82 +1,66 @@
 {
-    "ambiente": "LABORATORIO (PC) - STRATEGIA SOMMA ISOCRONA V1",
-    "ruota_attiva": "BARI",
-    "statistiche": {
-        "casi_esaminati": 7397,
-        "vincite_ambata": 993,
-        "vincite_ambo": 150,
-        "efficacia_globale": "15.45%"
+    "configurazione": {
+        "motore_attivo": "Motore A - Distanza Ciclometrica Dinamica",
+        "ruota": "BARI",
+        "protocollo": "SOLO STUDIO",
+        "data_generazione": "28/10/2026"
     },
-    "ultimo_calcolo": {
-        "ultimo_primo_estratto": 35,
-        "ultimo_quinto_estratto": 72,
-        "fisso_dinamico_somma_isocrona": 17
-    },
-    "previsione": {
-        "tipo_giocata": "STUDIO / REALE (Verifica Storico)",
-        "ambata_principale": 52,
+    "previsione_corrente": {
+        "ambata": 8,
         "ambi_secchi": [
-            "52-7",
-            "52-38",
-            "52-39"
+            "8-53",
+            "8-82",
+            "8-3"
         ]
     },
-    "storico": [
+    "tabella_colpi": [
         {
-            "id": 7398,
-            "fisso": 77,
-            "ambata": 41,
-            "esito": "In Corso / Perdente",
-            "colpo": "-"
+            "colpo": 1,
+            "data": "29/10/2026",
+            "cinquina": "",
+            "esito_ambata": "⏳",
+            "esito_ambi": "⏳",
+            "stato": "In corso"
         },
         {
-            "id": 7397,
-            "fisso": 47,
-            "ambata": 58,
-            "esito": "VINCITA AMBATA",
-            "colpo": "3° Colpo"
+            "colpo": 2,
+            "data": "31/10/2026",
+            "cinquina": "",
+            "esito_ambata": "⏳",
+            "esito_ambi": "⏳",
+            "stato": "Programmato"
         },
         {
-            "id": 7396,
-            "fisso": 39,
-            "ambata": 52,
-            "esito": "In Corso / Perdente",
-            "colpo": "-"
+            "colpo": 3,
+            "data": "03/11/2026",
+            "cinquina": "",
+            "esito_ambata": "⏳",
+            "esito_ambi": "⏳",
+            "stato": "Programmato"
         },
         {
-            "id": 7395,
-            "fisso": 88,
-            "ambata": 85,
-            "esito": "In Corso / Perdente",
-            "colpo": "-"
+            "colpo": 4,
+            "data": "05/11/2026",
+            "cinquina": "",
+            "esito_ambata": "⏳",
+            "esito_ambi": "⏳",
+            "stato": "Programmato"
         },
         {
-            "id": 7394,
-            "fisso": 33,
-            "ambata": 89,
-            "esito": "In Corso / Perdente",
-            "colpo": "-"
+            "colpo": 5,
+            "data": "06/11/2026",
+            "cinquina": "",
+            "esito_ambata": "⏳",
+            "esito_ambi": "⏳",
+            "stato": "Programmato"
         },
         {
-            "id": 7393,
-            "fisso": 71,
-            "ambata": 87,
-            "esito": "VINCITA AMBATA",
-            "colpo": "2° Colpo"
-        },
-        {
-            "id": 7392,
-            "fisso": 5,
-            "ambata": 67,
-            "esito": "VINCITA AMBATA",
-            "colpo": "2° Colpo"
-        },
-        {
-            "id": 7391,
-            "fisso": 83,
-            "ambata": 67,
-            "esito": "VINCITA AMBATA",
-            "colpo": "3° Colpo"
+            "colpo": 6,
+            "data": "07/11/2026",
+            "cinquina": "",
+            "esito_ambata": "⏳",
+            "esito_ambi": "⏳",
+            "stato": "Programmato"
         }
     ]
 }
