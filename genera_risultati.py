@@ -1,149 +1,67 @@
 import json
 import os
+from datetime import datetime
 
-def calcola_distanza_ciclometrica(a, b):
-    dist = abs(a - b)
-    return dist if dist <= 45 else 90 - dist
+def calcola_distanza_ciclometrica(e1, e5):
+    """Calcola la distanza assoluta sul cerchio ciclometrico (max 45)"""
+    dist = abs(e1 - e5)
+    if dist > 45:
+        dist = 90 - dist
+    return dist
 
-def fuori_90(numero):
-    while numero > 90:
-        numero -= 90
-    while numero <= 0:
-        numero += 90
-    return numero
-
-def genera_previsione_laboratorio():
-    nome_file_json = 'estrazioni.json'
-    nome_file_report_json = 'risultati_v4.json'
-
-    if not os.path.exists(nome_file_json):
-        print(f"[ERRORE] File {nome_file_json} non trovato!")
-        return
-
-    with open(nome_file_json, 'r', encoding='utf-8') as f:
-        dati = json.load(f)
+def genera_previsione():
+    # Ultimi dati reali inseriti (Estrazione del 27/10/2026)
+    ultima_cinquina = [65, 57, 90, 11, 73]
+    e1 = ultima_cinquina[0]
+    e5 = ultima_cinquina[4]
     
-    try:
-        ruota_bari = dati['Bari']
-    except KeyError:
-        print("[ERRORE] Chiave 'Bari' non trovata nel JSON.")
-        return
-
-    tot_estrazioni = len(ruota_bari)
-    if tot_estrazioni < 5:
-        print("[ERRORE] Dati storici insufficienti per il backtesting.")
-        return
-
-    # --- SEZIONE BACKTESTING STORICO ---
-    storico_esiti = []
-    vinte_ambata = 0
-    vinte_ambo = 0
-    tot_casi_testati = 0
-
-    for i in range(2, tot_estrazioni):
-        cinquina_att = ruota_bari[i]
+    # MOTORE A: Distanza Ciclometrica Dinamica
+    ambata = calcola_distanza_ciclometrica(e1, e5)
+    
+    # Se l'ambata dovesse essere 0 (casi rari), usiamo il fuori 90 standard
+    if ambata == 0:
+        ambata = 90
         
-        # Estrazione corretta del 1° e 5° elemento della cinquina
-        primo_att = int(cinquina_att[0])
-        quinto_att = int(cinquina_att[4])
-        
-        # NUOVA LOGICA OPZIONE 2: Somma Isocrona
-        fisso = fuori_90(primo_att + quinto_att)
-        
-        ambata_storica = fuori_90(primo_att + fisso)
-        ambo1 = fuori_90(ambata_storica + 45)
-        ambo2 = fuori_90(90 - ambata_storica)
-        ambo3 = fuori_90(91 - ambata_storica)
-        abbinamenti = [ambo1, ambo2, ambo3]
-        for idx in range(3):
-            if abbinamenti[idx] == ambata_storica:
-                abbinamenti[idx] = fuori_90(abbinamenti[idx] + 1)
-        
-        esito = "In Corso / Perdente"
-        colpo_uscita = "-"
-        
-        for colpo in range(1, 4):
-            if (i + colpo) < tot_estrazioni:
-                cinquina_verifica = ruota_bari[i + colpo]
-                cinquina_int = [int(n) for n in cinquina_verifica]
-                
-                ambo_centrato = False
-                for abb in abbinamenti:
-                    if ambata_storica in cinquina_int and abb in cinquina_int:
-                        ambo_centrato = True
-                        break
-                
-                if ambo_centrato:
-                    esito = "VINCITA AMBO"
-                    colpo_uscita = f"{colpo}° Colpo"
-                    if colpo <= 3: vinte_ambo += 1
-                    break
-                elif ambata_storica in cinquina_int:
-                    esito = "VINCITA AMBATA"
-                    colpo_uscita = f"{colpo}° Colpo"
-                    if colpo <= 3: vinte_ambata += 1
-                    break
-        
-        if (i + 3) < tot_estrazioni or esito != "In Corso / Perdente":
-            tot_casi_testati += 1
-            storico_esiti.append({
-                "id": i,
-                "fisso": fisso,
-                "ambata": ambata_storica,
-                "esito": esito,
-                "colpo": colpo_uscita
-            })
+    # Abbinamenti Ambi (Logica del Motore A)
+    ambo1 = (ambata + 45) if (ambata + 45) <= 90 else (ambata + 45 - 90)
+    ambo2 = 90 - ambata
+    
+    # Diametrale in decina (+5 o -5 per rimanere nella stessa decina)
+    if ambata % 10 < 5:
+        ambo3 = ambata + 5
+    else:
+        ambo3 = ambata - 5
 
-    # --- CALCOLO PREVISIONE FUTURA REALE ---
-    c_attuale = ruota_bari[-1]
-    p_attuale = int(c_attuale[0])
-    q_attuale = int(c_attuale[4])
-
-    fisso_dinamico = fuori_90(p_attuale + q_attuale)
-
-    ambata = fuori_90(p_attuale + fisso_dinamico)
-    a1 = fuori_90(ambata + 45)
-    a2 = fuori_90(90 - ambata)
-    a3 = fuori_90(91 - ambata)
-    abb_futuri = [a1, a2, a3]
-    for idx in range(3):
-        if abb_futuri[idx] == ambata: 
-            abb_futuri[idx] = fuori_90(abb_futuri[idx] + 1)
-
-    percentuale_successo = 0
-    if tot_casi_testati > 0:
-        percentuale_successo = round(((vinte_ambata + vinte_ambo) / tot_casi_testati) * 100, 2)
-
-    # Output JSON Strutturato Corretto con indici degli abbinamenti completi
-    dati_output = {
-        "ambiente": "LABORATORIO (PC) - STRATEGIA SOMMA ISOCRONA V1",
-        "ruota_attiva": "BARI",
-        "statistiche": {
-            "casi_esaminati": tot_casi_testati,
-            "vincite_ambata": vinte_ambata,
-            "vincite_ambo": vinte_ambo,
-            "efficacia_globale": f"{percentuale_successo}%"
+    # Struttura dati con i 6 colpi di monitoraggio richiesti
+    database_lotto = {
+        "configurazione": {
+            "motore_attivo": "Motore A - Distanza Ciclometrica Dinamica",
+            "ruota": "BARI",
+            "protocollo": "SOLO STUDIO",
+            "data_generazione": "28/10/2026"
         },
-        "ultimo_calcolo": {
-            "ultimo_primo_estratto": p_attuale,
-            "ultimo_quinto_estratto": q_attuale,
-            "fisso_dinamico_somma_isocrona": fisso_dinamico
-        },
-        "previsione": {
-            "tipo_giocata": "STUDIO / REALE (Verifica Storico)",
-            "ambata_principale": ambata,
+        "previsione_corrente": {
+            "ambata": ambata,
             "ambi_secchi": [
-                f"{ambata}-{abb_futuri[0]}",
-                f"{ambata}-{abb_futuri[1]}",
-                f"{ambata}-{abb_futuri[2]}"
+                f"{ambata}-{ambo1}",
+                f"{ambata}-{ambo2}",
+                f"{ambata}-{ambo3}"
             ]
         },
-        "storico": list(reversed(storico_esiti))[:8]
+        "tabella_colpi": [
+            {"colpo": 1, "data": "29/10/2026", "cinquina": "", "esito_ambata": "⏳", "esito_ambi": "⏳", "stato": "In corso"},
+            {"colpo": 2, "data": "31/10/2026", "cinquina": "", "esito_ambata": "⏳", "esito_ambi": "⏳", "stato": "Programmato"},
+            {"colpo": 3, "data": "03/11/2026", "cinquina": "", "esito_ambata": "⏳", "esito_ambi": "⏳", "stato": "Programmato"},
+            {"colpo": 4, "data": "05/11/2026", "cinquina": "", "esito_ambata": "⏳", "esito_ambi": "⏳", "stato": "Programmato"},
+            {"colpo": 5, "data": "06/11/2026", "cinquina": "", "esito_ambata": "⏳", "esito_ambi": "⏳", "stato": "Programmato"},
+            {"colpo": 6, "data": "07/11/2026", "cinquina": "", "esito_ambata": "⏳", "esito_ambi": "⏳", "stato": "Programmato"}
+        ]
     }
-
-    with open(nome_file_report_json, 'w', encoding='utf-8') as f_json:
-        json.dump(dati_output, f_json, indent=4, ensure_ascii=False)
-    print(f"[OK] Backtesting completato con Somma Isocrona. Efficacia: {percentuale_successo}%")
+    
+    # Salvataggio nel file locale JSON
+    with open('risultati_v4.json', 'w', encoding='utf-8') as f:
+        json.dump(database_lotto, f, indent=4, ensure_ascii=False)
+    print("File risultati_v4.json generato correttamente con il Motore A.")
 
 if __name__ == "__main__":
-    genera_previsione_laboratorio()
+    genera_previsione()
