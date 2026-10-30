@@ -22,6 +22,9 @@ jobs:
       - name: Esegui algoritmo
         run: python genera_risultati.py
 
+      - name: Esegui verifica colpi Algoritmo Regina
+        run: python verifica_colpi.py
+
       - name: Commit e Push dei risultati
         run: |
           git config --global user.name "github-actions"
