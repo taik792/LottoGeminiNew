@@ -25,10 +25,10 @@
         {
             "colpo": 2,
             "data": "31/10/2026",
-            "cinquina": "58-79-20-27-7",
-            "esito_ambata": "Negativo",
-            "esito_ambi": "Negativo",
-            "stato": "Chiuso"
+            "cinquina": "",
+            "esito_ambata": "⏳",
+            "esito_ambi": "⏳",
+            "stato": "In corso"
         },
         {
             "colpo": 3,
