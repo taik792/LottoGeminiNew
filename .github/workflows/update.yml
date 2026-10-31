@@ -22,7 +22,7 @@ jobs:
       - name: Esegui algoritmo
         run: python genera_risultati.py
 
-      - name: Esegui algoritmo
+      - name: Esegui verifica colpi Algoritmo Regina
         run: python verifica_colpi.py
 
       - name: Commit e Push dei risultati
