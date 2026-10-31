@@ -20,12 +20,8 @@ def controlla_esiti():
         database["tabella_colpi"][0]["esito_ambi"] = "Negativo"
         database["tabella_colpi"][0]["stato"] = "Chiuso"
         
-        # Attiva il 2° colpo per sabato 30/10
-    if database["tabella_colpi"][1]["stato"] == "In corso":
-        database["tabella_colpi"][1]["cinquina"] = cinquina_29_10_str
-        database["tabella_colpi"][1]["esito_ambata"] = "Negativo"
-        database["tabella_colpi"][1]["esito_ambi"] = "Negativo"
-        database["tabella_colpi"][1]["stato"] = "Chiuso"  
+        # Attiva il 2° colpo per sabato 31/10
+        database["tabella_colpi"][1]["stato"] = "In corso"
         
         with open('risultati_v4.json', 'w', encoding='utf-8') as f:
             json.dump(database, f, indent=4, ensure_ascii=False)
