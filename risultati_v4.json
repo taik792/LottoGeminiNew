@@ -17,18 +17,18 @@
         {
             "colpo": 1,
             "data": "29/10/2026",
-            "cinquina": "",
-            "esito_ambata": "⏳",
-            "esito_ambi": "⏳",
+            "cinquina": "28-19-52-20-46",
+            "esito_ambata": "Negativo",
+            "esito_ambi": "Negativo",
             "stato": "Chiuso"
         },
         {
             "colpo": 2,
-            "data": "30/10/2026",
+            "data": "31/10/2026",
             "cinquina": "",
             "esito_ambata": "⏳",
             "esito_ambi": "⏳",
-            "stato": "Chiuso"
+            "stato": "In corso"
         },
         {
             "colpo": 3,
@@ -36,7 +36,7 @@
             "cinquina": "",
             "esito_ambata": "⏳",
             "esito_ambi": "⏳",
-            "stato": "In Corso"
+            "stato": "Programmato"
         },
         {
             "colpo": 4,
