@@ -20,15 +20,15 @@
             "cinquina": "",
             "esito_ambata": "⏳",
             "esito_ambi": "⏳",
-            "stato": "In corso"
+            "stato": "Chiuso"
         },
         {
             "colpo": 2,
-            "data": "31/10/2026",
+            "data": "30/10/2026",
             "cinquina": "",
             "esito_ambata": "⏳",
             "esito_ambi": "⏳",
-            "stato": "Programmato"
+            "stato": "Chiuso"
         },
         {
             "colpo": 3,
@@ -36,7 +36,7 @@
             "cinquina": "",
             "esito_ambata": "⏳",
             "esito_ambi": "⏳",
-            "stato": "Programmato"
+            "stato": "In Corso"
         },
         {
             "colpo": 4,
