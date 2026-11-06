@@ -48,8 +48,8 @@ def genera_previsione():
             {"colpo": 2, "data": "30/10/2026", "cinquina": "58-79-20-27-7", "esito_ambata": "Negativo", "esito_ambi": "Negativo", "stato": "Chiuso"},
             {"colpo": 3, "data": "31/10/2026", "cinquina": "15-60-11-81-74", "esito_ambata": "Negativo", "esito_ambi": "negativo", "stato": "Chiuso"},
             {"colpo": 4, "data": "03/11/2026", "cinquina": "60-81-39-27-89",  "esito_ambata": "Negativo", "esito_ambi": "negativo", "stato": "Chiuso"},
-            {"colpo": 5, "data": "05/11/2026", "cinquina": "", "esito_ambata": "⏳", "esito_ambi": "⏳", "stato": "Programmato"},
-            {"colpo": 6, "data": "06/11/2026", "cinquina": "", "esito_ambata": "⏳", "esito_ambi": "⏳", "stato": "Programmato"}
+            {"colpo": 5, "data": "05/11/2026", "cinquina": "76-65-54-69-19",  "esito_ambata": "Negativo", "esito_ambi": "negativo", "stato": "Chiuso"},
+            {"colpo": 6, "data": "06/11/2026", "cinquina": "", "esito_ambata": "⏳", "esito_ambi": "⏳", "stato": "In Corso"}
         ]
     }
     
