@@ -1,6 +1,5 @@
 import json
 import os
-from datetime import datetime
 
 def calcola_distanza_ciclometrica(e1, e5):
     dist = abs(e1 - e5)
@@ -9,9 +8,9 @@ def calcola_distanza_ciclometrica(e1, e5):
     return dist
 
 def genera_previsione():
-    # Ultimi dati reali di partenza (Estrazione del 27/10/2026)
-    e1 = 65
-    e5 = 73
+    # Ultimi dati reali di partenza (Estrazione del 06/11/2026)
+    e1 = 17
+    e5 = 52
     
     # MOTORE A: Distanza Ciclometrica Dinamica
     ambata = calcola_distanza_ciclometrica(e1, e5)
@@ -27,13 +26,13 @@ def genera_previsione():
     else:
         ambo3 = ambata - 5
 
-    # NUOVA STRUTTURA ALLINEATA CON IL CALENDARIO REALE RECENTE
+    # NUOVO CICLO DI 6 COLPI (Partenza 07/11/2026)
     database_lotto = {
         "configurazione": {
             "motore_attivo": "Motore A - Distanza Ciclometrica Dinamica",
             "ruota": "BARI",
             "protocollo": "SOLO STUDIO",
-            "data_generazione": "28/10/2026"
+            "data_generazione": "07/11/2026"
         },
         "previsione_corrente": {
             "ambata": ambata,
@@ -44,18 +43,18 @@ def genera_previsione():
             ]
         },
         "tabella_colpi": [
-            {"colpo": 1, "data": "29/10/2026", "cinquina": "28-19-52-20-46", "esito_ambata": "Negativo", "esito_ambi": "Negativo", "stato": "Chiuso"},
-            {"colpo": 2, "data": "30/10/2026", "cinquina": "58-79-20-27-7", "esito_ambata": "Negativo", "esito_ambi": "Negativo", "stato": "Chiuso"},
-            {"colpo": 3, "data": "31/10/2026", "cinquina": "15-60-11-81-74", "esito_ambata": "Negativo", "esito_ambi": "negativo", "stato": "Chiuso"},
-            {"colpo": 4, "data": "03/11/2026", "cinquina": "60-81-39-27-89",  "esito_ambata": "Negativo", "esito_ambi": "negativo", "stato": "Chiuso"},
-            {"colpo": 5, "data": "05/11/2026", "cinquina": "76-65-54-69-19",  "esito_ambata": "Negativo", "esito_ambi": "negativo", "stato": "Chiuso"},
-            {"colpo": 6, "data": "06/11/2026", "cinquina": "17-8-89-77-52",  "esito_ambata": "Positivo", "esito_ambi": "negativo", "stato": "Chiuso"},
+            {"colpo": 1, "data": "07/11/2026", "cinquina": "", "esito_ambata": "⏳", "esito_ambi": "⏳", "stato": "In corso"},
+            {"colpo": 2, "data": "10/11/2026", "cinquina": "", "esito_ambata": "⏳", "esito_ambi": "⏳", "stato": "Programmato"},
+            {"colpo": 3, "data": "12/11/2026", "cinquina": "", "esito_ambata": "⏳", "esito_ambi": "⏳", "stato": "Programmato"},
+            {"colpo": 4, "data": "13/11/2026", "cinquina": "", "esito_ambata": "⏳", "esito_ambi": "⏳", "stato": "Programmato"},
+            {"colpo": 5, "data": "14/11/2026", "cinquina": "", "esito_ambata": "⏳", "esito_ambi": "⏳", "stato": "Programmato"},
+            {"colpo": 6, "data": "17/11/2026", "cinquina": "", "esito_ambata": "⏳", "esito_ambi": "⏳", "stato": "Programmato"}
         ]
     }
     
     with open('risultati_v4.json', 'w', encoding='utf-8') as f:
         json.dump(database_lotto, f, indent=4, ensure_ascii=False)
-    print("File risultati_v4.json rigenerato con allineamento date (Colpo 3 Attivo).")
+    print("Nuovo ciclo avviato! Previsione attiva: Ambata 35.")
 
 if __name__ == "__main__":
     genera_previsione()
