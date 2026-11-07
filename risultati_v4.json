@@ -3,20 +3,20 @@
         "motore_attivo": "Motore A - Distanza Ciclometrica Dinamica",
         "ruota": "BARI",
         "protocollo": "SOLO STUDIO",
-        "data_generazione": "28/10/2026"
+        "data_generazione": "07/11/2026"
     },
     "previsione_corrente": {
-        "ambata": 8,
+        "ambata": 35,
         "ambi_secchi": [
-            "8-53",
-            "8-82",
-            "8-3"
+            "35-80",
+            "35-55",
+            "35-30"
         ]
     },
     "tabella_colpi": [
         {
             "colpo": 1,
-            "data": "29/10/2026",
+            "data": "07/11/2026",
             "cinquina": "28-19-52-20-46",
             "esito_ambata": "Negativo",
             "esito_ambi": "Negativo",
@@ -24,43 +24,43 @@
         },
         {
             "colpo": 2,
-            "data": "30/10/2026",
-            "cinquina": "58-79-20-27-7",
-            "esito_ambata": "Negativo",
-            "esito_ambi": "Negativo",
-            "stato": "Chiuso"
+            "data": "10/11/2026",
+            "cinquina": "",
+            "esito_ambata": "⏳",
+            "esito_ambi": "⏳",
+            "stato": "In corso"
         },
         {
             "colpo": 3,
-            "data": "31/10/2026",
-            "cinquina": "15-60-11-81-74",
-            "esito_ambata": "Negativo",
-            "esito_ambi": "negativo",
-            "stato": "Chiuso"
+            "data": "12/11/2026",
+            "cinquina": "",
+            "esito_ambata": "⏳",
+            "esito_ambi": "⏳",
+            "stato": "Programmato"
         },
         {
             "colpo": 4,
-            "data": "03/11/2026",
-            "cinquina": "60-81-39-27-89",
-            "esito_ambata": "Negativo",
-            "esito_ambi": "negativo",
-            "stato": "Chiuso"
+            "data": "13/11/2026",
+            "cinquina": "",
+            "esito_ambata": "⏳",
+            "esito_ambi": "⏳",
+            "stato": "Programmato"
         },
         {
             "colpo": 5,
-            "data": "05/11/2026",
-            "cinquina": "76-65-54-69-19",
-            "esito_ambata": "Negativo",
-            "esito_ambi": "negativo",
-            "stato": "Chiuso"
+            "data": "14/11/2026",
+            "cinquina": "",
+            "esito_ambata": "⏳",
+            "esito_ambi": "⏳",
+            "stato": "Programmato"
         },
         {
             "colpo": 6,
-            "data": "06/11/2026",
-            "cinquina": "17-8-89-77-52",
-            "esito_ambata": "Positivo",
-            "esito_ambi": "negativo",
-            "stato": "Chiuso"
+            "data": "17/11/2026",
+            "cinquina": "",
+            "esito_ambata": "⏳",
+            "esito_ambi": "⏳",
+            "stato": "Programmato"
         }
     ]
 }
