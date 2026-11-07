@@ -57,10 +57,10 @@
         {
             "colpo": 6,
             "data": "06/11/2026",
-            "cinquina": "",
-            "esito_ambata": "⏳",
-            "esito_ambi": "⏳",
-            "stato": "In Corso"
+            "cinquina": "17-8-89-77-52",
+            "esito_ambata": "Negativo",
+            "esito_ambi": "negativo",
+            "stato": "Chiuso"
         }
     ]
 }
