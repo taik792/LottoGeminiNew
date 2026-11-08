@@ -43,8 +43,8 @@ def genera_previsione():
             ]
         },
         "tabella_colpi": [
-            {"colpo": 1, "data": "07/11/2026", "cinquina": "", "esito_ambata": "⏳", "esito_ambi": "⏳", "stato": "In corso"},
-            {"colpo": 2, "data": "10/11/2026", "cinquina": "", "esito_ambata": "⏳", "esito_ambi": "⏳", "stato": "Programmato"},
+            {"colpo": 1, "data": "07/11/2026", "cinquina": "64-9-1-8-12", "esito_ambata": "NEGATIVO", "esito_ambi": "NEGATIVO", "stato": "Chiuso"},
+            {"colpo": 2, "data": "10/11/2026", "cinquina": "", "esito_ambata": "⏳", "esito_ambi": "⏳", "stato": "In corso"},
             {"colpo": 3, "data": "12/11/2026", "cinquina": "", "esito_ambata": "⏳", "esito_ambi": "⏳", "stato": "Programmato"},
             {"colpo": 4, "data": "13/11/2026", "cinquina": "", "esito_ambata": "⏳", "esito_ambi": "⏳", "stato": "Programmato"},
             {"colpo": 5, "data": "14/11/2026", "cinquina": "", "esito_ambata": "⏳", "esito_ambi": "⏳", "stato": "Programmato"},
